@@ -819,7 +819,24 @@ const App = () => {
              className="w-full overflow-x-auto pb-16 pt-4 px-4 -mx-4 responsive-scrollbar"
           >
             <div className="flex gap-8 w-max">
-              
+
+              <div className="w-[340px] md:w-[400px] flex-shrink-0">
+                <ProjectCard 
+                  title="Gula Cerdas"
+                  category="IOT Solution"
+                  description="Standardisasi produksi gula aren menggunakan sensor Termokopel dan Motor DC untuk mengukur kekentalan serta titik jenuh."
+                  tags={['IOT', 'ESP32', 'UMKM']}
+                  icon={<Cpu className="text-white" size={20} />}
+                  color="green"
+                  images={["gula.JPG"]} 
+                  onOpenGallery={openGallery}
+                  heightClass="h-56"
+                  links={[
+                    { text: "Github", url: "https://github.com/rifqiimt/Gula-Cerdas.git", icon: <Github size={12}/> },
+                  ]}
+                />
+              </div>
+
               <div className="w-[340px] md:w-[400px] flex-shrink-0">
                 <ProjectCard 
                   title="Lifegen App"
