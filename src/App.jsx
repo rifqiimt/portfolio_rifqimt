@@ -784,7 +784,7 @@ const App = () => {
                       <TechStackCard icon="unity.png" name="Unity" desc="Augmented Reality" />
                       <TechStackCard icon="blender.png" name="Blender" desc="3D" />
                       <TechStackCard icon="mesh.png" name="Meshroom" desc="Photogrammetry" />
-                      <TechStackCard icon="mendix.jpeg" name="Mendix" desc="Low-Code" />
+                      <TechStackCard icon="arduino.png" name="Arduino IDE" desc="Low-Code" />
                       <TechStackCard icon="canva.png" name="Canva" desc="Graphic" />
                     </div>
                  </div>
@@ -823,7 +823,7 @@ const App = () => {
               <div className="w-[340px] md:w-[400px] flex-shrink-0">
                 <ProjectCard 
                   title="Gula Cerdas"
-                  category="IOT Solution"
+                  category="IoT Solution"
                   description="Standardisasi produksi gula aren menggunakan sensor Termokopel dan Motor DC untuk mengukur kekentalan serta titik jenuh."
                   tags={['IOT', 'ESP32', 'UMKM']}
                   icon={<Cpu className="text-white" size={20} />}
@@ -873,23 +873,6 @@ const App = () => {
 
               <div className="w-[340px] md:w-[400px] flex-shrink-0">
                 <ProjectCard 
-                  title="WeatherFit"
-                  category="Full Stack"
-                  description="Aplikasi rekomendasi olahraga berbasis cuaca real-time menggunakan API cuaca dan geolokasi."
-                  tags={['Mendix', 'API', 'Code']}
-                  icon={<ExternalLink className="text-white" size={20} />}
-                  color="blue"
-                  images={["https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&q=80"]}
-                  onOpenGallery={openGallery}
-                  heightClass="h-56"
-                  links={[
-                    { text: "Mendix App", url: "#", icon: <ExternalLink size={12}/>, className: "bg-blue-100 hover:bg-blue-200" }
-                  ]}
-                />
-              </div>
-
-              <div className="w-[340px] md:w-[400px] flex-shrink-0">
-                <ProjectCard 
                   title="Smart Water Metering"
                   category="Embedded"
                   description="Sistem monitoring penggunaan air berbasis Arduino Uno untuk mencegah pemborosan air rumah tangga."
@@ -919,7 +902,7 @@ const App = () => {
                   heightClass="h-56"
                   links={[
                     { text: "Github", url: "https://github.com/rifqiimt/BridgeGuard.git", icon: <Github size={12}/> },
-                    { text: "Demo Video", url: "https://youtube.com/@muhammadabiyyu3010?si=cWjiHW9ce7i0kfPy", icon: <Youtube size={12}/>, className: "bg-red-100 hover:bg-red-200" }
+                    { text: "Demo", url: "https://www.youtube.com/@muhammadabiyyu3010/shorts", icon: <Youtube size={12}/>, className: "bg-red-100 hover:bg-red-200" }
                   ]}
                 />
               </div>
@@ -932,12 +915,12 @@ const App = () => {
                   tags={['AR', 'Unity', 'Edu']}
                   icon={<Box className="text-white" size={20} />}
                   color="orange"
-                  images={["https://images.unsplash.com/photo-1626379953822-baec19c3accd?w=400&q=80"]}
+                  images={["bmkg2.png"]}
                   onOpenGallery={openGallery}
                   heightClass="h-56"
                   links={[
                     { text: "Download APK", url: "#", icon: <Smartphone size={12}/>, className: "bg-green-100 hover:bg-green-200" },
-                    { text: "Preview", url: "#", icon: <Youtube size={12}/>, className: "bg-red-100 hover:bg-red-200" }
+                    { text: "Demo", url: "https://drive.google.com/file/d/1V6obcvnr7jf35-M14eItzmC8sS8rudcz/view?usp=drive_link", icon: <Youtube size={12}/>, className: "bg-red-100 hover:bg-red-200" }
                   ]}
                 />
               </div>
@@ -992,7 +975,7 @@ const App = () => {
                                     </div>
                                 </div>
                                 <span className="font-mono font-bold bg-black text-white px-4 py-2 transform rotate-2 text-sm shadow-[3px_3px_0px_0px_#22c55e] border border-transparent">
-                                    2024
+                                    2024-2025
                                 </span>
                             </div>
 
