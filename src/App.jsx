@@ -41,7 +41,7 @@ import {
 
 /* --- HOOKS & UTILS --- */
 
-// 1. REVEAL HOOK: Trigger Once (Hanya muncul 1 kali agar nyaman di mata)
+// 1. REVEAL HOOK: Trigger Once
 const useOnScreen = (options) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -111,19 +111,18 @@ const useAutoScroll = (ref, speed = 1) => {
   }, [ref, speed]);
 };
 
-/* --- MODAL STUDI KASUS / CASE STUDY MODAL (2 KOLOM + TABS) --- */
+/* --- MODAL STUDI KASUS & SERTIFIKAT --- */
 const CaseStudyModal = ({ isOpen, data, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     setActiveIndex(0);
-    setActiveTab('overview');
   }, [data, isOpen]);
 
   if (!isOpen || !data) return null;
 
   const images = data.gallery || (data.images ? data.images : ["https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"]);
+  const isCert = data.isCert === true;
 
   const nextImage = (e) => {
     e.stopPropagation();
@@ -147,7 +146,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
         <X size={24} />
       </button>
 
-      {/* Container Utama Modal (2 Kolom Desktop) */}
+      {/* Container Utama Modal */}
       <div className="relative w-full max-w-6xl h-full max-h-[90vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-2xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
         
         {/* Header Bar Retro Window */}
@@ -156,12 +155,14 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
             <span className="w-3 h-3 rounded-full bg-red-400 border border-black"></span>
             <span className="w-3 h-3 rounded-full bg-yellow-400 border border-black"></span>
             <span className="w-3 h-3 rounded-full bg-green-400 border border-black"></span>
-            <span className="font-mono font-black text-xs sm:text-sm uppercase ml-2">CASE_STUDY_VIEWER // {data.title}</span>
+            <span className="font-mono font-black text-xs sm:text-sm uppercase ml-2">
+              {isCert ? "CERTIFICATE_VIEWER" : "CASE_STUDY_VIEWER"} // {data.title}
+            </span>
           </div>
-          <span className="font-mono text-xs font-bold px-2 py-0.5 bg-black text-white uppercase">{data.category || data.role || "DETAIL"}</span>
+          <span className="font-mono text-xs font-bold px-2 py-0.5 bg-black text-white uppercase">{data.category || data.role || data.subtitle || "DETAIL"}</span>
         </div>
 
-        {/* Konten 2 Kolom (Kiri: Galeri Foto, Kanan: Info & Studi Kasus) */}
+        {/* Konten 2 Kolom (Kiri: Galeri Foto, Kanan: Info) */}
         <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
           
           {/* KOLOM KIRI: GALERI GAMBAR */}
@@ -208,97 +209,102 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
             </div>
           </div>
 
-          {/* KOLOM KANAN: TAB STUDI KASUS & DETAIL TEKNIS */}
+          {/* KOLOM KANAN: KONTEN DETAIL BERSIH & BERSTRUKTUR */}
           <div className="lg:col-span-6 p-5 sm:p-8 flex flex-col justify-between bg-white">
             <div>
-              {/* Judul & Badge */}
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-mono font-bold bg-yellow-300 border border-black px-2 py-0.5">{data.year || "2025-2026"}</span>
-                  {data.tags && data.tags.map((tag, i) => (
-                    <span key={i} className="text-xs font-bold px-2 py-0.5 bg-gray-100 border border-black">#{tag}</span>
-                  ))}
+              {/* Judul & Hanya Tahun (Tanpa tulisan kecil/hastag) */}
+              <div className="mb-6">
+                {data.year && (
+                  <div className="mb-2">
+                    <span className="text-xs font-mono font-bold bg-yellow-300 border border-black px-2.5 py-1">
+                      {data.year}
+                    </span>
+                  </div>
+                )}
+                <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-black leading-none">
+                  {data.title}
+                </h2>
+                {data.subtitle && (
+                  <p className="text-sm font-bold text-gray-500 mt-1">{data.subtitle}</p>
+                )}
+              </div>
+
+              {/* TAMPILAN KHUSUS SERTIFIKAT */}
+              {isCert ? (
+                <div className="space-y-4 animate-in fade-in duration-200 py-2">
+                  <div className="p-4 bg-yellow-50 border-l-4 border-black font-medium text-gray-800 leading-relaxed text-sm sm:text-base">
+                    {data.description || "Sertifikasi resmi dan pelatihan intensif untuk menguji serta memperkuat kompetensi teknis profesional."}
+                  </div>
+                  
+                  {data.issuer && (
+                    <div className="p-3.5 bg-gray-50 border-2 border-black/30 rounded">
+                      <h4 className="font-black text-xs uppercase text-gray-800 mb-1">Diterbitkan Oleh / Instansi:</h4>
+                      <p className="text-sm font-bold text-black">{data.issuer}</p>
+                    </div>
+                  )}
+
+                  {data.keyInfo && (
+                    <div className="p-3.5 bg-blue-50 border-2 border-black/30 rounded">
+                      <h4 className="font-black text-xs uppercase text-blue-900 mb-1">Informasi Kunci & Kredensial:</h4>
+                      <p className="text-sm font-medium text-gray-800">{data.keyInfo}</p>
+                    </div>
+                  )}
                 </div>
-                <h2 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-black leading-none">{data.title}</h2>
-                {data.subtitle && <p className="text-sm font-bold text-gray-500 mt-1">{data.subtitle}</p>}
-              </div>
+              ) : (
+                /* TAMPILAN STUDI KASUS PROYEK & EXPERIENCE (Tanpa Tab Menu) */
+                <div className="space-y-4 animate-in fade-in duration-200">
+                  {/* Deskripsi Utama */}
+                  <p className="p-3.5 bg-yellow-50 border-l-4 border-black font-semibold text-black text-sm sm:text-base leading-relaxed">
+                    {data.description || "Proyek dan pengalaman yang menunjukkan kontribusi serta keahlian teknis secara profesional."}
+                  </p>
 
-              {/* Tab Navigasi Studi Kasus */}
-              <div className="flex border-b-2 border-black gap-2 mb-6 overflow-x-auto hide-scrollbar">
-                {[
-                  { id: 'overview', label: 'Ringkasan', icon: <Info size={14}/> },
-                  { id: 'problem', label: 'Masalah & Solusi', icon: <AlertCircle size={14}/> },
-                  { id: 'impact', label: 'Dampak & Tech', icon: <TrendingUp size={14}/> }
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-1.5 px-3 py-2 font-black text-xs uppercase border-2 border-b-0 rounded-t transition-all ${
-                      activeTab === tab.id 
-                        ? 'bg-black text-white border-black' 
-                        : 'bg-gray-100 text-gray-700 border-transparent hover:bg-gray-200'
-                    }`}
-                  >
-                    {tab.icon}
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+                  {/* Rumusan Masalah & Solusi (Jika Ada) */}
+                  {(data.problem || data.solution) && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                      {data.problem && (
+                        <div className="p-3 bg-red-50 border-2 border-black/30 rounded">
+                          <h4 className="font-black text-xs uppercase text-red-700 mb-1 flex items-center gap-1">
+                            <AlertCircle size={14}/> Tantangan:
+                          </h4>
+                          <p className="text-xs sm:text-sm text-gray-800">{data.problem}</p>
+                        </div>
+                      )}
+                      {data.solution && (
+                        <div className="p-3 bg-green-50 border-2 border-black/30 rounded">
+                          <h4 className="font-black text-xs uppercase text-green-800 mb-1 flex items-center gap-1">
+                            <CheckCircle2 size={14}/> Solusi:
+                          </h4>
+                          <p className="text-xs sm:text-sm text-gray-800">{data.solution}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
-              {/* Isi Konten Tab */}
-              <div className="text-sm font-medium text-gray-700 leading-relaxed space-y-4 min-h-[160px]">
-                {activeTab === 'overview' && (
-                  <div className="space-y-3 animate-in fade-in duration-200">
-                    <p className="p-3 bg-yellow-50 border-l-4 border-black font-semibold text-black">
-                      {data.description || "Ringkasan proyek/pengalaman utama ini menunjukkan kontribusi secara profesional."}
-                    </p>
-                    <div>
-                      <h4 className="font-black text-xs uppercase text-black mb-1">Motivasi & Tujuan:</h4>
-                      <p>{data.motivation || "Menciptakan solusi digital yang estetis, efisien, dan memiliki daya guna nyata bagi masyarakat maupun organisasi."}</p>
+                  {/* Hasil & Dampak (Jika Ada) */}
+                  {data.impact && (
+                    <div className="p-3.5 bg-blue-50 border-l-4 border-blue-500 rounded-r">
+                      <h4 className="font-black text-xs uppercase text-blue-900 mb-1 flex items-center gap-1">
+                        <TrendingUp size={14}/> Hasil & Dampak Nyata:
+                      </h4>
+                      <p className="text-xs sm:text-sm font-medium text-gray-800">{data.impact}</p>
+                    </div>
+                  )}
+
+                  {/* Tech Stack & Tools yang Digunakan */}
+                  <div className="pt-4 border-t border-gray-200">
+                    <h4 className="font-black text-xs uppercase text-black mb-2.5 flex items-center gap-1.5">
+                      <Cpu size={14}/> Tech Stack & Tools yang Digunakan:
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {(data.techStack || data.tags || ['React', 'Figma', 'IoT', 'Leadership']).map((t, idx) => (
+                        <span key={idx} className="px-2.5 py-1 bg-black text-white text-xs font-mono font-bold rounded">
+                          {t}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                )}
-
-                {activeTab === 'problem' && (
-                  <div className="space-y-4 animate-in fade-in duration-200">
-                    <div className="p-3 bg-red-50 border-2 border-black/30 rounded">
-                      <h4 className="font-black text-xs uppercase text-red-700 mb-1 flex items-center gap-1">
-                        <AlertCircle size={14}/> Rumusan Masalah:
-                      </h4>
-                      <p>{data.problem || "Adanya tantangan efisiensi, akurasi, dan keterbatasan alat/sistem lama yang membutuhkan inovasi teknis baru."}</p>
-                    </div>
-                    <div className="p-3 bg-green-50 border-2 border-black/30 rounded">
-                      <h4 className="font-black text-xs uppercase text-green-800 mb-1 flex items-center gap-1">
-                        <CheckCircle2 size={14}/> Solusi yang Dilakukan:
-                      </h4>
-                      <p>{data.solution || "Mengembangkan pendekatan sistematis berbasis embedded hardware/software serta rancangan antarmuka yang ramah pengguna."}</p>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'impact' && (
-                  <div className="space-y-4 animate-in fade-in duration-200">
-                    <div>
-                      <h4 className="font-black text-xs uppercase text-black mb-1 flex items-center gap-1">
-                        <TrendingUp size={14}/> Hasil & Manfaat Nyata:
-                      </h4>
-                      <p className="p-3 bg-blue-50 border-l-4 border-blue-500 font-semibold text-black">
-                        {data.impact || "Meningkatkan stabilitas sistem, menghemat waktu proses, serta mendapatkan apresiasi tinggi dari pengguna/peserta acara."}
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="font-black text-xs uppercase text-black mb-2">Alat & Keahlian Khusus:</h4>
-                      <div className="flex flex-wrap gap-1.5">
-                        {(data.techStack || data.tags || ['React', 'Figma', 'IoT', 'Leadership']).map((t, idx) => (
-                          <span key={idx} className="px-2.5 py-1 bg-black text-white text-xs font-mono font-bold rounded">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Footer Modal Action Buttons */}
@@ -331,7 +337,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
 // --- COMPONENTS LAINNYA ---
 const Reveal = ({ children, delay = 0, className = "" }) => {
   const [ref, isVisible] = useOnScreen({ threshold: 0.1 });
-   
+    
   return (
     <div 
       ref={ref}
@@ -345,7 +351,7 @@ const Reveal = ({ children, delay = 0, className = "" }) => {
   );
 };
 
-// COMPONENT: Visual Experience Card (Magazine Tile)
+// COMPONENT: Visual Experience Card
 const VisualExperienceCard = ({ title, role, year, image, categoryBadgeColor = "bg-yellow-300", onClickDetail }) => {
   return (
     <div 
@@ -388,102 +394,85 @@ const VisualExperienceCard = ({ title, role, year, image, categoryBadgeColor = "
   );
 };
 
-// COMPONENT: Neo-Brutalist Project Card
-const ProjectCard = ({ title, category, description, tags, icon, color, images, heightClass = "h-64", aspectClass = "aspect-video", onOpenModal, links }) => {
-  const accentColor = color.includes('pink') ? 'bg-pink-400' : 
-                      color.includes('purple') ? 'bg-purple-400' :
-                      color.includes('blue') ? 'bg-blue-400' :
-                      color.includes('green') ? 'bg-green-400' :
-                      color.includes('orange') ? 'bg-orange-400' : 'bg-yellow-400';
-
+// COMPONENT: Project Card (Clean Image-Only Card Tanpa "Click to view...")
+const ProjectCard = ({ title, category, images, onOpenModal }) => {
   return (
-    <div className="group relative h-full">
-      <div className={`absolute top-2 left-2 w-full h-full bg-black rounded-xl transition-all duration-300 group-hover:top-3 group-hover:left-3`}></div>
-      
-      <div className="relative bg-white border-2 border-black rounded-xl overflow-hidden h-full flex flex-col transition-transform duration-300 group-hover:-translate-y-1 group-hover:-translate-x-1">
-        <div className="border-b-2 border-black px-4 py-2 flex justify-between items-center bg-gray-50">
-            <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full border-2 border-black bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full border-2 border-black bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full border-2 border-black bg-green-400"></div>
-            </div>
-            <div className={`px-2 py-0.5 border-2 border-black text-[10px] font-bold uppercase tracking-wider ${accentColor} rounded`}>
-                {category}
-            </div>
+    <div 
+      onClick={onOpenModal}
+      className="group relative h-72 sm:h-80 w-full bg-white border-2 border-black rounded-xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
+    >
+      <div className="w-full h-full p-2">
+        <div className="relative w-full h-full rounded-lg overflow-hidden bg-gray-100 border border-black/20">
+          <img 
+            src={images && images[0]} 
+            alt={title} 
+            className="w-full h-full object-cover object-center transform transition-transform duration-500 ease-out group-hover:scale-95"
+            onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"; }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none" />
+        </div>
+      </div>
+
+      <div className="absolute top-4 left-4 z-10">
+        <span className="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider bg-yellow-300 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded">
+          {category}
+        </span>
+      </div>
+
+      <div className="absolute bottom-4 left-4 right-4 z-10 flex items-end justify-between pointer-events-none">
+        <div className="transform transition-transform duration-300 group-hover:translate-x-1">
+          <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] leading-none">
+            {title}
+          </h3>
         </div>
 
-        <div className="relative overflow-hidden border-b-2 border-black bg-gray-100 group/img">
-            {images && images.length > 0 ? (
-                <div 
-                    className={`${aspectClass} ${heightClass} w-full cursor-pointer relative`}
-                    onClick={onOpenModal}
-                >
-                    <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/10 transition-colors z-10 flex items-center justify-center">
-                        <div className="bg-white border-2 border-black p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] opacity-0 group-hover/img:opacity-100 transition-all duration-200 transform scale-75 group-hover/img:scale-100 rotate-3 group-hover/img:rotate-0">
-                            <span className="font-bold text-sm">CASE STUDY DETAIL</span>
-                        </div>
-                    </div>
-                    <img 
-                        src={images[0]} 
-                        alt={title} 
-                        className="w-full h-full object-cover grayscale group-hover/img:grayscale-0 transition-all duration-500" 
-                        onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80"; }}
-                    />
-                    {images.length > 1 && (
-                        <div className="absolute bottom-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center gap-1">
-                            <ImageIcon size={12} /> +{images.length - 1}
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div className={`${heightClass} flex items-center justify-center border-dashed border-2 border-gray-300 m-4 rounded`}>
-                    <span className="font-mono text-gray-400">NO_IMAGE_DATA</span>
-                </div>
-            )}
-        </div>
-
-        <div className="p-5 flex flex-col flex-grow">
-            <div className="flex items-start justify-between mb-3">
-                <h3 className="text-xl font-black text-black leading-tight uppercase">{title}</h3>
-                <div className="bg-black text-white p-1.5 rounded border-2 border-transparent group-hover:border-black group-hover:bg-white group-hover:text-black transition-colors">
-                    {icon}
-                </div>
-            </div>
-            
-            <p className="text-gray-600 text-sm mb-4 font-medium leading-relaxed border-l-4 border-gray-200 pl-3 flex-grow">
-                {description}
-            </p>
-
-            <div className="mt-auto">
-                <div className="flex flex-wrap gap-2 mb-4">
-                    {tags.map((tag, index) => (
-                        <span key={index} className="text-[10px] font-bold px-2 py-1 bg-gray-100 border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all">
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
-
-                {links && links.length > 0 && (
-                    <div className="flex flex-wrap gap-2 pt-3 border-t-2 border-dashed border-gray-300">
-                        {links.map((link, i) => (
-                            <a
-                                key={i}
-                                href={link.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all ${link.className || 'bg-white hover:bg-gray-50'}`}
-                            >
-                                {link.icon}
-                                {link.text}
-                            </a>
-                        ))}
-                    </div>
-                )}
-            </div>
+        <div className="w-10 h-10 bg-white text-black border-2 border-black rounded-full flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+          <ArrowUpRight size={20} />
         </div>
       </div>
     </div>
   );
+};
+
+// COMPONENT: Cert Card (Clean Image-Only Card)
+const CertCard = ({ title, subtitle, images, onOpenModal }) => {
+    return (
+        <div 
+          onClick={onOpenModal}
+          className="group relative h-64 sm:h-72 w-full bg-white border-2 border-black rounded-xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
+        >
+            <div className="w-full h-full p-2">
+                <div className="relative w-full h-full rounded-lg overflow-hidden bg-gray-100 border border-black/20">
+                    <img 
+                        src={images && images[0]} 
+                        alt={title} 
+                        className="w-full h-full object-cover object-center transform transition-transform duration-500 ease-out group-hover:scale-95"
+                        onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=600&q=80"; }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none" />
+                </div>
+            </div>
+
+            <div className="absolute top-4 right-4 z-10 bg-black text-white px-2.5 py-1 text-xs font-mono font-bold border border-white">
+                CERTIFICATE
+            </div>
+
+            <div className="absolute bottom-4 left-4 right-4 z-10 flex items-end justify-between pointer-events-none">
+                <div className="space-y-1 transform transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="inline-block px-2 py-0.5 text-[10px] font-black uppercase text-black bg-green-300 border border-black">
+                        {subtitle}
+                    </span>
+                    <h4 className="text-lg sm:text-xl font-black text-white uppercase tracking-tight drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] leading-none">
+                        {title}
+                    </h4>
+                </div>
+
+                <div className="w-9 h-9 bg-white text-black border-2 border-black rounded-full flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                    <ArrowUpRight size={18} />
+                </div>
+            </div>
+        </div>
+    );
 };
 
 // COMPONENT: Tech Stack Sticker
@@ -509,63 +498,6 @@ const TechStackCard = ({ icon, name, desc }) => (
     </div>
   </div>
 );
-
-// COMPONENT: Certificate Card
-const CertCard = ({ title, subtitle, desc, color, icon, images, onOpenModal }) => {
-    const bgClass = color === 'green' ? 'bg-green-200' : 
-                    color === 'orange' ? 'bg-orange-200' : 
-                    color === 'blue' ? 'bg-blue-200' : 'bg-yellow-200';
-
-    return (
-        <div className="group relative min-w-[320px] h-full">
-            <div className={`absolute inset-0 border-2 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-xl`}></div>
-            
-            <div className={`relative h-full flex flex-col p-5 border-2 border-black bg-white rounded-xl transition-transform duration-200 group-hover:-translate-y-1 group-hover:-translate-x-1 group-hover:shadow-none`}>
-                <div className="absolute top-0 right-8 w-0.5 h-full border-r-2 border-dashed border-gray-300 z-0"></div>
-                
-                <div className="relative z-10">
-                    <div className="flex items-start gap-3 mb-3">
-                        <div className={`p-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${bgClass} rounded-lg`}>
-                            {React.cloneElement(icon, { size: 20, strokeWidth: 2.5 })}
-                        </div>
-                        <div className="pr-4">
-                            <h4 className="font-black text-base leading-tight uppercase">{title}</h4>
-                            <span className="text-xs font-bold bg-gray-100 px-1 mt-1 inline-block border border-black">{subtitle}</span>
-                        </div>
-                    </div>
-                    
-                    <p className="text-sm font-medium text-gray-600 mb-4 line-clamp-3 pr-4">{desc}</p>
-                </div>
-
-                <div className="mt-auto relative z-10 pr-4">
-                    <div 
-                        className="w-full h-32 border-2 border-black bg-gray-100 rounded-lg overflow-hidden relative cursor-pointer group/img"
-                        onClick={onOpenModal}
-                    >
-                        {images && images.length > 0 ? (
-                            <>
-                                <div className="absolute inset-0 bg-yellow-400/80 border-2 border-black translate-y-full group-hover/img:translate-y-0 transition-transform duration-300 z-10 flex items-center justify-center">
-                                    <span className="font-black text-black uppercase tracking-wider">View Cert</span>
-                                </div>
-                                <img 
-                                    src={images[0]} 
-                                    alt={title} 
-                                    className="w-full h-full object-cover filter grayscale group-hover/img:grayscale-0 transition-all"
-                                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1579389083078-4e7018379f7e?w=400&q=80"; }}
-                                />
-                            </>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-gray-400 bg-gray-50 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:8px_8px]">
-                               <Award size={24}/>
-                               <span className="text-[10px] font-mono mt-1">NO_PREVIEW</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 const SocialLink = ({ href, icon }) => (
   <a 
@@ -607,9 +539,6 @@ const App = () => {
     { name: 'Certifications', id: 'certs' },
   ];
 
-  // ==========================================
-  // AUTOMATIC SCROLLSPY
-  // ==========================================
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -664,18 +593,18 @@ const App = () => {
   };
 
   // ==========================================
-  // DATA MASTER: PROJECTS (LENGKAP DENGAN STUDI KASUS)
+  // DATA MASTER: PROJECTS
   // ==========================================
   const projectsData = [
     {
       title: "Lifegen App",
       category: "UI/UX Design",
+      year: "2025",
       description: "Daily health and calorie tracking application with a clean interface to motivate a healthy lifestyle.",
       problem: "Pengguna sering merasa terbebani oleh aplikasi pelacak kalori yang terlalu rumit dan penuh tabel data yang membingungkan.",
       solution: "Merancang antarmuka bersih berbasis gamifikasi visual di Figma dengan alur pengisian kalori cepat hanya dalam 3 klik.",
       impact: "Mencapai tingkat penyelesaian purwarupa (prototype task completion) 92% saat pengujian kelayakan pengguna.",
-      tags: ['Figma', 'Mobile', 'Health'],
-      icon: <Smartphone className="text-white" size={20} />,
+      techStack: ['Figma', 'Design System', 'UI/UX Prototyping'],
       color: "pink",
       gallery: ["life.png"],
       links: [
@@ -685,12 +614,12 @@ const App = () => {
     {
       title: "LandConnect",
       category: "Marketplace",
+      year: "2025",
       description: "Strategic land trading platform with interactive map features to facilitate location search.",
       problem: "Pencarian lahan tanah strategis sering kali kurang transparan dan tidak memiliki visualisasi pemetaan batas tanah yang jelas.",
       solution: "Mengintegrasikan peta interaktif digital untuk memetakan spesifikasi zona, harga per meter, serta akses infrastruktur terdekat.",
       impact: "Mempercepat proses kurasi lokasi properti bagi calon pembeli dan investor.",
-      tags: ['Figma', 'Web', 'Map'],
-      icon: <Briefcase className="text-white" size={20} />,
+      techStack: ['Figma', 'Interactive Map UI', 'Web Prototype'],
       color: "purple",
       gallery: ["land.png"],
       links: [
@@ -700,12 +629,12 @@ const App = () => {
     {
       title: "Gula Cerdas",
       category: "IoT Solution",
+      year: "2025–2026",
       description: "Palm sugar production standardization using Thermocouple sensors and DC Motors to measure viscosity and saturation point.",
       problem: "Produksi gula aren UMKM tradisional mengandalkan feeling/intuisi, menyebabkan tingkat kekentalan dan kualitas yang tidak konsisten.",
       solution: "Menggunakan mikrokontroler ESP32, sensor Thermocouple, dan pengaduk otomatis untuk mengukur titik jenuh serta viskositas secara presisi.",
       impact: "Meningkatkan konsistensi kualitas produksi gula aren hingga 85% dan menghemat tenaga fisik petani aren.",
-      tags: ['IOT', 'ESP32', 'UMKM'],
-      icon: <Cpu className="text-white" size={20} />,
+      techStack: ['ESP32', 'Thermocouple Sensor', 'C++ / Arduino IDE', 'DC Motor Control'],
       color: "green",
       gallery: ["gula1.jpeg", "gula2.jpeg", "gula3.jpeg", "gula.JPG"],
       links: [
@@ -716,12 +645,12 @@ const App = () => {
     {
       title: "Smart Water Metering",
       category: "Embedded",
+      year: "2024",
       description: "Water usage monitoring system based on Arduino Uno to prevent household water waste.",
       problem: "Banyak rumah tangga tidak menyadari kebocoran pipa atau pemborosan air sampai tagihan bulanan membengkak.",
-      solution: "Membankitkan pemantauan arus air real-time berbasis Arduino Uno dengan sensor flow meter dan peringatan alarm batas konsumsi.",
+      solution: "Membangun pemantauan arus air real-time berbasis Arduino Uno dengan sensor flow meter dan peringatan alarm batas konsumsi.",
       impact: "Membantu mendeteksi kebocoran air lebih dini dan menekan penggunaan air berlebih hingga 30%.",
-      tags: ['Arduino', 'C++', 'IoT'],
-      icon: <Cpu className="text-white" size={20} />,
+      techStack: ['Arduino Uno', 'Water Flow Sensor', 'C++ Embedded'],
       color: "green",
       gallery: ["swms.jpeg", "swm1.jpeg", "swm2.jpeg", "swm3.jpeg"],
       links: [
@@ -732,12 +661,12 @@ const App = () => {
     {
       title: "BridgeGuard",
       category: "IoT Solution",
+      year: "2025",
       description: "Early bridge vibration detection device using ESP32 and ADXL accelerometer sensors.",
       problem: "Kurangnya pemantauan struktur jembatan secara terus-menerus meningkatkan risiko kecelakaan saat terjadi beban atau getaran berlebih.",
       solution: "Memasang sensor akselerometer ADXL yang terhubung dengan ESP32 untuk memantau frekuensi getaran anomali secara real-time.",
       impact: "Memberikan sistem peringatan dini struktural dengan pengiriman data nirkabel instan.",
-      tags: ['ESP32', 'Safety', 'HW'],
-      icon: <ExternalLink className="text-white" size={20} />,
+      techStack: ['ESP32', 'ADXL Accelerometer', 'Real-Time Telemetry'],
       color: "green",
       gallery: ["bg.jpeg"],
       links: [
@@ -748,12 +677,12 @@ const App = () => {
     {
       title: "AR BMKG Tools",
       category: "AR / VR",
+      year: "2026",
       description: "Markerless AR educational app for 3D interactive visualization of BMKG meteorological tools.",
       problem: "Alat-alat meteorologi BMKG sering kali berukuran besar dan sensitif, sehingga sulit untuk dipelajari langsung oleh publik atau staf baru.",
       solution: "Membangun aplikasi Augmented Reality (AR) markerless berbasis Unity untuk menampilkan model 3D alat cuaca interaktif di smartphone.",
       impact: "Menjadi sarana edukasi visual baru di Stasiun Meteorologi Kelas I Sultan Iskandar Muda Banda Aceh.",
-      tags: ['AR', 'Unity', 'Edu'],
-      icon: <Box className="text-white" size={20} />,
+      techStack: ['Unity3D', 'Vuforia AR Engine', 'Blender 3D Modeling'],
       color: "orange",
       gallery: ["bmkg2.png", "bmkg1.jpg"],
       links: [
@@ -764,13 +693,13 @@ const App = () => {
   ];
 
   // ==========================================
-  // DATA MASTER: EXPERIENCE (LENGKAP DENGAN STAR METHOD)
+  // DATA MASTER: EXPERIENCE
   // ==========================================
   const experiencesList = [
     {
       role: "Project Lead (Ketua)",
       title: "CMD 2025",
-      year: "2025",
+      year: "2025–2026",
       image: "cmd.png",
       categoryBadgeColor: "bg-yellow-300",
       description: "Memimpin acara kompetisi dan seminar IT nasional tahunan berskala besar di lingkungan kampus.",
@@ -778,7 +707,7 @@ const App = () => {
       solution: "Menerapkan alur kerja manajemen proyek yang transparan, restrukturisasi prizepool yang realistis, dan kolaborasi sponsorship.",
       impact: "Acara berjalan sukses dihadiri peserta dari berbagai universitas dengan efisiensi anggaran optimal.",
       gallery: ["cmd.png", "cmd1.jpeg", "cmd2.jpeg", "cmd3.jpeg", "cmd4.jpeg", "cmd5.jpeg"],
-      tags: ['Leadership', 'EventMgmt', 'PublicSpeaking']
+      techStack: ['Project Management', 'Sponsorship Relations', 'Team Leadership']
     },
     {
       role: "Vice Chairman",
@@ -791,7 +720,7 @@ const App = () => {
       solution: "Merancang dan mendistribusikan sistem air minum isi ulang otomatis yang siap pakai bagi masyarakat desa.",
       impact: "Meningkatkan kualitas akses air bersih lokal yang berkelanjutan.",
       gallery: ["pbmt.png"],
-      tags: ['CommunityService', 'SystemDesign']
+      techStack: ['Community Outreach', 'System Engineering']
     },
     {
       role: "Vice Head of Kesma",
@@ -804,7 +733,7 @@ const App = () => {
       solution: "Membentuk program pendampingan dan penampungan aspirasi reguler secara terbuka.",
       impact: "Menjembatani resolusi masalah akademik secara proaktif bagi ratusan mahasiswa.",
       gallery: ["kesma.jpg", "kesma1.png"],
-      tags: ['Advocacy', 'Organization']
+      techStack: ['Student Advocacy', 'Public Communication']
     },
     {
       role: "Public Relations Staff",
@@ -817,7 +746,7 @@ const App = () => {
       solution: "Memproduksi kampanye visual serta menjalin kemitraan media partner universitas.",
       impact: "Meningkatkan engagement media sosial organisasi BEM FT secara signifikan.",
       gallery: ["humas.png"],
-      tags: ['PublicRelations', 'Branding']
+      techStack: ['Social Media Strategy', 'Media Relations']
     },
     {
       role: "Event Coordinator",
@@ -830,7 +759,63 @@ const App = () => {
       solution: "Menyusun rundown interaktif dan workshop perkenalan mikrokontroler bagi mahasiswa baru.",
       impact: "Tingkat kepuasan mahasiswa baru meningkat drastis dengan pendekatan edukatif.",
       gallery: ["cmd1.jpeg"],
-      tags: ['EventDesign', 'Mentorship']
+      techStack: ['Workshop Planning', 'Mentorship']
+    }
+  ];
+
+  // ==========================================
+  // DATA MASTER: CERTIFICATIONS
+  // ==========================================
+  const certsData = [
+    {
+      isCert: true,
+      title: "Bangkit Academy 2024",
+      subtitle: "Google, GoTo, Traveloka",
+      year: "2024",
+      description: "Program studi independen bersertifikat berstandar industri dalam pengembangan Machine Learning dan AI. Meliputi pemahaman mendalam tentang pengolahan data, pembuatan model prediktif, serta pengerjaan Capstone Project akhir secara kolaboratif bersama peserta lintas disiplin ilmu.",
+      issuer: "Google, GoTo, & Traveloka (Kampus Merdeka)",
+      keyInfo: "Kelulusan dengan sertifikat kompetensi standar Google & penyelesaian AI Capstone Project.",
+      gallery: ["bangkit.jpg", "bangkit1.jpg", "bangkit2.jpg"]
+    },
+    {
+      isCert: true,
+      title: "BNSP - IoT Engineer",
+      subtitle: "BNSP / LSP TDI",
+      year: "2024",
+      description: "Sertifikasi keahlian profesi resmi yang diselenggarakan oleh Badan Nasional Sertifikasi Profesi (BNSP) melalui Lembaga Sertifikasi Profesi (LSP). Menguji dan memvalidasi keahlian teknis dalam merancang, merakit, serta mengimplementasikan perangkat keras Internet of Things dan jaringan embedded.",
+      issuer: "Badan Nasional Sertifikasi Profesi (BNSP)",
+      keyInfo: "Sertifikasi kompetensi resmi berskala nasional sebagai praktisi IoT & Embedded System.",
+      gallery: ["iot.jpg", "iot1.jpg"]
+    },
+    {
+      isCert: true,
+      title: "Skill Academy CAMP",
+      subtitle: "Ruangguru",
+      year: "2023",
+      description: "Bootcamp intensif perancangan antarmuka dan pengalaman pengguna (UI/UX) berbasis Design Thinking. Mengajarkan riset pengguna, wireframing, pembuatan design system, hingga penyelesaian prototipe interaktif berpresisi tinggi menggunakan Figma.",
+      issuer: "Skill Academy by Ruangguru",
+      keyInfo: "Penyelesaian portofolio proyek UI/UX yang telah diuji dengan usability testing.",
+      gallery: ["camp.jpg", "camp1.jpg"]
+    },
+    {
+      isCert: true,
+      title: "KORIKA AI Webinar",
+      subtitle: "KORIKA",
+      year: "2024",
+      description: "Webinar dan pelatihan teknologi kecerdasan buatan (AI) yang diselenggarakan oleh Kolaborasi Riset dan Inovasi Kecerdasan Buatan Indonesia (KORIKA), mengupas implementasi algoritma AI dalam pemodelan prediksi cuaca dan iklim di Indonesia.",
+      issuer: "KORIKA Indonesia",
+      keyInfo: "Wawasan mendalam mengenai integrasi kecerdasan buatan pada meteorologi.",
+      gallery: ["korika.jpg"]
+    },
+    {
+      isCert: true,
+      title: "Olimpiade Sains Nasional",
+      subtitle: "Kemdikbud",
+      year: "High School",
+      description: "Ajang kompetisi sains bergengsi tingkat pelajar yang diselenggarakan oleh Kementerian Pendidikan dan Kebudayaan RI. Berhasil meraih prestasi juara di bidang Informatika (Komputer) yang menguji logika algoritmik dan pemecahan masalah (competitive programming).",
+      issuer: "Kementerian Pendidikan dan Kebudayaan RI",
+      keyInfo: "Juara kompetisi algoritma dan pemrograman tingkat Kabupaten/Kota.",
+      gallery: ["osn.jpg"]
     }
   ];
 
@@ -880,7 +865,7 @@ const App = () => {
       </div>
 
       {/* ==========================================
-          NAVBAR: SOLID NEO-BRUTALIST + AUTO SCROLLSPY
+          NAVBAR: TANPA BORDER KECIL DALAM
           ========================================== */}
       <nav className={`fixed left-1/2 -translate-x-1/2 w-[95%] max-w-4xl z-50 transition-all duration-500 ${scrolled ? 'top-4' : 'top-6'}`}>
         <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-full px-5 py-2.5 flex justify-between items-center transition-all duration-300">
@@ -893,8 +878,8 @@ const App = () => {
             RIFQI<span className="bg-black text-white px-2 py-0.5 ml-1 not-italic transform -skew-x-12 inline-block text-xs rounded">.MT</span>
           </div>
 
-          {/* Desktop Menu dengan Sliding Pill Indicator */}
-          <div className="hidden md:flex items-center relative bg-gray-100 p-1 rounded-full border-2 border-black">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center relative p-1 rounded-full">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -1027,7 +1012,6 @@ const App = () => {
                 />
               </div>
 
-              {/* Badges statis/hover (tanpa animasi bounce berulang agar tenang) */}
               <div className="absolute -right-4 top-10 bg-white border-2 border-black p-3 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 flex items-center gap-2 transform rotate-3 hover:scale-105 transition-transform">
                  <Figma size={24} className="text-black"/>
                  <span className="font-black text-xs uppercase">UI/UX<br/>MASTER</span>
@@ -1122,7 +1106,7 @@ const App = () => {
       </section>
 
       {/* ==========================================
-          PROJECTS SECTION (KLIK KARTU -> CASE STUDY MODAL)
+          PROJECTS SECTION (CLEAN VISUAL CARDS)
           ========================================== */}
       <section id="projects" className="py-24 bg-[#fffdf5] overflow-hidden">
         <div className="container mx-auto px-6">
@@ -1137,7 +1121,7 @@ const App = () => {
                </div>
                
                <div className="hidden md:flex gap-2">
-                  <div className="px-4 py-2 border-2 border-black font-bold text-xs uppercase bg-gray-100">Click Card for Case Study</div>
+                  <div className="px-4 py-2 border-2 border-black font-bold text-xs uppercase bg-gray-100">Click Card for Full Case Study</div>
                </div>
             </div>
           </Reveal>
@@ -1150,9 +1134,9 @@ const App = () => {
               {projectsData.map((project, idx) => (
                 <div key={idx} className="w-[340px] md:w-[400px] flex-shrink-0">
                   <ProjectCard 
-                    {...project}
+                    title={project.title}
+                    category={project.category}
                     images={project.gallery}
-                    heightClass="h-56"
                     onOpenModal={() => openCaseModal(project)}
                   />
                 </div>
@@ -1227,23 +1211,18 @@ const App = () => {
                                 Developing interactive AR-based media to visualize meteorological tools in 3D, improving technical understanding for staff and station visitors.
                             </p>
 
-                            <div className="border-t-2 border-black pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-bold px-2 py-1 bg-white border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">#AugmentedReality</span>
-                                    <span className="text-[10px] font-bold px-2 py-1 bg-white border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">#Unity3D</span>
-                                </div>
-                                
+                            <div className="border-t-2 border-black pt-4 flex flex-col sm:flex-row justify-end items-center gap-4">
                                 <button 
                                     onClick={() => openCaseModal({
                                       title: "BMKG Aceh - AR Project",
                                       role: "Internship Project",
-                                      year: "2024-2025",
+                                      year: "2024–2025",
                                       description: "Mengembangkan media pembelajaran interaktif berbasis Augmented Reality (AR) untuk visualisasi 3D alat-alat meteorologi.",
                                       problem: "Pengenalan instrumen cuaca kepada pengunjung atau staf baru terkendala oleh dimensi alat yang sensitif dan tersebar di lapangan.",
                                       solution: "Membuat aplikasi mobile AR markerless berbasis Unity dan 3D modeling berpresisi tinggi.",
                                       impact: "Efisiensi alur pengenalan alat bagi para tamu dan pelajar di Stasiun Meteorologi Kelas I SIM Banda Aceh.",
                                       gallery: ["bmkg1.jpg", "bmkg2.png"],
-                                      tags: ["Unity3D", "AugmentedReality", "Meteorology"]
+                                      techStack: ["Unity3D", "Vuforia Engine", "Blender 3D Modeling", "C# Scripting"]
                                     })} 
                                     className="group relative inline-flex items-center gap-2 bg-yellow-300 border-2 border-black px-5 py-2 rounded font-black uppercase text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-400 transition-all"
                                 >
@@ -1290,7 +1269,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Certifications */}
+      {/* Certifications (CLEAN VISUAL CARDS) */}
       <section id="certs" className="py-24 bg-yellow-50 relative overflow-hidden">
          <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px'}}></div>
 
@@ -1306,109 +1285,16 @@ const App = () => {
                 className="w-full overflow-x-auto pb-16 pt-4 px-4 -mx-4 responsive-scrollbar"
             >
               <div className="flex gap-8 w-max">
-                  <div className="w-[320px] md:w-[360px] flex-shrink-0">
-                     <CertCard 
-                       title="Bangkit Academy"  
-                       subtitle="Google, GoTo, Traveloka" 
-                       desc="Independent Study in Machine Learning. AI Capstone Project."
-                       color="green" 
-                       icon={<BookOpen className="text-black" />} 
-                       images={["bangkit.jpg", "bangkit1.jpg", "bangkit2.jpg"]}
-                       onOpenModal={() => openCaseModal({
-                         title: "Bangkit Academy 2024",
-                         role: "ML Study Cohort",
-                         year: "2024",
-                         description: "Program studi independen bersertifikat yang berfokus pada Machine Learning & AI.",
-                         problem: "Pengembangan pemodelan data modern untuk memecahkan permasalahan industri digital.",
-                         solution: "Menyelesaikan proyek Capstone kolaboratif lintas disiplin ilmu bersama tim Cloud & Mobile.",
-                         impact: "Dinyatakan lulus dengan kompetensi ML standar Google & GoTo.",
-                         gallery: ["bangkit.jpg", "bangkit1.jpg", "bangkit2.jpg"],
-                         tags: ["MachineLearning", "TensorFlow", "Google"]
-                       })}
-                     />
+                {certsData.map((cert, index) => (
+                  <div key={index} className="w-[320px] md:w-[360px] flex-shrink-0">
+                    <CertCard 
+                      title={cert.title}
+                      subtitle={cert.subtitle}
+                      images={cert.gallery}
+                      onOpenModal={() => openCaseModal(cert)}
+                    />
                   </div>
-                  
-                  <div className="w-[320px] md:w-[360px] flex-shrink-0">
-                     <CertCard 
-                       title="IoT Device Engineering" 
-                       subtitle="BNSP / LSP TDI" 
-                       desc="Competency certification in IoT and Networking."
-                       color="yellow" 
-                       icon={<Cpu className="text-black" />} 
-                       images={["iot.jpg", "iot1.jpg"]}
-                       onOpenModal={() => openCaseModal({
-                         title: "BNSP - IoT Engineer",
-                         role: "Certified Professional",
-                         year: "2024",
-                         description: "Sertifikasi keahlian profesi resmi Badan Nasional Sertifikasi Profesi (BNSP).",
-                         problem: "Pengujian standar keahlian perakitan mikrokontroler serta jaringan nirkabel IoT.",
-                         solution: "Lulus pengujian praktikum dan wawancara asesmen kompetensi perangkat keras.",
-                         impact: "Kredensial keahlian embedded system berstandar nasional.",
-                         gallery: ["iot.jpg", "iot1.jpg"],
-                         tags: ["BNSP", "IoT", "Embedded"]
-                       })}
-                     />
-                  </div>
-
-                  <div className="w-[320px] md:w-[360px] flex-shrink-0">
-                     <CertCard 
-                       title="Skill Academy CAMP" 
-                       subtitle="Ruangguru" 
-                       desc="Intensive UI/UX Design & Prototyping Bootcamp."
-                       color="orange" 
-                       icon={<Award className="text-black" />} 
-                       images={["camp.jpg", "camp1.jpg"]}
-                       onOpenModal={() => openCaseModal({
-                         title: "Skill Academy CAMP",
-                         role: "UI/UX Bootcamp",
-                         year: "2023",
-                         description: "Bootcamp intensif perancangan produk digital dan prototipe interaktif.",
-                         problem: "Mengubah ide atau permasalahan pengguna menjadi antarmuka aplikasi yang intuitif.",
-                         solution: "Menerapkan kerangka kerja Design Thinking dari Empathize sampai Prototyping di Figma.",
-                         impact: "Menciptakan studi kasus desain produk yang siap diuji kelayakan (usability testing).",
-                         gallery: ["camp.jpg", "camp1.jpg"],
-                         tags: ["UIUX", "Figma", "DesignThinking"]
-                       })}
-                     />
-                  </div>
-
-                  <div className="w-[320px] md:w-[360px] flex-shrink-0">
-                     <CertCard 
-                       title="Webinar AI Weather" 
-                       subtitle="KORIKA" 
-                       desc="Utilization of AI for weather forecasting."
-                       color="blue" 
-                       icon={<ExternalLink className="text-black" />} 
-                       images={["korika.jpg"]}
-                       onOpenModal={() => openCaseModal({
-                         title: "KORIKA AI Webinar",
-                         role: "Participant",
-                         year: "2024",
-                         description: "Pemanfaatan kecerdasan buatan dalam pemodelan prediksi iklim dan cuaca.",
-                         gallery: ["korika.jpg"],
-                         tags: ["AI", "Weather", "KORIKA"]
-                       })}
-                     />
-                  </div>
-                  
-                  <div className="w-[320px] md:w-[360px] flex-shrink-0">
-                     <CertCard 
-                       title="Science Olympiad (OSN)" 
-                       subtitle="Kemdikbud" 
-                       desc="City Level Champion in Informatics."
-                       color="yellow" 
-                       icon={<Award className="text-black" />} 
-                       images={["osn.jpg"]}
-                       onOpenModal={() => openCaseModal({
-                         title: "Olimpiade Sains Nasional",
-                         role: "Bidang Informatika",
-                         year: "High School",
-                         description: "Kejuaraan algoritma dan pemrograman tingkat kabupaten/kota.",
-                         gallery: ["osn.jpg"],
-                         tags: ["Algorithm", "CompetitiveProgramming", "OSN"]
-                       })}
-                     />
-                  </div>
+                ))}
               </div>
             </div>
          </div>
@@ -1436,7 +1322,7 @@ const App = () => {
         </div>
       </footer>
 
-      {/* POP-UP MODAL CASE STUDY BARU */}
+      {/* POP-UP MODAL CASE STUDY / CERTIFICATE */}
       <CaseStudyModal 
         isOpen={isModalOpen} 
         data={selectedCaseData} 
