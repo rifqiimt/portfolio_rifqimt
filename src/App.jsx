@@ -28,7 +28,8 @@ import {
   Youtube,
   CheckCircle2,
   AlertCircle,
-  TrendingUp
+  TrendingUp,
+  FileText
 } from 'lucide-react';
 
 /* --- HOOKS & UTILS --- */
@@ -103,6 +104,87 @@ const useAutoScroll = (ref, speed = 0.8) => {
   }, [ref, speed]);
 };
 
+/* --- MODAL KHUSUS CV.PDF --- */
+const CVModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-yellow-300/90 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-300" onClick={onClose}>
+      <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+      
+      {/* Tombol Tutup Modal */}
+      <button 
+        onClick={onClose} 
+        className="absolute top-5 right-5 sm:top-6 sm:right-6 bg-black text-white p-2.5 sm:p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all z-50 rounded-xl"
+      >
+        <X size={20} />
+      </button>
+
+      {/* Container Utama Modal CV */}
+      <div className="relative w-full max-w-5xl h-full max-h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        
+        {/* Header Bar */}
+        <div className="flex justify-between items-center px-6 py-3 border-b-2 border-black bg-gray-100 shrink-0">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-red-400 border border-black"></span>
+            <span className="w-3 h-3 rounded-full bg-yellow-400 border border-black"></span>
+            <span className="w-3 h-3 rounded-full bg-green-400 border border-black"></span>
+            <span className="font-mono font-black text-xs sm:text-sm uppercase ml-2 text-gray-700">
+              CV_VIEWER // RIFQI_MUBARAK_TAMPENG_CV.PDF
+            </span>
+          </div>
+          <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 bg-black text-white rounded uppercase">
+            RESUME
+          </span>
+        </div>
+
+        {/* PDF Embed / Iframe */}
+        <div className="flex-grow bg-gray-200 relative overflow-hidden flex items-center justify-center">
+          <iframe 
+            src="cv.pdf#toolbar=0" 
+            title="CV Rifqi Mubarak Tampeng" 
+            className="w-full h-full min-h-[55vh] border-0 relative z-10"
+          />
+          {/* Fallback info jika browser HP tidak mendukung render iframe PDF */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 p-6 text-center z-0">
+            <p className="text-sm font-bold text-gray-600 mb-4">Pratinjau PDF tidak didukung secara langsung di peramban ini.</p>
+            <a 
+              href="cv.pdf" 
+              download="CV_Rifqi_Mubarak_Tampeng.pdf"
+              className="px-6 py-3 bg-yellow-300 border-2 border-black font-black text-xs uppercase rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Download CV.pdf
+            </a>
+          </div>
+        </div>
+
+        {/* Footer Action Bar */}
+        <div className="p-4 sm:px-6 bg-white border-t-2 border-black flex flex-wrap items-center justify-between gap-3 shrink-0">
+          <span className="font-mono text-xs text-gray-400 font-bold">CURRICULUM VITAE // PROFESSIONAL RESUME</span>
+          <div className="flex gap-2">
+            <a
+              href="cv.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase bg-white border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-100 transition-all"
+            >
+              <ExternalLink size={14} /> Buka di Tab Baru
+            </a>
+            <a
+              href="cv.pdf"
+              download="CV_Rifqi_Mubarak_Tampeng.pdf"
+              className="flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase bg-yellow-300 border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-400 transition-all"
+            >
+              Download CV
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 /* --- MODAL STUDI KASUS & SERTIFIKAT --- */
 const CaseStudyModal = ({ isOpen, data, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -141,71 +223,79 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
       {/* Container Utama Modal */}
       <div className="relative w-full max-w-6xl h-full max-h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
         
-        {/* Header Bar Retro Window */}
+        {/* Header Bar */}
         <div className="flex justify-between items-center px-6 py-3 border-b-2 border-black bg-gray-100 shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-red-400 border border-black"></span>
             <span className="w-3 h-3 rounded-full bg-yellow-400 border border-black"></span>
             <span className="w-3 h-3 rounded-full bg-green-400 border border-black"></span>
             <span className="font-mono font-black text-xs sm:text-sm uppercase ml-2 text-gray-700">
-              {isCert ? "CERTIFICATE_VIEWER" : "CASE_STUDY_VIEWER"} // {data.title}
+              {isCert ? "CERTIFICATE_VIEWER" : "PORTFOLIO_VIEWER"} // {data.title}
             </span>
           </div>
-          <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 bg-black text-white rounded uppercase">{data.category || data.role || data.subtitle || "DETAIL"}</span>
+          <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 bg-black text-white rounded uppercase">
+            {data.category || data.role || "DETAIL"}
+          </span>
         </div>
 
-        {/* Konten 2 Kolom (Kiri: Galeri Foto, Kanan: Info) */}
+        {/* Konten 2 Kolom */}
         <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
           
-          {/* KOLOM KIRI: GALERI GAMBAR */}
-          <div className="lg:col-span-6 border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-gray-50 flex flex-col p-6 justify-between min-h-[300px]">
-            <div className="relative overflow-hidden bg-white border-2 border-black rounded-2xl flex-grow flex items-center justify-center min-h-[240px] shadow-sm">
+          {/* === KOLOM KIRI: GAMBAR FULL BLEED TANPA CELAH PUTIH (p-0 & w-full h-full object-cover) === */}
+          <div className="lg:col-span-6 border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-black flex flex-col justify-between relative min-h-[300px] sm:min-h-[420px] p-0 overflow-hidden">
+            
+            {/* Gambar full mengisi container tanpa celah */}
+            <div className="relative w-full h-full flex-grow flex items-center justify-center bg-black overflow-hidden">
+              <img 
+                src={images[activeIndex]} 
+                alt={`Slide ${activeIndex + 1}`} 
+                className="w-full h-full object-cover object-center block"
+                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"; }}
+              />
+
+              {/* Overlay shadow tipis agar tombol & badge nomor foto jelas terbaca */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+
+              {/* Tombol navigasi slide melayang di atas gambar */}
               {images.length > 1 && (
                 <>
                   <button 
                     onClick={prevImage} 
-                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-10 rounded-full hover:bg-yellow-300 transition-all"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/90 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-10 rounded-full hover:bg-yellow-300 transition-all"
                   >
-                    <ChevronLeft size={16} />
+                    <ChevronLeft size={18} />
                   </button>
                   <button 
                     onClick={nextImage} 
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-10 rounded-full hover:bg-yellow-300 transition-all"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/90 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-10 rounded-full hover:bg-yellow-300 transition-all"
                   >
-                    <ChevronRight size={16} />
+                    <ChevronRight size={18} />
                   </button>
                 </>
               )}
-
-              <img 
-                src={images[activeIndex]} 
-                alt={`Slide ${activeIndex + 1}`} 
-                className="max-h-[44vh] w-auto object-contain mx-auto"
-                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"; }}
-              />
               
-              <div className="absolute bottom-3 right-3 bg-black text-white font-mono text-[11px] px-2.5 py-0.5 rounded border border-white">
+              <div className="absolute top-4 left-4 bg-black/80 text-white font-mono text-[11px] px-2.5 py-1 rounded border border-white z-10">
                 {activeIndex + 1} / {images.length}
               </div>
             </div>
 
-            {/* Thumbnail Indicator Dots */}
-            <div className="flex gap-2 overflow-x-auto max-w-full pt-4 hide-scrollbar justify-center">
+            {/* Thumbnail Indicator Dots (Floating di bawah gambar) */}
+            <div className="absolute bottom-4 left-0 right-0 flex gap-2 overflow-x-auto max-w-full px-4 hide-scrollbar justify-center z-10">
               {images.map((_, idx) => (
                 <button
                   key={idx} 
                   onClick={(e) => { e.stopPropagation(); setActiveIndex(idx); }}
-                  className={`h-2.5 border border-black transition-all duration-300 rounded-full ${idx === activeIndex ? 'bg-yellow-300 w-6' : 'bg-white w-2.5 hover:bg-gray-200'}`}
+                  className={`h-2.5 border border-black transition-all duration-300 rounded-full shadow-sm ${idx === activeIndex ? 'bg-yellow-300 w-7' : 'bg-white/80 w-2.5 hover:bg-white'}`}
                 />
               ))}
             </div>
           </div>
 
-          {/* KOLOM KANAN: KONTEN DETAIL BERSIH & BERSTRUKTUR */}
+          {/* KOLOM KANAN: KONTEN DETAIL BERFORMAT INDUSTRI */}
           <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between bg-white">
             <div>
-              {/* Hanya Tahun & Judul */}
-              <div className="mb-6">
+              {/* Metadata Header */}
+              <div className="mb-6 border-b-2 border-black/10 pb-4">
                 {data.year && (
                   <div className="mb-2">
                     <span className="text-xs font-mono font-bold bg-yellow-300 border border-black px-2.5 py-0.5 rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -216,8 +306,10 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                 <h2 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-black leading-tight">
                   {data.title}
                 </h2>
-                {data.subtitle && (
-                  <p className="text-xs sm:text-sm font-bold text-gray-600 mt-1">{data.subtitle}</p>
+                {(data.institution || data.client) && (
+                  <p className="text-xs sm:text-sm font-black text-gray-700 mt-1.5 flex items-center gap-1.5">
+                    {data.institution || data.client} <span className="text-gray-400">•</span> {data.location || "Indonesia"}
+                  </p>
                 )}
               </div>
 
@@ -225,7 +317,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
               {isCert ? (
                 <div className="space-y-4 animate-in fade-in duration-200 py-2">
                   <div className="p-4 bg-yellow-50 border-l-4 border-black font-medium text-gray-800 leading-relaxed text-sm sm:text-base">
-                    {data.description || "Sertifikasi resmi dan pelatihan intensif untuk menguji serta memperkuat kompetensi teknis profesional."}
+                    {data.description}
                   </div>
                   
                   {data.issuer && (
@@ -243,46 +335,37 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                   )}
                 </div>
               ) : (
-                /* TAMPILAN STUDI KASUS PROYEK & EXPERIENCE (Tanpa Tab Menu) */
-                <div className="space-y-4 animate-in fade-in duration-200">
-                  <p className="p-4 bg-yellow-50 border-l-4 border-black font-semibold text-black text-sm sm:text-base leading-relaxed">
-                    {data.description || "Proyek dan pengalaman yang menunjukkan kontribusi serta keahlian teknis secara profesional."}
-                  </p>
-
-                  {(data.problem || data.solution) && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                      {data.problem && (
-                        <div className="p-3.5 bg-red-50 border border-black/30 rounded-xl">
-                          <h4 className="font-black text-xs uppercase text-red-700 mb-1 flex items-center gap-1">
-                            <AlertCircle size={14}/> Tantangan:
-                          </h4>
-                          <p className="text-xs sm:text-sm text-gray-800 leading-relaxed">{data.problem}</p>
-                        </div>
-                      )}
-                      {data.solution && (
-                        <div className="p-3.5 bg-green-50 border border-black/30 rounded-xl">
-                          <h4 className="font-black text-xs uppercase text-green-800 mb-1 flex items-center gap-1">
-                            <CheckCircle2 size={14}/> Solusi:
-                          </h4>
-                          <p className="text-xs sm:text-sm text-gray-800 leading-relaxed">{data.solution}</p>
-                        </div>
-                      )}
-                    </div>
+                /* TAMPILAN STUDI KASUS PROYEK & EXPERIENCE */
+                <div className="space-y-5 animate-in fade-in duration-200">
+                  
+                  {/* Executive Summary Paragraph */}
+                  {data.summary && (
+                    <p className="text-sm sm:text-base font-medium text-gray-800 leading-relaxed border-l-4 border-black pl-3 bg-yellow-50 py-2.5 pr-2">
+                      {data.summary}
+                    </p>
                   )}
 
-                  {data.impact && (
-                    <div className="p-3.5 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl">
-                      <h4 className="font-black text-xs uppercase text-blue-900 mb-1 flex items-center gap-1">
-                        <TrendingUp size={14}/> Hasil & Dampak Nyata:
+                  {/* Bullet Points Details */}
+                  {data.details && data.details.length > 0 && (
+                    <div>
+                      <h4 className="font-black text-xs uppercase tracking-wider text-black mb-2 flex items-center gap-1.5">
+                        <CheckCircle2 size={15} className="text-green-600" /> Key Highlights & Responsibilities:
                       </h4>
-                      <p className="text-xs sm:text-sm font-medium text-gray-800 leading-relaxed">{data.impact}</p>
+                      <ul className="space-y-2 text-xs sm:text-sm text-gray-800 leading-relaxed">
+                        {data.details.map((point, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <span className="text-black font-black mt-0.5">•</span>
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   )}
 
                   {/* Tech Stack & Tools yang Digunakan */}
                   <div className="pt-3 border-t border-gray-200">
                     <h4 className="font-black text-xs uppercase text-black mb-2.5 flex items-center gap-1.5">
-                      <Cpu size={14}/> Tech Stack & Tools yang Digunakan:
+                      <Cpu size={14}/> Technologies & Arsenal:
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {(data.techStack || data.tags || ['React', 'Figma', 'IoT', 'Leadership']).map((t, idx) => (
@@ -292,6 +375,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                       ))}
                     </div>
                   </div>
+
                 </div>
               )}
             </div>
@@ -340,12 +424,12 @@ const Reveal = ({ children, delay = 0, className = "" }) => {
   );
 };
 
-// COMPONENT: Visual Experience Card (Refined Font Sizes & Spacing)
+// COMPONENT: Visual Experience Card
 const VisualExperienceCard = ({ title, role, year, image, categoryBadgeColor = "bg-yellow-300", onClickDetail }) => {
   return (
     <div 
       onClick={onClickDetail}
-      className="group relative w-full h-72 sm:h-80 bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
+      className="group relative w-full h-80 sm:h-96 bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
     >
       <div className="w-full h-full p-2.5 transition-transform duration-500 ease-out">
         <div className="relative w-full h-full rounded-xl overflow-hidden bg-gray-100 border border-black/20">
@@ -383,12 +467,12 @@ const VisualExperienceCard = ({ title, role, year, image, categoryBadgeColor = "
   );
 };
 
-// COMPONENT: Project Card (Clean Image-Only Card - Refined Font Sizes)
-const ProjectCard = ({ title, category, images, onOpenModal }) => {
+// COMPONENT: Project Card
+const ProjectCard = ({ title, category, images, color = "bg-yellow-300", onOpenModal }) => {
   return (
     <div 
       onClick={onOpenModal}
-      className="group relative h-72 sm:h-80 w-full bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
+      className="group relative h-80 sm:h-96 w-full bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
     >
       <div className="w-full h-full p-2.5">
         <div className="relative w-full h-full rounded-xl overflow-hidden bg-gray-100 border border-black/20">
@@ -403,7 +487,7 @@ const ProjectCard = ({ title, category, images, onOpenModal }) => {
       </div>
 
       <div className="absolute top-5 left-5 z-10">
-        <span className="px-2.5 py-1 text-[11px] font-black uppercase tracking-wider bg-yellow-300 border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded">
+        <span className={`px-2.5 py-1 text-[11px] font-black uppercase tracking-wider ${color} text-black border border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded`}>
           {category}
         </span>
       </div>
@@ -423,12 +507,12 @@ const ProjectCard = ({ title, category, images, onOpenModal }) => {
   );
 };
 
-// COMPONENT: Cert Card (Clean Minimalist Card - Refined Font Sizes)
+// COMPONENT: Cert Card
 const CertCard = ({ title, subtitle, images, onOpenModal }) => {
     return (
         <div 
           onClick={onOpenModal}
-          className="group relative h-64 sm:h-72 w-full bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
+          className="group relative h-72 sm:h-80 w-full bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all duration-300 cursor-pointer select-none"
         >
             <div className="w-full h-full p-2.5">
               <div className="relative w-full h-full rounded-xl overflow-hidden bg-gray-100 border border-black/20">
@@ -506,18 +590,22 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  // State untuk Case Study Modal (Pop-Up Detail)
+  // State untuk Case Study Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCaseData, setSelectedCaseData] = useState(null);
+
+  // State untuk Modal CV.PDF
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
+
+  // State untuk Kategori & Filter Proyek
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [showAllProjects, setShowAllProjects] = useState(false);
 
   // State untuk kontrol Show More pada section Experience
   const [showAllExp, setShowAllExp] = useState(false);
 
-  // Refs for Auto-Scroll
-  const projectScrollRef = useRef(null);
+  // Ref untuk Auto-Scroll Sertifikat
   const certScrollRef = useRef(null);
-
-  useAutoScroll(projectScrollRef, 0.6);
   useAutoScroll(certScrollRef, 0.6);
 
   const navLinks = [
@@ -572,6 +660,16 @@ const App = () => {
     document.body.style.overflow = 'unset';
   };
 
+  const openCVModal = () => {
+    setIsCVModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeCVModal = () => {
+    setIsCVModalOpen(false);
+    document.body.style.overflow = 'unset';
+  };
+
   const scrollTo = (id) => {
     const element = document.getElementById(id);
     if (element) {
@@ -582,67 +680,109 @@ const App = () => {
   };
 
   // ==========================================
-  // DATA MASTER: PROJECTS (Termasuk 4 Website PGNMAS)
+  // DATA MASTER: 11 PROJECTS
   // ==========================================
   const projectsData = [
+    {
+      title: "Hardware Quest AR (Bachelor's Thesis Project)",
+      category: "AR / VR",
+      year: "2026",
+      institution: "Computer Engineering - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
+      summary: "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+      details: [
+        "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+        "Designed and animated detailed 3D models of computer components (Motherboard, CPU, RAM, GPU) using Blender with interactive 360-degree rotation and zoom.",
+        "Implemented Research and Development (R&D) prototyping methodologies and conducted System Usability Scale (SUS) and N-Gain cognitive evaluations with 20+ respondents.",
+        "Successfully defended the research as the final requirement for the Bachelor of Engineering (S.T.) degree."
+      ],
+      techStack: ['Unity3D', 'Vuforia AR', 'C# Scripting', 'Android SDK'],
+      color: "bg-orange-300",
+      gallery: ["ar_hw.png", "ar_hw1.png"]
+    },
     {
       title: "Fleedy",
       category: "Web Development",
       year: "2026",
-      description: "Corporate internal website platform developed for PT Permata Graha Nusantara (PGNMAS) featuring modern horizontal scrolling and responsive layout.",
-      problem: "Kebutuhan antarmuka web interaktif yang modern untuk menampilkan data dan layanan operasional secara dinamis.",
-      solution: "Membangun landing page dan antarmuka web interaktif berbasis React.js dan Tailwind CSS dengan alur navigasi yang halus.",
-      impact: "Meningkatkan daya tarik visual dan kemudahan akses informasi bagi pengguna internal maupun pemangku kepentingan.",
-      techStack: ['React.js', 'Tailwind CSS', 'UI/UX Design', 'Web Dev'],
-      color: "blue",
+      client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
+      location: "Jakarta, Indonesia",
+      summary: "Designed and engineered the official web landing platform for Fleedy, an integrated enterprise transportation and fleet management service managing over 964 vehicle units and IDR 189.88 Billion in total assets.",
+      details: [
+        "Engineered a highly responsive and modern corporate front-end using React.js and Tailwind CSS, featuring custom viewport-triggered reveal animations (RevealOnScroll).",
+        "Architected clean UI sections to present real-time GPS tracking capabilities, EV/Hybrid energy transition readiness, and comprehensive driver management workflows.",
+        "Visually structured complex 2024 annual operational metrics (19.16% YoY asset growth and IDR 153.05 Billion business revenue) into scannable, interactive data cards.",
+        "Optimized multi-device navigation and integrated direct cross-platform communication links (WhatsApp API, App Store, and Google Play ecosystem)."
+      ],
+      techStack: ["React.js", "Tailwind CSS", "Lucide Icons", "Custom IntersectionObserver", "Responsive UI/UX"],
+      color: "bg-blue-300",
       gallery: ["fleedy.png"]
-    },
-    {
-      title: "ArtBuild",
-      category: "Web Development",
-      year: "2026",
-      description: "Architecture and construction portfolio showcase website developed during internship at PT Permata Graha Nusantara (PGNMAS).",
-      problem: "Portofolio proyek konstruksi dan rancangan membutuhkan wadah digital yang estetis dan berkinerja tinggi.",
-      solution: "Mengembangkan situs web berdesain responsif dengan fokus pada performa pemuatan visual dan tata letak yang rapi.",
-      impact: "Mempermudah presentasi proyek-proyek konstruksi dan aset perusahaan secara profesional.",
-      techStack: ['React.js', 'Tailwind CSS', 'Responsive Web', 'PGNMAS'],
-      color: "purple",
-      gallery: ["artbuild.png"]
-    },
-    {
-      title: "Filexpert",
-      category: "Web Development",
-      year: "2026",
-      description: "Digital document and file management solution interface designed for corporate IT Support workflow at PGNMAS.",
-      problem: "Pengelolaan dan pencarian berkas atau dokumen administrasi IT membutuhkan antarmuka yang terpusat dan mudah diakses.",
-      solution: "Merancang antarmuka sistem manajemen file interaktif berbasis web dengan fitur pengelompokan yang efisien.",
-      impact: "Membantu menata alur kerja dokumentasi dan mempercepat akses berkas bagi tim internal.",
-      techStack: ['React.js', 'Tailwind CSS', 'Document Management', 'UI/UX'],
-      color: "green",
-      gallery: ["filexpert.png"]
     },
     {
       title: "Spativm",
       category: "Web Development",
       year: "2026",
-      description: "Spatial and facility management web portal developed for corporate asset visualization at PT Permata Graha Nusantara.",
-      problem: "Visualisasi informasi fasilitas dan ruang kantor membutuhkan presentasi web yang bersih dan informatif.",
-      solution: "Membangun portal web berdesain modern untuk menunjang kebutuhan manajemen ruang dan informasi fasilitas.",
-      impact: "Memberikan visibilitas yang lebih baik terhadap pengelolaan fasilitas korporat PGNMAS.",
-      techStack: ['React.js', 'Tailwind CSS', 'Facility Mgmt', 'Web Dev'],
-      color: "orange",
+      client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
+      location: "Jakarta, Indonesia",
+      summary: "Developed the corporate web portal for SPATIVM, showcasing regional facility management, HSE, and building maintenance services covering over 419,000 m² of corporate and government property assets.",
+      details: [
+        "Built a sophisticated front-end experience using React.js featuring custom frame-by-frame mathematical easing hooks (CountUp) for dynamic annual performance statistics.",
+        "Implemented a trigger-once IntersectionObserver architecture (FadeInSection) to deliver smooth, staggered entrance animations across multi-column service grids.",
+        "Designed intuitive UI layouts highlighting core facility services (Building Maintenance, Housekeeping, HSE & Security, and Office Support) with high-contrast visual hierarchy.",
+        "Showcased enterprise credibility by structuring strategic client ecosystems including Kementerian BUMN, SKK Migas, Pertamina, and PGN Group."
+      ],
+      techStack: ["React.js", "Tailwind CSS", "Custom Easing Animation Hooks", "Interactive UI", "Front-End Engineering"],
+      color: "bg-orange-300",
       gallery: ["spativm.png"]
+    },
+    {
+      title: "FileExpert",
+      category: "Web Development",
+      year: "2026",
+      client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
+      location: "Jakarta, Indonesia",
+      summary: "Engineered a high-impact B2B web platform for FileExpert, an ANRI-accredited archive management and DOX OCR technology solution handling over 153,446 corporate archive boxes.",
+      details: [
+        "Designed a bold, neo-brutalist corporate visual identity using React.js and Tailwind CSS with a distinctive green-and-yellow high-contrast color palette.",
+        "Implemented an infinite CSS linear marquee animation to dynamically showcase trust from vital enterprise partners (Pertamina Group, MIND ID, Bank BTN, and JAKPRO).",
+        "Created interactive feature showcases explaining DOX Optical Character Recognition (OCR) technology, metadata search capabilities, and certified archive management workflows.",
+        "Built an optimized, scannable statistical dashboard section displaying IDR 25.96 Billion in annual revenue and 12.72% YoY business growth."
+      ],
+      techStack: ["React.js", "Tailwind CSS", "CSS Keyframe Animations", "B2B UI/UX Design", "Neo-Brutalist Layouts"],
+      color: "bg-green-300",
+      gallery: ["filexpert.png"]
+    },
+    {
+      title: "ArtBuild",
+      category: "Web Development",
+      year: "2026",
+      client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
+      location: "Jakarta, Indonesia",
+      summary: "Created an elegant, luxury-focused web showcase for ArtBuild, presenting architectural design, interior fitting-out, and construction projects for PGN Group and Pertamina subsidiaries.",
+      details: [
+        "Crafted a refined editorial visual experience utilizing serif typography (Playfair Display), interactive Polaroid-style photo grids, and video background hero headers.",
+        "Developed a responsive, full-screen interactive project modal listing 20+ major 2024 Design & Build portfolios across internal PGN and external Pertamina Group facilities.",
+        "Engineered dynamic hover-reveal accordion components that expand to display detailed technical scopes (Preliminary Design, DED, RAB, and Custom Furniture production).",
+        "Structured performance metrics highlighting IDR 38.25 Billion in revenue contribution and high tender win rates across state-owned enterprise projects."
+      ],
+      techStack: ["React.js", "Tailwind CSS", "Playfair Display Typography", "Interactive Modals", "Video Hero Integration"],
+      color: "bg-purple-300",
+      gallery: ["artbuild.png"]
     },
     {
       title: "Lifegen App",
       category: "UI/UX Design",
       year: "2025",
-      description: "Daily health and calorie tracking application with a clean interface to motivate a healthy lifestyle.",
-      problem: "Pengguna sering merasa terbebani oleh aplikasi pelacak kalori yang terlalu rumit dan penuh tabel data yang membingungkan.",
-      solution: "Merancang antarmuka bersih berbasis gamifikasi visual di Figma dengan alur pengisian kalori cepat hanya dalam 3 klik.",
-      impact: "Mencapai tingkat penyelesaian purwarupa (prototype task completion) 92% saat pengujian kelayakan pengguna.",
-      techStack: ['Figma', 'Design System', 'UI/UX Prototyping'],
-      color: "pink",
+      institution: "UI/UX Case Study",
+      location: "Indonesia",
+      summary: "Daily health and calorie tracking mobile application featuring a clean, gamified interface to motivate consistent healthy lifestyle habits.",
+      details: [
+        "Applied the Design Thinking framework (Empathize, Define, Ideate, Prototype, Test) to solve calorie-tracking friction.",
+        "Conducted user research and identified that existing health apps overwhelmed users with complex data tables.",
+        "Designed high-fidelity Figma wireframes and interactive prototypes allowing quick calorie input in just 3 taps.",
+        "Achieved a 92% prototype task completion rate during usability testing with target users."
+      ],
+      techStack: ['Figma', 'Design System', 'UI/UX Prototyping', 'User Research'],
+      color: "bg-pink-300",
       gallery: ["life.png"],
       links: [
         { text: "Figma Prototype", url: "https://www.figma.com/proto/MIYprCXiJ8d9SDMZA5kMYT/Lifegen?node-id=48-3636&p=f&t=vXSOTZWg6oxs5i8D-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=48%3A3636&show-proto-sidebar=1", icon: <Figma size={14}/> },
@@ -650,14 +790,19 @@ const App = () => {
     },
     {
       title: "LandConnect",
-      category: "Marketplace",
+      category: "UI/UX Design",
       year: "2025",
-      description: "Strategic land trading platform with interactive map features to facilitate location search.",
-      problem: "Pencarian lahan tanah strategis sering kali kurang transparan dan tidak memiliki visualisasi pemetaan batas tanah yang jelas.",
-      solution: "Mengintegrasikan peta interaktif digital untuk memetakan spesifikasi zona, harga per meter, serta akses infrastruktur terdekat.",
-      impact: "Mempercepat proses kurasi lokasi properti bagi calon pembeli dan investor.",
-      techStack: ['Figma', 'Interactive Map UI', 'Web Prototype'],
-      color: "purple",
+      institution: "UI/UX Case Study",
+      location: "Indonesia",
+      summary: "Strategic land trading and property marketplace platform featuring interactive map mapping to simplify location and zoning search.",
+      details: [
+        "Designed an end-to-end web marketplace interface connecting land property investors with verified sellers.",
+        "Integrated interactive map UX wireframes to clearly visualize property boundaries, zoning types, and infrastructure access.",
+        "Created scalable Figma design systems including typography, color palettes, and reusable UI components.",
+        "Streamlined property curation workflows to enhance transparency in strategic land acquisition."
+      ],
+      techStack: ['Figma', 'Interactive Map UI', 'Web Prototype', 'Design System'],
+      color: "bg-purple-300",
       gallery: ["land.png"],
       links: [
         { text: "Figma Prototype", url: "https://www.figma.com/proto/OGf7IzSdu9WjrTlVOI0xP9/LandConnect?node-id=747-3006&t=dyPSPDRSZXDFVWfj-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=747%3A3006", icon: <Figma size={14}/> },
@@ -666,13 +811,20 @@ const App = () => {
     {
       title: "Gula Cerdas",
       category: "IoT Solution",
-      year: "2025–2026",
-      description: "Palm sugar production standardization using Thermocouple sensors and DC Motors to measure viscosity and saturation point.",
-      problem: "Produksi gula aren UMKM tradisional mengandalkan feeling/intuisi, menyebabkan tingkat kekentalan dan kualitas yang tidak konsisten.",
-      solution: "Menggunakan mikrokontroler ESP32, sensor Thermocouple, dan pengaduk otomatis untuk mengukur titik jenuh serta viskositas secara presisi.",
-      impact: "Meningkatkan konsistensi kualitas produksi gula aren hingga 85% dan menghemat tenaga fisik petani aren.",
-      techStack: ['ESP32', 'Thermocouple Sensor', 'C++ / Arduino IDE', 'DC Motor Control'],
-      color: "green",
+      year: "2025 – 2026",
+      institution: "Innovillage 2025 - Universitas Syiah Kuala",
+      location: "Aceh Besar, Indonesia",
+      summary: "An IoT-based palm sugar production standardization system utilizing Thermocouple sensors, current sensors, and a Web Dashboard to remotely monitor boiling saturation and viscosity. Selected among the Top 180 Funded Projects in Innovillage 2025.",
+      details: [
+        "Selected among the Top 180 Funded Projects nationwide in Innovillage 2025 (Social Project Competition by Telkom Indonesia & Witel).",
+        "Engineered an embedded hardware solution (ESP32) to replace traditional feeling-based palm sugar cooking methods with data-driven parameters.",
+        "Integrated MAX6675 high-precision Thermocouple sensors for temperature and INA219 current sensors to dynamically calculate liquid viscosity based on DC motor load.",
+        "Developed a seamless hardware-to-cloud pipeline using Firebase Realtime Database to transmit live cooking metrics with minimal latency.",
+        "Built a remote Web Dashboard interface that empowers non-expert users to monitor the 'saturation percentage' safely away from extreme heat.",
+        "Successfully validated the prototype in a real-world UMKM environment, eliminating the risk of overcooked batches and enabling cross-generational skill transfer."
+      ],
+      techStack: ['ESP32', 'Firebase IoT', 'MAX6675 / INA219', 'Web Dashboard', 'C++ / Arduino IDE'],
+      color: "bg-green-300",
       gallery: ["gula1.jpeg", "gula2.jpeg", "gula3.jpeg", "gula.JPG"],
       links: [
         { text: "Github Repo", url: "https://github.com/rifqiimt/Gula-Cerdas.git", icon: <Github size={14}/> },
@@ -681,14 +833,19 @@ const App = () => {
     },
     {
       title: "Smart Water Metering",
-      category: "Embedded",
+      category: "IoT Solution",
       year: "2024",
-      description: "Water usage monitoring system based on Arduino Uno to prevent household water waste.",
-      problem: "Banyak rumah tangga tidak menyadari kebocoran pipa atau pemborosan air sampai tagihan bulanan membengkak.",
-      solution: "Membangun pemantauan arus air real-time berbasis Arduino Uno dengan sensor flow meter dan peringatan alarm batas konsumsi.",
-      impact: "Membantu mendeteksi kebocoran air lebih dini dan menekan penggunaan air berlebih hingga 30%.",
-      techStack: ['Arduino Uno', 'Water Flow Sensor', 'C++ Embedded'],
-      color: "green",
+      institution: "Embedded Hardware Project",
+      location: "Aceh, Indonesia",
+      summary: "Arduino Uno-based residential water usage monitoring and alarm system designed to detect pipe leaks and prevent household water waste.",
+      details: [
+        "Developed a real-time water flow monitoring device using Arduino Uno and precision water flow sensors.",
+        "Programmed embedded C++ firmware to calculate cumulative water consumption and trigger usage threshold alarms.",
+        "Designed hardware schematic and assembled sensor circuitry for reliable household deployment.",
+        "Helped households identify undetected pipe leaks early, reducing monthly excess water waste by 30%."
+      ],
+      techStack: ['Arduino Uno', 'Water Flow Sensor', 'C++ Embedded', 'Hardware Assembly'],
+      color: "bg-green-300",
       gallery: ["swms.jpeg", "swm1.jpeg", "swm2.jpeg", "swm3.jpeg"],
       links: [
         { text: "Arduino Code", url: "#", icon: <Code size={14}/> },
@@ -699,12 +856,17 @@ const App = () => {
       title: "BridgeGuard",
       category: "IoT Solution",
       year: "2025",
-      description: "Early bridge vibration detection device using ESP32 and ADXL accelerometer sensors.",
-      problem: "Kurangnya pemantauan struktur jembatan secara terus-menerus meningkatkan risiko kecelakaan saat terjadi beban atau getaran berlebih.",
-      solution: "Memasang sensor akselerometer ADXL yang terhubung dengan ESP32 untuk memantau frekuensi getaran anomali secara real-time.",
-      impact: "Memberikan sistem peringatan dini struktural dengan pengiriman data nirkabel instan.",
-      techStack: ['ESP32', 'ADXL Accelerometer', 'Real-Time Telemetry'],
-      color: "green",
+      institution: "IoT Research Project",
+      location: "Aceh, Indonesia",
+      summary: "Early bridge vibration detection device utilizing ESP32 and ADXL accelerometer sensors for structural structural integrity monitoring.",
+      details: [
+        "Designed an early-warning structural monitoring IoT device using ESP32 and ADXL accelerometer sensors.",
+        "Programmed embedded firmware to calculate Root Mean Square (RMS) vibration frequencies in real time.",
+        "Integrated Firebase Realtime Database telemetry to transmit anomalous structural vibration alerts wirelessly.",
+        "Provided a low-cost, scalable structural safety monitoring approach for bridge maintenance infrastructure."
+      ],
+      techStack: ['ESP32', 'ADXL Accelerometer', 'Firebase IoT', 'Real-Time Telemetry'],
+      color: "bg-green-300",
       gallery: ["bg.jpeg"],
       links: [
         { text: "Github Repo", url: "https://github.com/rifqiimt/BridgeGuard.git", icon: <Github size={14}/> },
@@ -715,12 +877,17 @@ const App = () => {
       title: "AR BMKG Tools",
       category: "AR / VR",
       year: "2026",
-      description: "Markerless AR educational app for 3D interactive visualization of BMKG meteorological tools.",
-      problem: "Alat-alat meteorologi BMKG sering kali berukuran besar dan sensitif, sehingga sulit untuk dipelajari langsung oleh publik atau staf baru.",
-      solution: "Membangun aplikasi Augmented Reality (AR) markerless berbasis Unity untuk menampilkan model 3D alat cuaca interaktif di smartphone.",
-      impact: "Menjadi sarana edukasi visual baru di Stasiun Meteorologi Kelas I Sultan Iskandar Muda Banda Aceh.",
-      techStack: ['Unity3D', 'Vuforia AR Engine', 'Blender 3D Modeling'],
-      color: "orange",
+      institution: "BMKG Class I Meteorological Station SIM",
+      location: "Banda Aceh, Indonesia",
+      summary: "Markerless AR educational app for 3D interactive visualization of BMKG meteorological tools developed for Class I SIM Station Banda Aceh.",
+      details: [
+        "Built a markerless Augmented Reality mobile app using Unity and Vuforia to display sensitive meteorological tools.",
+        "Created accurate 3D instrument models allowing station visitors and new meteorology staff to inspect equipment safely.",
+        "Optimized 3D rendering and mobile application size for smooth performance on standard Android devices.",
+        "Implemented as an official visual educational medium at Class I Meteorological Station SIM Banda Aceh."
+      ],
+      techStack: ['Unity3D', 'Vuforia AR Engine', 'Blender 3D Modeling', 'C# Scripting'],
+      color: "bg-orange-300",
       gallery: ["bmkg2.png", "bmkg1.jpg"],
       links: [
         { text: "Download APK", url: "#", icon: <Smartphone size={14}/>, className: "bg-green-100 text-black hover:bg-green-200" },
@@ -729,74 +896,134 @@ const App = () => {
     }
   ];
 
+  // Logika Filter Proyek
+  const categories = ['ALL', 'WEB DEV', 'IOT', 'AR / VR', 'UI/UX'];
+  
+  const filteredProjects = selectedCategory === 'ALL'
+    ? projectsData
+    : projectsData.filter(item => {
+        if (selectedCategory === 'WEB DEV') return item.category === 'Web Development';
+        if (selectedCategory === 'IOT') return item.category === 'IoT Solution';
+        if (selectedCategory === 'AR / VR') return item.category === 'AR / VR';
+        if (selectedCategory === 'UI/UX') return item.category === 'UI/UX Design';
+        return true;
+      });
+
+  const displayedProjects = (selectedCategory === 'ALL' && !showAllProjects) 
+    ? filteredProjects.slice(0, 6) 
+    : filteredProjects;
+
   // ==========================================
-  // DATA MASTER: EXPERIENCE
+  // DATA MASTER: 6 NON-INTERNSHIP EXPERIENCES & LEADERSHIP
   // ==========================================
   const experiencesList = [
     {
-      role: "Project Lead (Ketua)",
-      title: "CMD 2025",
-      year: "2025–2026",
+      role: "Augmented Reality Developer",
+      title: "Hardware Quest AR (Bachelor's Thesis Project)",
+      year: "2026",
+      institution: "Computer Engineering - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
+      image: "ar_hw.png",
+      categoryBadgeColor: "bg-orange-300",
+      summary: "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+      details: [
+        "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+        "Designed and animated detailed 3D models of computer components (Motherboard, CPU, RAM, GPU) using Blender with interactive 360-degree rotation and zoom.",
+        "Implemented Research and Development (R&D) prototyping methodologies and conducted System Usability Scale (SUS) and N-Gain cognitive evaluations with 20+ respondents.",
+        "Successfully defended the research as the final requirement for the Bachelor of Engineering (S.T.) degree."
+      ],
+      gallery: ["ar_hw.png", "ar_hw1.png"],
+      techStack: ['Unity 3D', 'Vuforia AR', 'C# Scripting', 'Android']
+    },
+    {
+      role: "Chief Event Organizer / Project Manager",
+      title: "Computer Multi-Challenge Day (CMD 2025)",
+      year: "2025 – 2026",
+      institution: "Computer Engineering - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
       image: "cmd.png",
       categoryBadgeColor: "bg-yellow-300",
-      description: "Memimpin acara kompetisi dan seminar IT nasional tahunan berskala besar di lingkungan kampus.",
-      problem: "Tantangan menyatukan koordinasi dari 120 panitia serta mengelola keterbatasan pendanaan dan penjadwalan 6 sub-lomba nasional.",
-      solution: "Menerapkan alur kerja manajemen proyek yang transparan, restrukturisasi prizepool yang realistis, dan kolaborasi sponsorship.",
-      impact: "Acara berjalan sukses dihadiri peserta dari berbagai universitas dengan efisiensi anggaran optimal.",
+      summary: "Served as Chief Organizer/Project Manager for a major campus-wide technology event themed 'Empowering Youth for a Golden in the Digital Age'.",
+      details: [
+        "Served as Chief Organizer/Project Manager for a major campus-wide technology event themed 'Empowering Youth for a Golden in the Digital Age'.",
+        "Led and coordinated over 120 student committee members across multiple divisions to execute competition rundowns and technical logistics.",
+        "Strategically restructured the financial budget and rationalized the total prize pool to a realistic scale under 10 million IDR, adapting to campus funding constraints without sacrificing event prestige.",
+        "Managed stakeholder communication, sponsorship partnerships, and cross-departmental collaboration within the Faculty of Engineering."
+      ],
       gallery: ["cmd.png", "cmd1.jpeg", "cmd2.jpeg", "cmd3.jpeg", "cmd4.jpeg", "cmd5.jpeg"],
-      techStack: ['Project Management', 'Sponsorship Relations', 'Team Leadership']
+      techStack: ['Project Management', 'Sponsorships', 'Leadership', 'Budgeting']
     },
     {
-      role: "Vice Chairman",
-      title: "PBMT XI - KKN",
+      role: "Engineering Leadership Participant / Facilitator",
+      title: "PBMT (Pelatihan Bersama Manajemen Teknik)",
       year: "2024",
+      institution: "Faculty of Engineering - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
       image: "pbmt.png",
       categoryBadgeColor: "bg-blue-300",
-      description: "Pengabdian masyarakat berbasis teknologi di Desa Luthu Lamwu dengan fokus pada infrastruktur air bersih.",
-      problem: "Akses air minum yang belum terdistribusi merata dan memerlukan solusi teknis langsung pakai di lokasi desa.",
-      solution: "Merancang dan mendistribusikan sistem air minum isi ulang otomatis yang siap pakai bagi masyarakat desa.",
-      impact: "Meningkatkan kualitas akses air bersih lokal yang berkelanjutan.",
+      summary: "Participated in and facilitated intensive organizational leadership and technical management training within the Faculty of Engineering.",
+      details: [
+        "Participated in and facilitated intensive organizational leadership and technical management training within the Faculty of Engineering.",
+        "Developed core competencies in project planning, problem-solving, and team dynamics through structured engineering management simulations.",
+        "Collaborated with cross-departmental engineering peers to design actionable problem-solving workflows for student organization initiatives.",
+        "Mentored junior engineering students in basic organizational leadership, event logistics, and effective communication strategies."
+      ],
       gallery: ["pbmt.png"],
-      techStack: ['Community Outreach', 'System Engineering']
+      techStack: ['Engineering Mgmt', 'Leadership', 'Team Dynamics', 'Simulation']
     },
     {
-      role: "Vice Head of Kesma",
-      title: "HIMATEKKOM",
-      year: "2024",
+      role: "Active Member & Technical Contributor",
+      title: "HIMATEKKOM (Himpunan Mahasiswa Teknik Komputer)",
+      year: "2023 – 2026",
+      institution: "Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
       image: "kesma.jpg",
       categoryBadgeColor: "bg-purple-300",
-      description: "Mengelola aspirasi dan kesejahteraan akademik mahasiswa Teknik Komputer.",
-      problem: "Alur komunikasi kendala kuliah dan kebutuhan mahasiswa dengan pihak jurusan yang perlu dipercepat.",
-      solution: "Membentuk program pendampingan dan penampungan aspirasi reguler secara terbuka.",
-      impact: "Menjembatani resolusi masalah akademik secara proaktif bagi ratusan mahasiswa.",
+      summary: "Actively contributed to departmental student association programs, technical workshops, and academic seminars in Computer Engineering.",
+      details: [
+        "Actively contributed to departmental student association programs, technical workshops, and academic seminars in Computer Engineering.",
+        "Facilitated technical sharing sessions on computer hardware assembly, GPU benchmarking, and PC optimization for engineering students.",
+        "Assisted in technical support, audio-visual setups, and event logistics for departmental gatherings and academic evaluations.",
+        "Fostered a collaborative community among batchmates ('leting Tekkom') to support peer learning and graduation milestones."
+      ],
       gallery: ["kesma.jpg", "kesma1.png"],
-      techStack: ['Student Advocacy', 'Public Communication']
+      techStack: ['PC Hardware', 'Workshops', 'Audio-Visual', 'Peer Mentoring']
     },
     {
-      role: "Public Relations Staff",
-      title: "BEM Fakultas Teknik",
-      year: "2024",
+      role: "Faculty Executive Staff / Contributor",
+      title: "BEM FT (Badan Eksekutif Mahasiswa Fakultas Teknik)",
+      year: "2024 – 2025",
+      institution: "Faculty of Engineering - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
       image: "humas.png",
       categoryBadgeColor: "bg-pink-300",
-      description: "Mengatur strategi pencitraan dan publikasi acara fakultas ke luar.",
-      problem: "Kebutuhan menjaga standar informasi visual yang profesional dan jangkauan audiens yang luas.",
-      solution: "Memproduksi kampanye visual serta menjalin kemitraan media partner universitas.",
-      impact: "Meningkatkan engagement media sosial organisasi BEM FT secara signifikan.",
+      summary: "Engaged in faculty-level executive programs, bridging communication between Computer Engineering students and Engineering Faculty leadership.",
+      details: [
+        "Engaged in faculty-level executive programs, bridging communication between Computer Engineering students and Engineering Faculty leadership.",
+        "Collaborated with multi-disciplinary engineering teams to organize faculty-wide academic, technical, and student welfare events.",
+        "Developed strong administrative, public speaking, and stakeholder negotiation skills through executive board responsibilities.",
+        "Contributed to strategic planning and execution of student development agendas across the Faculty of Engineering."
+      ],
       gallery: ["humas.png"],
-      techStack: ['Social Media Strategy', 'Media Relations']
+      techStack: ['Executive Board', 'Public Speaking', 'Event Logistics', 'Negotiation']
     },
     {
-      role: "Event Coordinator",
-      title: "BIOS Orientation",
-      year: "2025",
+      role: "Technical Research Member",
+      title: "BIOS (Basic Information & Operating System)",
+      year: "2023 – 2026",
+      institution: "Computer Engineering Club - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
       image: "cmd1.jpeg",
       categoryBadgeColor: "bg-green-300",
-      description: "Mendesain konsep ospek dan penyambutan mahasiswa baru.",
-      problem: "Mengubah pola ospek tradisional menjadi orientasi berbasis proyek teknik dan pengenalan keahlian.",
-      solution: "Menyusun rundown interaktif dan workshop perkenalan mikrokontroler bagi mahasiswa baru.",
-      impact: "Tingkat kepuasan mahasiswa baru meningkat drastis dengan pendekatan edukatif.",
+      summary: "Engaged as an active member in the departmental tech community focused on embedded systems, hardware architecture, and software logic.",
+      details: [
+        "Engaged as an active member in the departmental tech community focused on embedded systems, hardware architecture, and software logic.",
+        "Collaborated on practical IoT development projects (such as BridgeGuard vibration detection and GulaCerdas monitoring) utilizing Firebase and sensor telemetry.",
+        "Participated in peer-to-peer code reviews, microcontroller logic analysis, and debugging sessions for academic research applications.",
+        "Explored emerging technologies including markerless Augmented Reality (Unity 3D/Vuforia) and web frontend frameworks."
+      ],
       gallery: ["cmd1.jpeg"],
-      techStack: ['Workshop Planning', 'Mentorship']
+      techStack: ['IoT & Firebase', 'Code Review', 'Unity 3D/AR', 'Frontend Web']
     }
   ];
 
@@ -902,21 +1129,21 @@ const App = () => {
       </div>
 
       {/* ==========================================
-          NAVBAR: TANPA BORDER KECIL DALAM
+          NAVBAR: KOTAK (rounded-xl)
           ========================================== */}
       <nav className={`fixed left-1/2 -translate-x-1/2 w-[95%] max-w-5xl z-50 transition-all duration-500 ${scrolled ? 'top-4' : 'top-6'}`}>
-        <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-full px-5 py-2.5 flex justify-between items-center transition-all duration-300">
+        <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] rounded-xl px-5 py-2.5 flex justify-between items-center transition-all duration-300">
           
           {/* Logo */}
           <div 
             className="text-base font-black italic tracking-tighter cursor-pointer flex items-center gap-1.5 select-none text-black hover:-rotate-2 transition-transform" 
             onClick={() => scrollTo('home')}
           >
-            RIFQI<span className="bg-black text-white px-2 py-0.5 text-[11px] rounded-full font-bold not-italic">.MT</span>
+            RIFQI<span className="bg-black text-white px-2 py-0.5 text-[11px] rounded font-bold not-italic">.MT</span>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center relative p-1 rounded-full">
+          <div className="hidden md:flex items-center relative p-1 rounded-lg">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -931,7 +1158,7 @@ const App = () => {
 
                   {isActive && (
                     <span 
-                      className="absolute inset-0 bg-yellow-300 border-2 border-black rounded-full shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] -z-0"
+                      className="absolute inset-0 bg-yellow-300 border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] -z-0"
                       style={{
                         transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)'
                       }}
@@ -942,16 +1169,22 @@ const App = () => {
             })}
           </div>
 
-          {/* Hire Me CTA & Hamburger */}
+          {/* Hire Me & CV CTA & Hamburger */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={openCVModal}
+              className="hidden sm:flex bg-yellow-300 border-2 border-black text-black font-black text-xs uppercase px-3.5 py-2 rounded-lg items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              <FileText size={14} /> CV
+            </button>
             <a 
               href="mailto:tampengrifqmubarak@gmail.com" 
-              className="hidden sm:flex bg-pink-400 border-2 border-black text-black font-bold text-xs uppercase px-4 py-2 rounded-full items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              className="hidden sm:flex bg-pink-400 border-2 border-black text-black font-bold text-xs uppercase px-4 py-2 rounded-lg items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               <Mail size={14}/> Hire Me!
             </a>
             <button 
-              className="md:hidden p-2 border-2 border-black rounded-full bg-white active:bg-black active:text-white transition-colors" 
+              className="md:hidden p-2 border-2 border-black rounded-lg bg-white active:bg-black active:text-white transition-colors" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -961,7 +1194,7 @@ const App = () => {
 
         {/* Mobile Menu Dropdown */}
         {isMenuOpen && (
-          <div className="absolute top-full mt-2 left-0 w-full bg-white border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-2xl overflow-hidden animate-in slide-in-from-top-3">
+          <div className="absolute top-full mt-2 left-0 w-full bg-white border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-xl overflow-hidden animate-in slide-in-from-top-3">
             {navLinks.map((link) => (
               <button
                 key={link.name}
@@ -974,11 +1207,18 @@ const App = () => {
                 <ArrowUpRight size={18} />
               </button>
             ))}
+            <button
+              onClick={() => { openCVModal(); setIsMenuOpen(false); }}
+              className="w-full text-left px-6 py-3.5 font-black uppercase text-sm bg-yellow-300 flex justify-between items-center transition-colors"
+            >
+              Lihat / Download CV.PDF
+              <FileText size={18} />
+            </button>
           </div>
         )}
       </nav>
 
-      {/* Hero Section (Wider Container max-w-[1400px] + Skala Font Refined: text-4xl sm:text-5xl lg:text-6xl) */}
+      {/* Hero Section */}
       <section id="home" className="min-h-screen flex flex-col justify-center pt-32 pb-24 relative overflow-hidden">
         <div className="absolute top-1/4 -left-10 w-40 h-40 bg-purple-400 rounded-full border-2 border-black mix-blend-multiply filter blur-xl opacity-50"></div>
         <div className="absolute bottom-1/4 -right-10 w-60 h-60 bg-yellow-300 rounded-full border-2 border-black mix-blend-multiply filter blur-xl opacity-50"></div>
@@ -1009,16 +1249,22 @@ const App = () => {
                     <Terminal size={20} className="text-white"/>
                 </div>
                 <p className="text-sm sm:text-base font-medium leading-relaxed">
-                  Computer Engineering Student (GPA 3.50). Specializing in: <span className="font-bold underline decoration-pink-500 decoration-4">UI/UX Design</span>, <span className="font-bold underline decoration-blue-500 decoration-4">3D Modeling</span>, & <span className="font-bold underline decoration-green-500 decoration-4">Low-Code Dev</span>.
+                  Bachelor of Engineering (S.T.) in Computer Engineering - Universitas Syiah Kuala (GPA 3.55). Specializing in: <span className="font-bold underline decoration-pink-500 decoration-4">UI/UX Design</span>, <span className="font-bold underline decoration-blue-500 decoration-4">Web Development</span>, & <span className="font-bold underline decoration-green-500 decoration-4">Low-Code Dev</span>.
                 </p>
             </div>
             
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
-              <button onClick={() => scrollTo('projects')} className="group px-7 py-3.5 bg-black text-white text-xs sm:text-sm font-bold uppercase border-2 border-black rounded shadow-[6px_6px_0px_0px_#22d3ee] hover:shadow-[2px_2px_0px_0px_#22d3ee] hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex items-center gap-2">
+              <button onClick={() => scrollTo('projects')} className="group px-7 py-3.5 bg-black text-white text-xs sm:text-sm font-bold uppercase border-2 border-black rounded-lg shadow-[6px_6px_0px_0px_#22d3ee] hover:shadow-[2px_2px_0px_0px_#22d3ee] hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex items-center gap-2">
                 View Projects <MousePointer2 size={18} className="group-hover:rotate-12 transition-transform" />
               </button>
-              <button onClick={() => scrollTo('experience')} className="px-7 py-3.5 bg-white text-black text-xs sm:text-sm font-bold uppercase border-2 border-black rounded shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all">
+              <button onClick={() => scrollTo('experience')} className="px-7 py-3.5 bg-white text-black text-xs sm:text-sm font-bold uppercase border-2 border-black rounded-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all">
                 Experience
+              </button>
+              <button
+                onClick={openCVModal}
+                className="px-7 py-3.5 bg-yellow-300 text-black text-xs sm:text-sm font-black uppercase border-2 border-black rounded-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] hover:bg-yellow-400 transition-all flex items-center gap-2"
+              >
+                <FileText size={18} /> View CV / Resume
               </button>
             </div>
 
@@ -1037,7 +1283,7 @@ const App = () => {
           </Reveal>
 
           <Reveal delay={200} className="lg:w-5/12 flex justify-center relative">
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80">
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-[26rem] lg:h-[26rem]">
               <div className="absolute top-0 right-0 w-full h-full bg-blue-400 border-2 border-black rounded-full mix-blend-normal z-0 translate-x-4 translate-y-4"></div>
               
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-black bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] z-10 hover:scale-105 transition-transform duration-500">
@@ -1055,8 +1301,8 @@ const App = () => {
               </div>
               
               <div className="absolute -left-2 bottom-12 bg-yellow-300 border-2 border-black p-3 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 flex items-center gap-2 transform -rotate-2 hover:scale-105 transition-transform">
-                 <Box size={20} className="text-black"/>
-                 <span className="font-black text-[11px] sm:text-xs uppercase">3D<br/>ARTIST</span>
+                 <Code size={20} className="text-black"/>
+                 <span className="font-black text-[11px] sm:text-xs uppercase">WEB DEV<br/>REACT & TAILWIND</span>
               </div>
             </div>
           </Reveal>
@@ -1073,7 +1319,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* About & Skills (Wider Container max-w-[1400px] + H2: text-xl sm:text-2xl lg:text-3xl) */}
+      {/* About & Skills */}
       <section id="about" className="py-28 bg-purple-50 border-t-4 border-black relative">
         <div className="absolute top-0 left-0 w-full h-4 bg-[repeating-linear-gradient(45deg,black,black_10px,transparent_10px,transparent_20px)] opacity-20"></div>
         
@@ -1093,10 +1339,10 @@ const App = () => {
                     <QuoteIcon className="absolute -top-4 -left-4 w-10 h-10 bg-yellow-400 border-2 border-black text-black p-2 rounded-full z-10" />
                     <div className="text-black font-medium text-sm sm:text-base leading-relaxed space-y-5">
                         <p>
-                        I am a high-achieving Computer Engineering undergraduate with a <span className="bg-green-200 px-1.5 py-0.5 border border-black font-bold">GPA of 3.50/4.00</span>. I have a strong passion for creating aesthetic and functional digital solutions.
+                        I am a Bachelor of Engineering (S.T.) graduate in Computer Engineering from Universitas Syiah Kuala with a <span className="bg-green-200 px-1.5 py-0.5 border border-black font-bold">GPA of 3.55/4.00</span>. I have a strong passion for creating aesthetic and functional digital solutions.
                         </p>
                         <p>
-                        My expertise ranges from intuitive User Interface (UI/UX) design and 3D modeling to IoT-based system development and Low-Code Full Stack applications.
+                        My expertise ranges from intuitive User Interface (UI/UX) design and modern Web Development to IoT-based system development and Low-Code Full Stack applications.
                         </p>
                         <p>
                         Beyond technical skills, I have proven leadership abilities, having led a team of up to <span className="bg-blue-200 px-1.5 py-0.5 border border-black font-bold">120 people</span> as the Project Lead for a national-level event (CMD 2025).
@@ -1108,7 +1354,7 @@ const App = () => {
                <Reveal delay={200} className="mt-8">
                  <div className="grid grid-cols-3 gap-5">
                    {[
-                     { val: "3.50", label: "GPA Score", color: "bg-pink-300" },
+                     { val: "3.55", label: "GPA Score", color: "bg-pink-300" },
                      { val: "120+", label: "Team Led", color: "bg-blue-300" },
                      { val: "6+", label: "Projects Done", color: "bg-green-300" }
                    ].map((stat, i) => (
@@ -1128,11 +1374,11 @@ const App = () => {
                          My Arsenal
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
-                      <TechStackCard icon="figma.png" name="Figma" desc="Design" />
+                      <TechStackCard icon="figma.png" name="Figma" desc="UI/UX Design" />
+                      <TechStackCard icon="react.png" name="React.js" desc="Frontend Web" />
+                      <TechStackCard icon="tailwind.png" name="Tailwind CSS" desc="Styling" />
                       <TechStackCard icon="unity.png" name="Unity" desc="Augmented Reality" />
-                      <TechStackCard icon="blender.png" name="Blender" desc="3D" />
-                      <TechStackCard icon="mesh.png" name="Meshroom" desc="Photogrammetry" />
-                      <TechStackCard icon="arduino.png" name="Arduino IDE" desc="Low-Code" />
+                      <TechStackCard icon="arduino.png" name="Arduino IDE" desc="IoT / Embedded" />
                       <TechStackCard icon="canva.png" name="Canva" desc="Graphic" />
                     </div>
                  </div>
@@ -1143,49 +1389,82 @@ const App = () => {
       </section>
 
       {/* ==========================================
-          PROJECTS SECTION (Wider Container max-w-[1400px] + 4 Proyek PGNMAS di Awal)
+          PROJECTS SECTION (Grid 3 Kolom + Kategori Filter Tabs)
           ========================================== */}
-      <section id="projects" className="py-28 bg-[#fffdf5] overflow-hidden">
+      <section id="projects" className="py-28 bg-[#fffdf5] border-t-4 border-black overflow-hidden">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
           <Reveal>
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
                <div>
                  <div className="flex items-center gap-2 mb-2">
                     <div className="h-1 w-12 bg-black"></div>
                     <span className="font-mono font-bold uppercase text-xs sm:text-sm">Selected Works</span>
                  </div>
-                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight leading-none">FEATURED <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500" style={{WebkitTextStroke: '1px black'}}>PROJECTS</span></h2>
+                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight leading-none">
+                   FEATURED <br/>
+                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500" style={{WebkitTextStroke: '1px black'}}>
+                     PROJECTS ({filteredProjects.length})
+                   </span>
+                 </h2>
                </div>
                
-               <div className="hidden md:flex gap-2">
-                  <div className="px-4 py-2 border-2 border-black font-bold text-xs uppercase bg-gray-100">Click Card for Full Case Study</div>
+               {/* CATEGORY FILTER TABS */}
+               <div className="flex flex-wrap gap-2">
+                 {categories.map((cat, i) => {
+                   const isActive = selectedCategory === cat;
+                   return (
+                     <button
+                       key={i}
+                       onClick={() => {
+                         setSelectedCategory(cat);
+                         setShowAllProjects(false);
+                       }}
+                       className={`px-4 py-2 border-2 border-black font-black text-xs uppercase rounded-lg transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                         isActive 
+                           ? 'bg-yellow-300 text-black translate-x-[1px] translate-y-[1px] shadow-none' 
+                           : 'bg-white text-gray-700 hover:bg-gray-100'
+                       }`}
+                     >
+                       {cat}
+                     </button>
+                   );
+                 })}
                </div>
             </div>
           </Reveal>
 
-          <div 
-             ref={projectScrollRef}
-             className="w-full overflow-x-auto pb-16 pt-4 px-4 -mx-4 responsive-scrollbar"
-          >
-            <div className="flex gap-8 w-max">
-              {projectsData.map((project, idx) => (
-                <div key={idx} className="w-[340px] md:w-[420px] flex-shrink-0">
-                  <ProjectCard 
-                    title={project.title}
-                    category={project.category}
-                    images={project.gallery}
-                    onOpenModal={() => openCaseModal(project)}
-                  />
-                </div>
-              ))}
-            </div>
+          {/* GRID PROYEK 3 KOLOM */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayedProjects.map((project, idx) => (
+              <Reveal key={idx} delay={(idx % 3) * 100}>
+                <ProjectCard 
+                  title={project.title}
+                  category={project.category}
+                  images={project.gallery}
+                  onOpenModal={() => openCaseModal(project)}
+                />
+              </Reveal>
+            ))}
           </div>
+
+          {/* TOMBOL SHOW MORE PROYEK */}
+          {selectedCategory === 'ALL' && filteredProjects.length > 6 && (
+            <div className="text-center mt-14">
+              <button
+                onClick={() => setShowAllProjects(!showAllProjects)}
+                className="bg-white border-2 border-black px-8 py-3.5 font-black uppercase text-xs sm:text-sm rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+              >
+                {showAllProjects 
+                  ? "↑ Tampilkan Lebih Sedikit Proyek" 
+                  : `↓ Lihat Semua Proyek (${filteredProjects.length - 6} Lainnya)`
+                }
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ==========================================
-          EXPERIENCE SECTION (Wider Container max-w-[1400px] + 2 Kartu Magang Profesional)
-          ========================================== */}
+      {/* Experience Section */}
       <section id="experience" className="py-28 bg-blue-50 border-y-4 border-black">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
           <Reveal>
@@ -1201,7 +1480,7 @@ const App = () => {
 
           {/* FEATURED PROFESSIONAL INTERNSHIPS (Grid 2 Kolom: PGNMAS & BMKG Aceh) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-20">
-            {/* 1. PT PERMATA GRAHA NUSANTARA (PGNMAS) - INTERNSHIP TERBARU 2026 */}
+            {/* 1. PT PERMATA GRAHA NUSANTARA (PGNMAS) */}
             <Reveal delay={100}>
               <div className="relative h-full">
                 <div className="absolute -top-4 left-4 bg-green-400 border-2 border-black px-3.5 py-1 font-black uppercase text-xs transform -rotate-1 z-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
@@ -1233,24 +1512,35 @@ const App = () => {
                                     </span>
                                 </div>
                                 <div className="inline-block bg-gray-100 border border-black px-2 py-0.5 mt-1">
-                                    <p className="font-bold text-xs text-gray-800">IT Support Division</p>
+                                    <p className="font-bold text-xs text-gray-800">IT Support & Graphic Design Intern</p>
                                 </div>
-                                <p className="text-xs font-bold text-gray-500 mt-1">PT Permata Graha Nusantara</p>
+                                <p className="text-xs font-bold text-gray-500 mt-1">PT Permata Graha Nusantara • Jakarta, Indonesia</p>
                             </div>
                         </div>
 
-                        <div className="bg-green-50 border-l-4 border-black p-4 mb-4 relative">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-green-700 mb-1 block">
-                                Core Scope & Projects
-                            </span>
-                            <h4 className="font-bold text-xs sm:text-sm leading-relaxed text-black">
-                                IT Infrastructure Support & Internal Web Platform Development (Fleedy, ArtBuild, Filexpert, Spativm)
-                            </h4>
-                        </div>
-                        
-                        <p className="text-gray-700 font-medium text-xs sm:text-sm leading-relaxed mb-4">
-                            Memberikan dukungan teknis pemeliharaan IT korporat serta membangun 4 platform website internal perusahaan berdesain modern dan responsif.
-                        </p>
+                        {/* Poin-poin rincian kontribusi magang langsung di halaman utama */}
+                        <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines.</span>
+                          </li>
+                        </ul>
                     </div>
 
                     <div className="border-t-2 border-black pt-4 flex flex-wrap justify-between items-center gap-3">
@@ -1261,15 +1551,21 @@ const App = () => {
                         
                         <button 
                             onClick={() => openCaseModal({
-                              title: "PGNMAS – IT Support & Web Dev",
-                              role: "Internship Project",
+                              title: "PT Permata Graha Nusantara (PGNMAS)",
+                              role: "IT Support & Graphic Design Intern",
                               year: "2026",
-                              description: "Magang profesional di PT Permata Graha Nusantara (PGNMAS) pada Divisi IT Support, bertanggung jawab atas dukungan teknis infrastruktur IT dan pengembangan aplikasi web internal.",
-                              problem: "Kebutuhan digitalisasi proses operasional dan pemeliharaan sistem IT korporat agar berjalan optimal dan efisien.",
-                              solution: "Memberikan dukungan teknis IT secara proaktif serta mengembangkan 4 platform website internal (Fleedy, ArtBuild, Filexpert, Spativm) berbasis modern web stack.",
-                              impact: "Meningkatkan efisiensi layanan dukung teknis IT dan mempercepat digitalisasi alur kerja internal perusahaan.",
+                              institution: "PT Permata Graha Nusantara",
+                              location: "Jakarta, Indonesia",
+                              summary: "Served as an IT Support and Graphic Design Intern at PT Permata Graha Nusantara (PGNMAS), supporting corporate IT infrastructure and leading frontend web development initiatives.",
+                              details: [
+                                "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
+                                "Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.",
+                                "Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.",
+                                "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.",
+                                "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
+                              ],
                               gallery: ["pgnmas.png", "fleedy.png", "artbuild.png", "filexpert.png", "spativm.png"],
-                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Web Development", "System Admin"]
+                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation"]
                             })} 
                             className="group relative inline-flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-4 py-1.5 rounded font-black uppercase text-xs shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-yellow-400 transition-all ml-auto"
                         >
@@ -1281,7 +1577,7 @@ const App = () => {
               </div>
             </Reveal>
 
-            {/* 2. BMKG ACEH - INTERNSHIP 2024–2025 */}
+            {/* 2. BMKG ACEH */}
             <Reveal delay={150}>
               <div className="relative h-full">
                 <div className="absolute -top-4 left-4 bg-green-400 border-2 border-black px-3.5 py-1 font-black uppercase text-xs transform -rotate-1 z-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
@@ -1309,47 +1605,59 @@ const App = () => {
                                 <div className="flex justify-between items-start gap-2">
                                     <h3 className="text-lg sm:text-xl font-black uppercase leading-tight">BMKG Aceh</h3>
                                     <span className="font-mono font-bold bg-black text-white px-2.5 py-1 text-xs shadow-[2px_2px_0px_0px_#22c55e]">
-                                        2024–2025
+                                        2024 – 2025
                                     </span>
                                 </div>
                                 <div className="inline-block bg-gray-100 border border-black px-2 py-0.5 mt-1">
-                                    <p className="font-bold text-xs text-gray-800">Class I Meteorological Station</p>
+                                    <p className="font-bold text-xs text-gray-800">IT & Computer Engineering Intern</p>
                                 </div>
-                                <p className="text-xs font-bold text-gray-500 mt-1">Sultan Iskandar Muda Banda Aceh</p>
+                                <p className="text-xs font-bold text-gray-500 mt-1">BMKG Kelas I SIM • Banda Aceh, Indonesia</p>
                             </div>
                         </div>
 
-                        <div className="bg-green-50 border-l-4 border-black p-4 mb-4 relative">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-green-700 mb-1 block">
-                                Final Project Title
-                            </span>
-                            <h4 className="font-bold text-xs sm:text-sm leading-relaxed text-black">
-                                "Utilization of Augmented Reality for Work Equipment Introduction at Class I Meteorological Station SIM Banda Aceh"
-                            </h4>
-                        </div>
-                        
-                        <p className="text-gray-700 font-medium text-xs sm:text-sm leading-relaxed mb-4">
-                            Developing interactive AR-based media to visualize meteorological tools in 3D, improving technical understanding for staff and station visitors.
-                        </p>
+                        {/* Poin-poin rincian kontribusi magang langsung di halaman utama */}
+                        <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Assisted the IT department in maintaining network infrastructure, system connectivity, and daily hardware operations at Class I Meteorological Station SIM.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Supported the monitoring and technical processing of meteorological and environmental sensor data using institutional software systems.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Collaborated with station engineers and staff to troubleshoot technical workstations and ensure reliable operational uptime.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Gained hands-on professional discipline and workflow experience within a high-reliability government technical institution.</span>
+                          </li>
+                        </ul>
                     </div>
 
                     <div className="border-t-2 border-black pt-4 flex flex-wrap justify-between items-center gap-3">
                         <div className="flex items-center gap-1.5">
-                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Unity 3D</span>
-                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Vuforia AR</span>
+                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Network Admin</span>
+                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Hardware Support</span>
                         </div>
                         
                         <button 
                             onClick={() => openCaseModal({
-                              title: "BMKG Aceh - AR Project",
-                              role: "Internship Project",
-                              year: "2024–2025",
-                              description: "Mengembangkan media pembelajaran interaktif berbasis Augmented Reality (AR) untuk visualisasi 3D alat-alat meteorologi.",
-                              problem: "Pengenalan instrumen cuaca kepada pengunjung atau staf baru terkendala oleh dimensi alat yang sensitif dan tersebar di lapangan.",
-                              solution: "Membuat aplikasi mobile AR markerless berbasis Unity dan 3D modeling berpresisi tinggi.",
-                              impact: "Efisiensi alur pengenalan alat bagi para tamu dan pelajar di Stasiun Meteorologi Kelas I SIM Banda Aceh.",
+                              title: "BMKG Kelas I SIM Banda Aceh",
+                              role: "IT & Computer Engineering Intern",
+                              year: "2024 – 2025",
+                              institution: "Badan Meteorologi, Klimatologi, dan Geofisika (BMKG)",
+                              location: "Banda Aceh, Indonesia",
+                              summary: "Completed a technical internship in the IT & Computer Engineering department at Class I Meteorological Station SIM Banda Aceh.",
+                              details: [
+                                "Assisted the IT department in maintaining network infrastructure, system connectivity, and daily hardware operations at Class I Meteorological Station SIM.",
+                                "Supported the monitoring and technical processing of meteorological and environmental sensor data using institutional software systems.",
+                                "Collaborated with station engineers and staff to troubleshoot technical workstations and ensure reliable operational uptime.",
+                                "Gained hands-on professional discipline and workflow experience within a high-reliability government technical institution."
+                              ],
                               gallery: ["bmkg1.jpg", "bmkg2.png"],
-                              techStack: ["Unity3D", "Vuforia Engine", "Blender 3D Modeling", "C# Scripting"]
+                              techStack: ["Network Admin", "Sensor Telemetry", "Hardware Maintenance", "System Support"]
                             })} 
                             className="group relative inline-flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-4 py-1.5 rounded font-black uppercase text-xs shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-yellow-400 transition-all ml-auto"
                         >
@@ -1395,7 +1703,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Certifications (Wider Container max-w-[1400px] + H2: text-xl sm:text-2xl lg:text-3xl) */}
+      {/* Certifications */}
       <section id="certs" className="py-28 bg-yellow-50 relative overflow-hidden">
          <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px'}}></div>
 
@@ -1426,7 +1734,7 @@ const App = () => {
          </div>
       </section>
 
-      {/* Footer (Wider Container max-w-[1400px]) */}
+      {/* Footer */}
       <footer className="py-20 bg-black text-white border-t-8 border-yellow-400">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16 text-center">
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-black mb-8 uppercase tracking-widest">Ready to Collaborate?</h2>
@@ -1453,6 +1761,12 @@ const App = () => {
         isOpen={isModalOpen} 
         data={selectedCaseData} 
         onClose={closeCaseModal} 
+      />
+
+      {/* POP-UP MODAL CV.PDF */}
+      <CVModal
+        isOpen={isCVModalOpen}
+        onClose={closeCVModal}
       />
 
     </div>
