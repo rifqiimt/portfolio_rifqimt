@@ -127,7 +127,7 @@ const getTechIconBadge = (techName) => {
   if (name.includes("blender") || name.includes("3d") || name.includes("meshroom")) {
     return <Layers size={14} className="text-amber-600" />;
   }
-  if (name.includes("figma") || name.includes("ui/ux")) {
+  if (name.includes("figma") || name.includes("ui/ux") || name.includes("maze")) {
     return <Figma size={14} className="text-pink-500" />;
   }
   if (name.includes("arduino") || name.includes("esp32") || name.includes("iot") || name.includes("sensor")) {
@@ -220,7 +220,7 @@ const CVModal = ({ isOpen, onClose }) => {
   );
 };
 
-/* --- MODAL STUDI KASUS & SERTIFIKAT --- */
+/* --- MODAL STUDI KASUS & SERTIFIKAT (GAMBAR STATIS/STICKY + CLIENT & LOCATION 1 BARIS) --- */
 const CaseStudyModal = ({ isOpen, data, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -255,7 +255,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
         <X size={20} />
       </button>
 
-      {/* Container Utama Modal (Tinggi dibatasi agar kolom bisa di-scroll terpisah) */}
+      {/* Container Utama Modal (Tinggi dikunci 88vh agar kolom anak bisa mandiri/statis) */}
       <div className="relative w-full max-w-6xl h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
         
         {/* Header Bar */}
@@ -273,11 +273,11 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
           </span>
         </div>
 
-        {/* Konten 2 Kolom */}
+        {/* Konten 2 Kolom: Kolom Kiri Dikunci h-full (Statis), Kolom Kanan Bisa Scroll (overflow-y-auto) */}
         <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-hidden h-full">
           
-          {/* === KOLOM KIRI: GAMBAR STATIS/STICKY & OBJECT-CONTAIN (ANTI-POTONG) === */}
-          <div className="lg:col-span-6 border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-black/95 flex flex-col justify-between relative h-[320px] lg:h-full p-0 overflow-hidden shrink-0">
+          {/* === KOLOM KIRI: GAMBAR STATIS (TIDAK IKUT SCROLL) & OBJECT-CONTAIN (TIDAK TERPOTONG) === */}
+          <div className="lg:col-span-6 border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-black/95 flex flex-col justify-between relative h-[300px] lg:h-full p-0 overflow-hidden shrink-0">
             
             <div className="relative w-full h-full flex-grow flex items-center justify-center overflow-hidden p-4">
               <img 
@@ -321,7 +321,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
             </div>
           </div>
 
-          {/* === KOLOM KANAN: KONTEN TEKS YANG BISA DI-SCROLL INDEPENDEN === */}
+          {/* === KOLOM KANAN: TEKS YANG BISA DI-SCROLL INDEPENDEN === */}
           <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between bg-white overflow-y-auto h-full">
             <div>
               {/* Metadata Header */}
@@ -336,10 +336,19 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                 <h2 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-black leading-tight">
                   {data.title}
                 </h2>
-                {(data.institution || data.client) && (
-                  <p className="text-xs sm:text-sm font-black text-gray-700 mt-1.5 flex items-center gap-1.5">
-                    {data.institution || data.client} <span className="text-gray-400">•</span> {data.location || "Indonesia"}
-                  </p>
+                
+                {/* === CLIENT (KIRI) & LOCATION (KANAN) DALAM 1 BARIS YANG SAMA === */}
+                {(data.institution || data.client || data.location) && (
+                  <div className="flex items-center justify-between gap-4 mt-3 pt-2.5 border-t border-black/10 text-xs sm:text-sm font-black text-gray-800">
+                    <span className="text-left font-extrabold text-black">
+                      {data.institution || data.client || "Project Case Study"}
+                    </span>
+                    {data.location && (
+                      <span className="text-right text-gray-500 font-bold shrink-0 ml-auto">
+                        {data.location}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
 
@@ -375,7 +384,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                     </p>
                   )}
 
-                  {/* Bullet Points Details */}
+                  {/* Bullet Points Details (Semua informasi penting termasuk webinar moderator terjamin tampil utuh) */}
                   {data.details && data.details.length > 0 && (
                     <div>
                       <h4 className="font-black text-xs uppercase tracking-wider text-black mb-2 flex items-center gap-1.5">
@@ -716,7 +725,7 @@ const App = () => {
   };
 
   // ==========================================
-  // DATA MASTER: 12 PROJECTS (TERMASUK WEBAR BMKG & LANDCONNECT BARU)
+  // DATA MASTER: 12 PROJECTS
   // ==========================================
   const projectsData = [
     // --- 1. WEB DEVELOPMENT (4 PROYEK PGNMAS DENGAN TOMBOL LIVE WEBSITE) ---
@@ -805,22 +814,22 @@ const App = () => {
       ]
     },
 
-    // --- 2. UI/UX DESIGN (2 PROYEK TERMASUK LANDCONNECT UPDATE) ---
+    // --- 2. UI/UX DESIGN ---
     {
-      title: "Lifegen App",
+      title: "LifeGen - Mobile Health & Wellness UI/UX Platform",
       category: "UI/UX Design",
-      subtitle: "Health & Calorie Tracking UI/UX Case Study",
-      year: "2025",
-      institution: "UI/UX Case Study",
-      location: "Indonesia",
-      summary: "Daily health and calorie tracking mobile application featuring a clean, gamified interface to motivate consistent healthy lifestyle habits.",
+      subtitle: "Product Design (UI/UX) / Mobile Application Prototype",
+      year: "2023",
+      client: "INFEST 9.0 (Informatics Festival) USK — Competition Finalist",
+      location: "Banda Aceh, Indonesia",
+      summary: "Co-designed and prototyped 'LifeGen', an intuitive mobile health and wellness platform engineered to combat modern lifestyle diseases by integrating automated calorie calculators, physical activity trackers, and interactive fitness communities. Successfully recognized as a Project Finalist at the INFEST 9.0 National Competition.",
       details: [
-        "Applied the Design Thinking framework (Empathize, Define, Ideate, Prototype, Test) to solve calorie-tracking friction.",
-        "Conducted user research and identified that existing health apps overwhelmed users with complex data tables.",
-        "Designed high-fidelity Figma wireframes and interactive prototypes allowing quick calorie input in just 3 taps.",
-        "Achieved a 92% prototype task completion rate during usability testing with target users."
+        "Conducted extensive user pain-point analysis to translate complex dietary and fitness barriers—such as caloric calculation difficulties and lack of training motivation—into structured, user-friendly mobile interfaces.",
+        "Designed clean UI flows for high-demand features, including real-time food intake logging, automated daily caloric goal calculators, and personalized activity trackers.",
+        "Architected a feature-rich wellness ecosystem encompassing visual progress reports, custom reminders, and localized social-community dashboards to foster peer-to-peer support.",
+        "Engineered an interactive, high-fidelity mobile prototype using Figma and validated user experiences using Maze to refine critical interaction paths, navigation structures, and touch-target sizing."
       ],
-      techStack: ['Figma', 'Design System', 'UI/UX Prototyping', 'User Research'],
+      techStack: ["Figma (Hi-Fi Prototyping)", "Maze (Usability Testing)", "Mobile UI/UX Design", "User Flow Mapping", "Interaction Design", "Information Architecture"],
       color: "bg-pink-300",
       gallery: ["life.png"]
     },
@@ -843,9 +852,9 @@ const App = () => {
       gallery: ["land.png"]
     },
 
-    // --- 3. AR / VR (2 PROYEK: SKRIPSI & WEBAR BMKG UPDATE) ---
+    // --- 3. AR / VR ---
     {
-      title: "Hardware Quest AR (Bachelor's Thesis Project)",
+      title: "Hardware AR (Bachelor's Thesis Project)",
       category: "AR / VR",
       subtitle: "Augmented Reality Developer",
       year: "2026",
@@ -860,7 +869,10 @@ const App = () => {
       ],
       techStack: ['Unity3D', 'Vuforia AR', 'Blender 3D Modeling', 'Android SDK'],
       color: "bg-orange-300",
-      gallery: ["ar_hw.png", "ar_hw1.png"]
+      gallery: ["ar_hw.png", "ar_hw1.png"],
+      links: [
+        { text: "App, Walkthrough & Research Data", url: "https://drive.google.com/drive/folders/", icon: <ExternalLink size={14}/>, className: "bg-orange-300 text-black hover:bg-orange-400" }
+      ]
     },
     {
       title: "Web-Based Augmented Reality for BMKG Meteorological Equipment Education",
@@ -1360,7 +1372,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* About & Skills */}
+      {/* About & Skills (8 KEY CORE ARSENAL STACK) */}
       <section id="about" className="py-28 bg-purple-50 border-t-4 border-black relative">
         <div className="absolute top-0 left-0 w-full h-4 bg-[repeating-linear-gradient(45deg,black,black_10px,transparent_10px,transparent_20px)] opacity-20"></div>
         
@@ -1408,6 +1420,7 @@ const App = () => {
                </Reveal>
             </div>
 
+            {/* SECTION MY ARSENAL DIPERLUAS MENJADI 8 CORE STACK TEKNOLOGI */}
             <div className="lg:col-span-5">
                <Reveal delay={300}>
                  <div className="bg-gray-100 border-2 border-black p-6 rounded-xl relative">
@@ -1418,9 +1431,11 @@ const App = () => {
                       <TechStackCard icon="figma.png" name="Figma" desc="UI/UX Design" />
                       <TechStackCard icon="react.png" name="React.js" desc="Frontend Web" />
                       <TechStackCard icon="tailwind.png" name="Tailwind CSS" desc="Styling" />
-                      <TechStackCard icon="unity.png" name="Unity" desc="Augmented Reality" />
-                      <TechStackCard icon="arduino.png" name="Arduino IDE" desc="IoT / Embedded" />
-                      <TechStackCard icon="canva.png" name="Canva" desc="Graphic" />
+                      <TechStackCard icon="unity.png" name="Unity 3D" desc="AR / VR Engine" />
+                      <TechStackCard icon="blender.png" name="Blender 3D" desc="3D Modeling" />
+                      <TechStackCard icon="arduino.png" name="ESP32 / Arduino" desc="IoT Systems" />
+                      <TechStackCard icon="firebase.png" name="Firebase" desc="Cloud / DB" />
+                      <TechStackCard icon="mesh.png" name="WebAR / Meshroom" desc="3D Photogrammetry" />
                     </div>
                  </div>
                </Reveal>
@@ -1430,7 +1445,7 @@ const App = () => {
       </section>
 
       {/* ==========================================
-          PROJECTS SECTION (Grid 3 Kolom + Kategori Filter Tabs)
+          PROJECTS SECTION (Grid 3 Kolom + Kategori Filter Tabs: WEB DEV -> UI/UX -> AR/VR -> IOT)
           ========================================== */}
       <section id="projects" className="py-28 bg-[#fffdf5] border-t-4 border-black overflow-hidden">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
@@ -1506,7 +1521,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Experience Section */}
+      {/* Experience Section (5 POIN KONTRIBUSI PGNMAS UTUH + WEBAR BMKG UTUH) */}
       <section id="experience" className="py-28 bg-blue-50 border-y-4 border-black">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
           <Reveal>
@@ -1522,7 +1537,7 @@ const App = () => {
 
           {/* FEATURED PROFESSIONAL INTERNSHIPS (Grid 2 Kolom: PGNMAS & BMKG Aceh) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-20">
-            {/* 1. PT PERMATA GRAHA NUSANTARA (PGNMAS) */}
+            {/* 1. PT PERMATA GRAHA NUSANTARA (PGNMAS) - LENGKAP DENGAN 5 POIN PRESTASI & MODERATOR WEBINAR */}
             <Reveal delay={100}>
               <div className="relative h-full">
                 <div className="absolute -top-4 left-4 bg-green-400 border-2 border-black px-3.5 py-1 font-black uppercase text-xs transform -rotate-1 z-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
@@ -1560,22 +1575,27 @@ const App = () => {
                             </div>
                         </div>
 
+                        {/* 5 Poin rincian kontribusi magang langsung di halaman utama */}
                         <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Supported daily corporate IT operations by configuring employee laptops, performing hardware/software troubleshooting, and conducting system license compliance checks.</span>
+                            <span>Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Designed and developed responsive web landing pages (including ArtBuild and Fleedy) using React.js and Tailwind CSS, featuring smooth horizontal scrolling and optimized mobile layouts.</span>
+                            <span>Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Managed corporate digital assets and shared file access across internal departments to streamline employee workstation setups.</span>
+                            <span>Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Produced professional visual and graphic design assets aligned with corporate branding standards for internal communications.</span>
+                            <span>Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-black font-black">•</span>
+                            <span>Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines.</span>
                           </li>
                         </ul>
                     </div>
@@ -1593,15 +1613,16 @@ const App = () => {
                               year: "2026",
                               institution: "PT Permata Graha Nusantara",
                               location: "Jakarta, Indonesia",
-                              summary: "Completed a regular professional internship at PT Permata Graha Nusantara (PGNMAS) in the IT Support and Graphic Design Division.",
+                              summary: "Completed a regular professional internship at PT Permata Graha Nusantara (PGNMAS) in the IT Support and Graphic Design Division, supporting enterprise IT operations, moderating corporate webinars, and leading front-end web development.",
                               details: [
-                                "Supported daily corporate IT operations by configuring employee laptops, performing hardware/software troubleshooting, and conducting system license compliance checks.",
-                                "Designed and developed responsive web landing pages (including ArtBuild and Fleedy) using React.js and Tailwind CSS, featuring smooth horizontal scrolling and optimized mobile layouts.",
-                                "Managed corporate digital assets and shared file access across internal departments to streamline employee workstation setups.",
-                                "Produced professional visual and graphic design assets aligned with corporate branding standards for internal communications."
+                                "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
+                                "Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.",
+                                "Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.",
+                                "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.",
+                                "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
                               ],
                               gallery: ["pgnmas.png", "fleedy.png", "artbuild.png", "filexpert.png", "spativm.png"],
-                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "System Admin"]
+                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation"]
                             })} 
                             className="group relative inline-flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-4 py-1.5 rounded font-black uppercase text-xs shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-yellow-400 transition-all ml-auto"
                         >
@@ -1641,11 +1662,11 @@ const App = () => {
                                 <div className="flex justify-between items-start gap-2">
                                     <h3 className="text-lg sm:text-xl font-black uppercase leading-tight">BMKG Aceh</h3>
                                     <span className="font-mono font-bold bg-black text-white px-2.5 py-1 text-xs shadow-[2px_2px_0px_0px_#22c55e]">
-                                        2024 – 2025
+                                        2025
                                     </span>
                                 </div>
                                 <div className="inline-block bg-gray-100 border border-black px-2 py-0.5 mt-1">
-                                    <p className="font-bold text-xs text-gray-800">IT & Computer Engineering Intern</p>
+                                    <p className="font-bold text-xs text-gray-800">AR & WebAR Developer Intern</p>
                                 </div>
                                 <p className="text-xs font-bold text-gray-500 mt-1">BMKG Kelas I SIM • Banda Aceh, Indonesia</p>
                             </div>
@@ -1654,45 +1675,45 @@ const App = () => {
                         <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Assisted the IT department in maintaining network infrastructure, system connectivity, and daily hardware operations at Class I Meteorological Station SIM.</span>
+                            <span>Designed and developed an interactive Web-Based Augmented Reality (WebAR) educational application to visualize complex meteorological equipment (such as Campbell Stokes) as interactive 3D models.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Supported the monitoring and technical processing of meteorological and environmental sensor data using institutional software systems.</span>
+                            <span>Reconstructed high-fidelity 3D assets from physical photos using Meshroom photogrammetry engine and optimized topology/texturing in Blender for mobile browser performance.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Collaborated with station engineers and staff to troubleshoot technical workstations and ensure reliable operational uptime.</span>
+                            <span>Engineered spatial scenes and UI overlays in Unity and published via Zapworks Studio for instant QR code browser access without app installation.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Gained hands-on professional discipline and workflow experience within a high-reliability government technical institution.</span>
+                            <span>Assisted IT department with daily hardware/network operations and technical sensor data processing.</span>
                           </li>
                         </ul>
                     </div>
 
                     <div className="border-t-2 border-black pt-4 flex flex-wrap justify-between items-center gap-3">
                         <div className="flex items-center gap-1.5">
-                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Network Admin</span>
-                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Hardware Support</span>
+                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">WebAR</span>
+                            <span className="text-[10px] px-2.5 py-0.5 bg-yellow-300 border border-black rounded font-bold">Unity 3D</span>
                         </div>
                         
                         <button 
                             onClick={() => openCaseModal({
                               title: "BMKG Kelas I SIM Banda Aceh",
-                              role: "IT & Computer Engineering Intern",
-                              year: "2024 – 2025",
-                              institution: "Badan Meteorologi, Klimatologi, dan Geofisika (BMKG)",
+                              role: "AR & WebAR Developer Intern",
+                              year: "2025",
+                              institution: "Stasiun Meteorologi Kelas I Sultan Iskandar Muda Banda Aceh (BMKG)",
                               location: "Banda Aceh, Indonesia",
-                              summary: "Completed a technical internship in the IT & Computer Engineering department at Class I Meteorological Station SIM Banda Aceh.",
+                              summary: "Completed a technical internship at BMKG Class I Meteorological Station SIM Banda Aceh, leading the development of Web-Based Augmented Reality (WebAR) educational media.",
                               details: [
-                                "Assisted the IT department in maintaining network infrastructure, system connectivity, and daily hardware operations at Class I Meteorological Station SIM.",
-                                "Supported the monitoring and technical processing of meteorological and environmental sensor data using institutional software systems.",
-                                "Collaborated with station engineers and staff to troubleshoot technical workstations and ensure reliable operational uptime.",
-                                "Gained hands-on professional discipline and workflow experience within a high-reliability government technical institution."
+                                "Designed and developed an interactive Web-Based Augmented Reality (WebAR) educational application to visualize complex meteorological equipment (such as Campbell Stokes) as interactive 3D models.",
+                                "Reconstructed high-fidelity 3D assets from physical photos using Meshroom photogrammetry engine and optimized topology/texturing in Blender for mobile browser performance.",
+                                "Engineered spatial scenes and UI overlays in Unity and published via Zapworks Studio for instant QR code browser access without app installation.",
+                                "Assisted IT department with daily hardware/network operations and technical sensor data processing."
                               ],
                               gallery: ["bmkg1.jpg", "bmkg2.png"],
-                              techStack: ["Network Admin", "Sensor Telemetry", "Hardware Maintenance", "System Support"]
+                              techStack: ["Unity 3D", "Zapworks Studio", "Blender", "Meshroom", "WebAR", "Network Admin"]
                             })} 
                             className="group relative inline-flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-4 py-1.5 rounded font-black uppercase text-xs shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-yellow-400 transition-all ml-auto"
                         >
