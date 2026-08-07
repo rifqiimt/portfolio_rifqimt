@@ -29,7 +29,11 @@ import {
   CheckCircle2,
   AlertCircle,
   TrendingUp,
-  FileText
+  FileText,
+  Globe,
+  Layers,
+  Database,
+  Cloud
 } from 'lucide-react';
 
 /* --- HOOKS & UTILS --- */
@@ -102,6 +106,37 @@ const useAutoScroll = (ref, speed = 0.8) => {
       element.removeEventListener('touchend', handleTouchEnd);
     };
   }, [ref, speed]);
+};
+
+/* --- HELPER IKON LOGO UNTUK TECH STACK DI DALAM MODAL --- */
+const getTechIconBadge = (techName) => {
+  const name = techName.toLowerCase();
+  
+  if (name.includes("react")) {
+    return <Code size={14} className="text-blue-500" />;
+  }
+  if (name.includes("tailwind")) {
+    return <Palette size={14} className="text-cyan-500" />;
+  }
+  if (name.includes("unity")) {
+    return <Box size={14} className="text-gray-900" />;
+  }
+  if (name.includes("vuforia") || name.includes("webar") || name.includes("zapworks")) {
+    return <Smartphone size={14} className="text-orange-500" />;
+  }
+  if (name.includes("blender") || name.includes("3d") || name.includes("meshroom")) {
+    return <Layers size={14} className="text-amber-600" />;
+  }
+  if (name.includes("figma") || name.includes("ui/ux")) {
+    return <Figma size={14} className="text-pink-500" />;
+  }
+  if (name.includes("arduino") || name.includes("esp32") || name.includes("iot") || name.includes("sensor")) {
+    return <Cpu size={14} className="text-emerald-600" />;
+  }
+  if (name.includes("firebase") || name.includes("cloud") || name.includes("database")) {
+    return <Database size={14} className="text-amber-500" />;
+  }
+  return <Terminal size={14} className="text-gray-700" />;
 };
 
 /* --- MODAL KHUSUS CV.PDF --- */
@@ -220,11 +255,11 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
         <X size={20} />
       </button>
 
-      {/* Container Utama Modal */}
-      <div className="relative w-full max-w-6xl h-full max-h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+      {/* Container Utama Modal (Tinggi dibatasi agar kolom bisa di-scroll terpisah) */}
+      <div className="relative w-full max-w-6xl h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
         
         {/* Header Bar */}
-        <div className="flex justify-between items-center px-6 py-3 border-b-2 border-black bg-gray-100 shrink-0">
+        <div className="flex justify-between items-center px-6 py-3 border-b-2 border-black bg-gray-100 shrink-0 z-20">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-red-400 border border-black"></span>
             <span className="w-3 h-3 rounded-full bg-yellow-400 border border-black"></span>
@@ -239,24 +274,19 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
         </div>
 
         {/* Konten 2 Kolom */}
-        <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
+        <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-hidden h-full">
           
-          {/* === KOLOM KIRI: GAMBAR FULL BLEED TANPA CELAH PUTIH (p-0 & w-full h-full object-cover) === */}
-          <div className="lg:col-span-6 border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-black flex flex-col justify-between relative min-h-[300px] sm:min-h-[420px] p-0 overflow-hidden">
+          {/* === KOLOM KIRI: GAMBAR STATIS/STICKY & OBJECT-CONTAIN (ANTI-POTONG) === */}
+          <div className="lg:col-span-6 border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-black/95 flex flex-col justify-between relative h-[320px] lg:h-full p-0 overflow-hidden shrink-0">
             
-            {/* Gambar full mengisi container tanpa celah */}
-            <div className="relative w-full h-full flex-grow flex items-center justify-center bg-black overflow-hidden">
+            <div className="relative w-full h-full flex-grow flex items-center justify-center overflow-hidden p-4">
               <img 
                 src={images[activeIndex]} 
                 alt={`Slide ${activeIndex + 1}`} 
-                className="w-full h-full object-cover object-center block"
+                className="max-w-full max-h-full w-auto h-auto object-contain block mx-auto drop-shadow-lg"
                 onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80"; }}
               />
 
-              {/* Overlay shadow tipis agar tombol & badge nomor foto jelas terbaca */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-
-              {/* Tombol navigasi slide melayang di atas gambar */}
               {images.length > 1 && (
                 <>
                   <button 
@@ -279,7 +309,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
               </div>
             </div>
 
-            {/* Thumbnail Indicator Dots (Floating di bawah gambar) */}
+            {/* Thumbnail Indicator Dots */}
             <div className="absolute bottom-4 left-0 right-0 flex gap-2 overflow-x-auto max-w-full px-4 hide-scrollbar justify-center z-10">
               {images.map((_, idx) => (
                 <button
@@ -291,8 +321,8 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
             </div>
           </div>
 
-          {/* KOLOM KANAN: KONTEN DETAIL BERFORMAT INDUSTRI */}
-          <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between bg-white">
+          {/* === KOLOM KANAN: KONTEN TEKS YANG BISA DI-SCROLL INDEPENDEN === */}
+          <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between bg-white overflow-y-auto h-full">
             <div>
               {/* Metadata Header */}
               <div className="mb-6 border-b-2 border-black/10 pb-4">
@@ -362,16 +392,22 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                     </div>
                   )}
 
-                  {/* Tech Stack & Tools yang Digunakan */}
+                  {/* Tech Stack & Tools dalam Bentuk Badge Ikon + Teks */}
                   <div className="pt-3 border-t border-gray-200">
                     <h4 className="font-black text-xs uppercase text-black mb-2.5 flex items-center gap-1.5">
                       <Cpu size={14}/> Technologies & Arsenal:
                     </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {(data.techStack || data.tags || ['React', 'Figma', 'IoT', 'Leadership']).map((t, idx) => (
-                        <span key={idx} className="px-2.5 py-1 bg-black text-white text-xs font-mono font-bold rounded-md">
-                          {t}
-                        </span>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.techStack || data.tags || ['React.js', 'Tailwind CSS', 'IoT', 'Leadership']).map((t, idx) => (
+                        <div 
+                          key={idx} 
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-black/80 rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 transition-colors"
+                        >
+                          {getTechIconBadge(t)}
+                          <span className="text-xs font-black text-black uppercase tracking-tight">
+                            {t}
+                          </span>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -381,7 +417,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
             </div>
 
             {/* Footer Modal Action Buttons */}
-            <div className="pt-6 mt-6 border-t border-black flex flex-wrap items-center justify-between gap-3">
+            <div className="pt-6 mt-8 border-t border-black flex flex-wrap items-center justify-between gap-3 shrink-0">
               <span className="font-mono text-xs text-gray-400 font-bold">RIFQI M. TAMPENG // WORK PORTFOLIO</span>
               
               <div className="flex gap-2">
@@ -680,29 +716,14 @@ const App = () => {
   };
 
   // ==========================================
-  // DATA MASTER: 11 PROJECTS
+  // DATA MASTER: 12 PROJECTS (TERMASUK WEBAR BMKG & LANDCONNECT BARU)
   // ==========================================
   const projectsData = [
+    // --- 1. WEB DEVELOPMENT (4 PROYEK PGNMAS DENGAN TOMBOL LIVE WEBSITE) ---
     {
-      title: "Hardware Quest AR (Bachelor's Thesis Project)",
-      category: "AR / VR",
-      year: "2026",
-      institution: "Computer Engineering - Universitas Syiah Kuala",
-      location: "Banda Aceh, Indonesia",
-      summary: "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
-      details: [
-        "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
-        "Designed and animated detailed 3D models of computer components (Motherboard, CPU, RAM, GPU) using Blender with interactive 360-degree rotation and zoom.",
-        "Implemented Research and Development (R&D) prototyping methodologies and conducted System Usability Scale (SUS) and N-Gain cognitive evaluations with 20+ respondents.",
-        "Successfully defended the research as the final requirement for the Bachelor of Engineering (S.T.) degree."
-      ],
-      techStack: ['Unity3D', 'Vuforia AR', 'C# Scripting', 'Android SDK'],
-      color: "bg-orange-300",
-      gallery: ["ar_hw.png", "ar_hw1.png"]
-    },
-    {
-      title: "Fleedy",
+      title: "Fleedy - Corporate Fleet & Transportation Management Web Platform",
       category: "Web Development",
+      subtitle: "Corporate Landing Page / Web Application",
       year: "2026",
       client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
       location: "Jakarta, Indonesia",
@@ -715,11 +736,15 @@ const App = () => {
       ],
       techStack: ["React.js", "Tailwind CSS", "Lucide Icons", "Custom IntersectionObserver", "Responsive UI/UX"],
       color: "bg-blue-300",
-      gallery: ["fleedy.png"]
+      gallery: ["fleedy.png"],
+      links: [
+        { text: "Live Website", url: "https://www.pgnmas.co.id", icon: <Globe size={14}/>, className: "bg-blue-300 text-black hover:bg-blue-400" }
+      ]
     },
     {
-      title: "Spativm",
+      title: "Spativm - Regional Facility & Building Management Portal",
       category: "Web Development",
+      subtitle: "Corporate Web Portal / Facility Management",
       year: "2026",
       client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
       location: "Jakarta, Indonesia",
@@ -732,11 +757,15 @@ const App = () => {
       ],
       techStack: ["React.js", "Tailwind CSS", "Custom Easing Animation Hooks", "Interactive UI", "Front-End Engineering"],
       color: "bg-orange-300",
-      gallery: ["spativm.png"]
+      gallery: ["spativm.png"],
+      links: [
+        { text: "Live Website", url: "https://www.pgnmas.co.id", icon: <Globe size={14}/>, className: "bg-orange-300 text-black hover:bg-orange-400" }
+      ]
     },
     {
-      title: "FileExpert",
+      title: "FileExpert - ANRI-Accredited Digital Archive & DOX Solution",
       category: "Web Development",
+      subtitle: "B2B Digital Solution / Archive Management Web",
       year: "2026",
       client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
       location: "Jakarta, Indonesia",
@@ -749,11 +778,15 @@ const App = () => {
       ],
       techStack: ["React.js", "Tailwind CSS", "CSS Keyframe Animations", "B2B UI/UX Design", "Neo-Brutalist Layouts"],
       color: "bg-green-300",
-      gallery: ["filexpert.png"]
+      gallery: ["filexpert.png"],
+      links: [
+        { text: "Live Website", url: "https://www.pgnmas.co.id", icon: <Globe size={14}/>, className: "bg-green-300 text-black hover:bg-green-400" }
+      ]
     },
     {
-      title: "ArtBuild",
+      title: "ArtBuild - Corporate Interior, Architecture & Construction Portal",
       category: "Web Development",
+      subtitle: "Design & Build Showcase / Web Application",
       year: "2026",
       client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
       location: "Jakarta, Indonesia",
@@ -766,11 +799,17 @@ const App = () => {
       ],
       techStack: ["React.js", "Tailwind CSS", "Playfair Display Typography", "Interactive Modals", "Video Hero Integration"],
       color: "bg-purple-300",
-      gallery: ["artbuild.png"]
+      gallery: ["artbuild.png"],
+      links: [
+        { text: "Live Website", url: "https://www.pgnmas.co.id", icon: <Globe size={14}/>, className: "bg-purple-300 text-black hover:bg-purple-400" }
+      ]
     },
+
+    // --- 2. UI/UX DESIGN (2 PROYEK TERMASUK LANDCONNECT UPDATE) ---
     {
       title: "Lifegen App",
       category: "UI/UX Design",
+      subtitle: "Health & Calorie Tracking UI/UX Case Study",
       year: "2025",
       institution: "UI/UX Case Study",
       location: "Indonesia",
@@ -783,34 +822,73 @@ const App = () => {
       ],
       techStack: ['Figma', 'Design System', 'UI/UX Prototyping', 'User Research'],
       color: "bg-pink-300",
-      gallery: ["life.png"],
-      links: [
-        { text: "Figma Prototype", url: "https://www.figma.com/proto/MIYprCXiJ8d9SDMZA5kMYT/Lifegen?node-id=48-3636&p=f&t=vXSOTZWg6oxs5i8D-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=48%3A3636&show-proto-sidebar=1", icon: <Figma size={14}/> },
-      ]
+      gallery: ["life.png"]
     },
     {
-      title: "LandConnect",
+      title: "LandConnect - Agricultural Land Provision & Connectivity Platform",
       category: "UI/UX Design",
-      year: "2025",
-      institution: "UI/UX Case Study",
-      location: "Indonesia",
-      summary: "Strategic land trading and property marketplace platform featuring interactive map mapping to simplify location and zoning search.",
+      subtitle: "Product Design (UI/UX) & Systems Engineering",
+      year: "2023",
+      client: "Department of Electrical & Computer Engineering, Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
+      summary: "Designed and modeled 'LandConnect', an innovative digital ecosystem bridging local farmers and landowners by enabling data-driven agricultural land leasing and sales, integrated with geospatial mapping and regional climate analysis.",
       details: [
-        "Designed an end-to-end web marketplace interface connecting land property investors with verified sellers.",
-        "Integrated interactive map UX wireframes to clearly visualize property boundaries, zoning types, and infrastructure access.",
-        "Created scalable Figma design systems including typography, color palettes, and reusable UI components.",
-        "Streamlined property curation workflows to enhance transparency in strategic land acquisition."
+        "Conducted rigorous primary and secondary research—analyzing 10 historical software architectures and interviewing local agricultural stakeholders—to synthesize user behaviors into Affinity Diagrams, Value Proposition Canvases (VPC), and Business Model Canvases (BMC).",
+        "Architected core system functionalities including interactive geospatial positioning using Google Maps, a real-time negotiation Live Chat engine, and a micro-climate/average temperature historic analytics widget.",
+        "Engineered comprehensive UX design frameworks by developing step-by-step user storyboards, complex use-case models, and multi-user UX flowcharts mapped specifically for both farmer and landowner personas.",
+        "Designed and executed high-fidelity interactive prototypes in Figma, conducting hands-on usability testing with 5 real target users to identify critical interface improvements in touch target scaling and layout responsiveness."
       ],
-      techStack: ['Figma', 'Interactive Map UI', 'Web Prototype', 'Design System'],
+      techStack: ["Figma (Hi-Fi Prototyping)", "UX Flowcharts", "Systems Architecture", "User Research & Testing", "Value Proposition Canvas (VPC)", "Business Model Canvas (BMC)"],
       color: "bg-purple-300",
-      gallery: ["land.png"],
+      gallery: ["land.png"]
+    },
+
+    // --- 3. AR / VR (2 PROYEK: SKRIPSI & WEBAR BMKG UPDATE) ---
+    {
+      title: "Hardware Quest AR (Bachelor's Thesis Project)",
+      category: "AR / VR",
+      subtitle: "Augmented Reality Developer",
+      year: "2026",
+      institution: "Computer Engineering - Universitas Syiah Kuala",
+      location: "Banda Aceh, Indonesia",
+      summary: "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+      details: [
+        "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+        "Designed and animated detailed 3D models of computer components (Motherboard, CPU, RAM, GPU) using Blender with interactive 360-degree rotation and zoom.",
+        "Implemented Research and Development (R&D) prototyping methodologies and conducted System Usability Scale (SUS) and N-Gain cognitive evaluations with 20+ respondents.",
+        "Successfully defended the research as the final requirement for the Bachelor of Engineering (S.T.) degree."
+      ],
+      techStack: ['Unity3D', 'Vuforia AR', 'Blender 3D Modeling', 'Android SDK'],
+      color: "bg-orange-300",
+      gallery: ["ar_hw.png", "ar_hw1.png"]
+    },
+    {
+      title: "Web-Based Augmented Reality for BMKG Meteorological Equipment Education",
+      category: "AR / VR",
+      subtitle: "Web-Based Augmented Reality (WebAR) / 3D Interaction",
+      year: "2025",
+      client: "Stasiun Meteorologi Kelas I Sultan Iskandar Muda Banda Aceh (BMKG)",
+      location: "Banda Aceh, Indonesia",
+      summary: "Designed and developed an interactive Web-Based Augmented Reality (WebAR) educational application to visualize complex meteorological equipment—such as the Campbell Stokes recorder—as realistic, interactive 3D models accessible instantly via mobile browsers.",
+      details: [
+        "Reconstructed high-fidelity 3D assets from 40-50 smartphone-captured physical photos of the Campbell Stokes instrument using Meshroom's photogrammetry engine.",
+        "Optimized 3D models in Blender by repairing mesh structures, adjusting topology, and refining texturing to ensure lightweight performance and fast loading times on mobile devices.",
+        "Engineered the interactive spatial scene and UI overlays within Unity, integrating dynamic educational text panels detailing the specific functions and workings of meteorological tools.",
+        "Published and hosted the WebAR experience on Zapworks, allowing seamless, instant cross-platform mobile access (Chrome/Safari) via physical QR code scanning without any external app installation."
+      ],
+      techStack: ["Unity 3D", "Zapworks Studio", "Blender", "Meshroom (Photogrammetry)", "WebAR", "Interactive UI/UX"],
+      color: "bg-orange-300",
+      gallery: ["bmkg2.png", "bmkg1.jpg"],
       links: [
-        { text: "Figma Prototype", url: "https://www.figma.com/proto/OGf7IzSdu9WjrTlVOI0xP9/LandConnect?node-id=747-3006&t=dyPSPDRSZXDFVWfj-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=747%3A3006", icon: <Figma size={14}/> },
+        { text: "Video Demo", url: "https://drive.google.com/file/d/1V6obcvnr7jf35-M14eItzmC8sS8rudcz/view?usp=drive_link", icon: <Youtube size={14}/>, className: "bg-red-100 text-black hover:bg-red-200" }
       ]
     },
+
+    // --- 4. IOT SOLUTION (3 PROYEK) ---
     {
       title: "Gula Cerdas",
       category: "IoT Solution",
+      subtitle: "IoT Solution & Cloud Integration",
       year: "2025 – 2026",
       institution: "Innovillage 2025 - Universitas Syiah Kuala",
       location: "Aceh Besar, Indonesia",
@@ -832,33 +910,13 @@ const App = () => {
       ]
     },
     {
-      title: "Smart Water Metering",
-      category: "IoT Solution",
-      year: "2024",
-      institution: "Embedded Hardware Project",
-      location: "Aceh, Indonesia",
-      summary: "Arduino Uno-based residential water usage monitoring and alarm system designed to detect pipe leaks and prevent household water waste.",
-      details: [
-        "Developed a real-time water flow monitoring device using Arduino Uno and precision water flow sensors.",
-        "Programmed embedded C++ firmware to calculate cumulative water consumption and trigger usage threshold alarms.",
-        "Designed hardware schematic and assembled sensor circuitry for reliable household deployment.",
-        "Helped households identify undetected pipe leaks early, reducing monthly excess water waste by 30%."
-      ],
-      techStack: ['Arduino Uno', 'Water Flow Sensor', 'C++ Embedded', 'Hardware Assembly'],
-      color: "bg-green-300",
-      gallery: ["swms.jpeg", "swm1.jpeg", "swm2.jpeg", "swm3.jpeg"],
-      links: [
-        { text: "Arduino Code", url: "#", icon: <Code size={14}/> },
-        { text: "Video Demo", url: "#", icon: <Youtube size={14}/>, className: "bg-red-100 text-black hover:bg-red-200" }
-      ]
-    },
-    {
       title: "BridgeGuard",
       category: "IoT Solution",
+      subtitle: "Structural Safety Monitoring IoT",
       year: "2025",
       institution: "IoT Research Project",
       location: "Aceh, Indonesia",
-      summary: "Early bridge vibration detection device utilizing ESP32 and ADXL accelerometer sensors for structural structural integrity monitoring.",
+      summary: "Early bridge vibration detection device utilizing ESP32 and ADXL accelerometer sensors for structural integrity monitoring.",
       details: [
         "Designed an early-warning structural monitoring IoT device using ESP32 and ADXL accelerometer sensors.",
         "Programmed embedded firmware to calculate Root Mean Square (RMS) vibration frequencies in real time.",
@@ -874,38 +932,39 @@ const App = () => {
       ]
     },
     {
-      title: "AR BMKG Tools",
-      category: "AR / VR",
-      year: "2026",
-      institution: "BMKG Class I Meteorological Station SIM",
-      location: "Banda Aceh, Indonesia",
-      summary: "Markerless AR educational app for 3D interactive visualization of BMKG meteorological tools developed for Class I SIM Station Banda Aceh.",
+      title: "Smart Water Metering",
+      category: "IoT Solution",
+      subtitle: "Embedded Hardware Project",
+      year: "2024",
+      institution: "Embedded Systems Project",
+      location: "Aceh, Indonesia",
+      summary: "Arduino Uno-based residential water usage monitoring and alarm system designed to detect pipe leaks and prevent household water waste.",
       details: [
-        "Built a markerless Augmented Reality mobile app using Unity and Vuforia to display sensitive meteorological tools.",
-        "Created accurate 3D instrument models allowing station visitors and new meteorology staff to inspect equipment safely.",
-        "Optimized 3D rendering and mobile application size for smooth performance on standard Android devices.",
-        "Implemented as an official visual educational medium at Class I Meteorological Station SIM Banda Aceh."
+        "Developed a real-time water flow monitoring device using Arduino Uno and precision water flow sensors.",
+        "Programmed embedded C++ firmware to calculate cumulative water consumption and trigger usage threshold alarms.",
+        "Designed hardware schematic and assembled sensor circuitry for reliable household deployment.",
+        "Helped households identify undetected pipe leaks early, reducing monthly excess water waste by 30%."
       ],
-      techStack: ['Unity3D', 'Vuforia AR Engine', 'Blender 3D Modeling', 'C# Scripting'],
-      color: "bg-orange-300",
-      gallery: ["bmkg2.png", "bmkg1.jpg"],
+      techStack: ['Arduino Uno', 'Water Flow Sensor', 'C++ Embedded', 'Hardware Assembly'],
+      color: "bg-green-300",
+      gallery: ["swms.jpeg", "swm1.jpeg", "swm2.jpeg", "swm3.jpeg"],
       links: [
-        { text: "Download APK", url: "#", icon: <Smartphone size={14}/>, className: "bg-green-100 text-black hover:bg-green-200" },
-        { text: "Video Demo", url: "https://drive.google.com/file/d/1V6obcvnr7jf35-M14eItzmC8sS8rudcz/view?usp=drive_link", icon: <Youtube size={14}/>, className: "bg-red-100 text-black hover:bg-red-200" }
+        { text: "Arduino Code", url: "#", icon: <Code size={14}/> },
+        { text: "Video Demo", url: "#", icon: <Youtube size={14}/>, className: "bg-red-100 text-black hover:bg-red-200" }
       ]
     }
   ];
 
   // Logika Filter Proyek
-  const categories = ['ALL', 'WEB DEV', 'IOT', 'AR / VR', 'UI/UX'];
+  const categories = ['ALL', 'WEB DEV', 'UI/UX', 'AR / VR', 'IOT'];
   
   const filteredProjects = selectedCategory === 'ALL'
     ? projectsData
     : projectsData.filter(item => {
         if (selectedCategory === 'WEB DEV') return item.category === 'Web Development';
-        if (selectedCategory === 'IOT') return item.category === 'IoT Solution';
-        if (selectedCategory === 'AR / VR') return item.category === 'AR / VR';
         if (selectedCategory === 'UI/UX') return item.category === 'UI/UX Design';
+        if (selectedCategory === 'AR / VR') return item.category === 'AR / VR';
+        if (selectedCategory === 'IOT') return item.category === 'IoT Solution';
         return true;
       });
 
@@ -914,116 +973,98 @@ const App = () => {
     : filteredProjects;
 
   // ==========================================
-  // DATA MASTER: 6 NON-INTERNSHIP EXPERIENCES & LEADERSHIP
+  // DATA MASTER: 5 NON-INTERNSHIP EXPERIENCES & LEADERSHIP
   // ==========================================
   const experiencesList = [
     {
-      role: "Augmented Reality Developer",
-      title: "Hardware Quest AR (Bachelor's Thesis Project)",
-      year: "2026",
-      institution: "Computer Engineering - Universitas Syiah Kuala",
-      location: "Banda Aceh, Indonesia",
-      image: "ar_hw.png",
-      categoryBadgeColor: "bg-orange-300",
-      summary: "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
-      details: [
-        "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
-        "Designed and animated detailed 3D models of computer components (Motherboard, CPU, RAM, GPU) using Blender with interactive 360-degree rotation and zoom.",
-        "Implemented Research and Development (R&D) prototyping methodologies and conducted System Usability Scale (SUS) and N-Gain cognitive evaluations with 20+ respondents.",
-        "Successfully defended the research as the final requirement for the Bachelor of Engineering (S.T.) degree."
-      ],
-      gallery: ["ar_hw.png", "ar_hw1.png"],
-      techStack: ['Unity 3D', 'Vuforia AR', 'C# Scripting', 'Android']
-    },
-    {
-      role: "Chief Event Organizer / Project Manager",
-      title: "Computer Multi-Challenge Day (CMD 2025)",
+      role: "Organizing Chairman (Chief Organizer)",
+      title: "CMD 2025",
       year: "2025 – 2026",
-      institution: "Computer Engineering - Universitas Syiah Kuala",
+      institution: "Computer Engineering Department • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "cmd.png",
       categoryBadgeColor: "bg-yellow-300",
-      summary: "Served as Chief Organizer/Project Manager for a major campus-wide technology event themed 'Empowering Youth for a Golden in the Digital Age'.",
+      summary: "Selected as Organizing Chairman for Computer Multi-Challenge Day (CMD) 2025, leading 120 coordinators in executing a national-scale IT competition and seminar.",
       details: [
-        "Served as Chief Organizer/Project Manager for a major campus-wide technology event themed 'Empowering Youth for a Golden in the Digital Age'.",
-        "Led and coordinated over 120 student committee members across multiple divisions to execute competition rundowns and technical logistics.",
-        "Strategically restructured the financial budget and rationalized the total prize pool to a realistic scale under 10 million IDR, adapting to campus funding constraints without sacrificing event prestige.",
-        "Managed stakeholder communication, sponsorship partnerships, and cross-departmental collaboration within the Faculty of Engineering."
+        "Led and managed a cross-functional team of 120 coordinators across 6 national IT competition divisions and seminars.",
+        "Managed corporate partnerships, sponsorship acquisition, and event budgeting under realistic financial constraints.",
+        "Restructured competition prize pools to under 10 million IDR to ensure long-term financial sustainability.",
+        "Delivered a successful national campus event with high participant satisfaction and optimal budget efficiency."
       ],
       gallery: ["cmd.png", "cmd1.jpeg", "cmd2.jpeg", "cmd3.jpeg", "cmd4.jpeg", "cmd5.jpeg"],
-      techStack: ['Project Management', 'Sponsorships', 'Leadership', 'Budgeting']
+      techStack: ['Project Management', 'Sponsorship Relations', 'Team Leadership', 'Budgeting']
     },
     {
-      role: "Engineering Leadership Participant / Facilitator",
-      title: "PBMT (Pelatihan Bersama Manajemen Teknik)",
+      role: "Vice Chairman",
+      title: "PBMT XI - KKN",
       year: "2024",
-      institution: "Faculty of Engineering - Universitas Syiah Kuala",
-      location: "Banda Aceh, Indonesia",
+      institution: "Community Service Initiative • Desa Luthu Lamwu",
+      location: "Aceh, Indonesia",
       image: "pbmt.png",
       categoryBadgeColor: "bg-blue-300",
-      summary: "Participated in and facilitated intensive organizational leadership and technical management training within the Faculty of Engineering.",
+      summary: "Served as Vice Chairman for a technology-focused community service program (PBMT XI) addressing rural clean water infrastructure.",
       details: [
-        "Participated in and facilitated intensive organizational leadership and technical management training within the Faculty of Engineering.",
-        "Developed core competencies in project planning, problem-solving, and team dynamics through structured engineering management simulations.",
-        "Collaborated with cross-departmental engineering peers to design actionable problem-solving workflows for student organization initiatives.",
-        "Mentored junior engineering students in basic organizational leadership, event logistics, and effective communication strategies."
+        "Co-led engineering field teams to assess and resolve clean water accessibility challenges in rural village households.",
+        "Designed and distributed ready-to-use automated drinking water refilling filtration systems for local residents.",
+        "Coordinated with village authorities and university faculty supervisors to ensure sustainable technical deployment.",
+        "Improved daily clean water distribution and long-term water quality for the local village community."
       ],
       gallery: ["pbmt.png"],
-      techStack: ['Engineering Mgmt', 'Leadership', 'Team Dynamics', 'Simulation']
+      techStack: ['Community Outreach', 'System Engineering', 'Field Leadership']
     },
     {
-      role: "Active Member & Technical Contributor",
-      title: "HIMATEKKOM (Himpunan Mahasiswa Teknik Komputer)",
-      year: "2023 – 2026",
-      institution: "Universitas Syiah Kuala",
+      role: "Vice Head of Student Welfare (Kesma)",
+      title: "HIMATEKKOM",
+      year: "2024",
+      institution: "Computer Engineering Student Association • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "kesma.jpg",
       categoryBadgeColor: "bg-purple-300",
-      summary: "Actively contributed to departmental student association programs, technical workshops, and academic seminars in Computer Engineering.",
+      summary: "Appointed as Vice Head of Student Welfare (Kesma), advocating for academic rights and student well-being across the Computer Engineering department.",
       details: [
-        "Actively contributed to departmental student association programs, technical workshops, and academic seminars in Computer Engineering.",
-        "Facilitated technical sharing sessions on computer hardware assembly, GPU benchmarking, and PC optimization for engineering students.",
-        "Assisted in technical support, audio-visual setups, and event logistics for departmental gatherings and academic evaluations.",
-        "Fostered a collaborative community among batchmates ('leting Tekkom') to support peer learning and graduation milestones."
+        "Managed academic advocacy and welfare aspirations for hundreds of Computer Engineering undergraduate students.",
+        "Established regular mentoring and open consultation sessions to bridge student communication with department faculty.",
+        "Proactively resolved student academic grievances regarding course scheduling and laboratory facilities.",
+        "Strengthened student community engagement through structured welfare assistance programs."
       ],
       gallery: ["kesma.jpg", "kesma1.png"],
-      techStack: ['PC Hardware', 'Workshops', 'Audio-Visual', 'Peer Mentoring']
+      techStack: ['Student Advocacy', 'Public Communication', 'Organization Mgmt']
     },
     {
-      role: "Faculty Executive Staff / Contributor",
-      title: "BEM FT (Badan Eksekutif Mahasiswa Fakultas Teknik)",
-      year: "2024 – 2025",
-      institution: "Faculty of Engineering - Universitas Syiah Kuala",
+      role: "Public Relations Staff",
+      title: "BEM Fakultas Teknik USK",
+      year: "2024",
+      institution: "Student Executive Board • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "humas.png",
       categoryBadgeColor: "bg-pink-300",
-      summary: "Engaged in faculty-level executive programs, bridging communication between Computer Engineering students and Engineering Faculty leadership.",
+      summary: "Served as Public Relations Staff at BEM Fakultas Teknik USK, managing strategic branding and external media publications.",
       details: [
-        "Engaged in faculty-level executive programs, bridging communication between Computer Engineering students and Engineering Faculty leadership.",
-        "Collaborated with multi-disciplinary engineering teams to organize faculty-wide academic, technical, and student welfare events.",
-        "Developed strong administrative, public speaking, and stakeholder negotiation skills through executive board responsibilities.",
-        "Contributed to strategic planning and execution of student development agendas across the Faculty of Engineering."
+        "Managed strategic external communications and digital branding campaigns for engineering faculty events.",
+        "Produced professional visual publicity assets and coordinated with university media partners.",
+        "Significantly increased organizational social media engagement and cross-faculty event reach.",
+        "Maintained high visual standards across official student executive board publications."
       ],
       gallery: ["humas.png"],
-      techStack: ['Executive Board', 'Public Speaking', 'Event Logistics', 'Negotiation']
+      techStack: ['Public Relations', 'Branding', 'Social Media Strategy']
     },
     {
-      role: "Technical Research Member",
-      title: "BIOS (Basic Information & Operating System)",
-      year: "2023 – 2026",
-      institution: "Computer Engineering Club - Universitas Syiah Kuala",
+      role: "Event Coordinator",
+      title: "BIOS Orientation",
+      year: "2025",
+      institution: "Computer Engineering Freshman Orientation • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "cmd1.jpeg",
       categoryBadgeColor: "bg-green-300",
-      summary: "Engaged as an active member in the departmental tech community focused on embedded systems, hardware architecture, and software logic.",
+      summary: "Coordinated the BIOS Orientation program, redesigning traditional freshman orientation into an interactive, project-based engineering boot camp.",
       details: [
-        "Engaged as an active member in the departmental tech community focused on embedded systems, hardware architecture, and software logic.",
-        "Collaborated on practical IoT development projects (such as BridgeGuard vibration detection and GulaCerdas monitoring) utilizing Firebase and sensor telemetry.",
-        "Participated in peer-to-peer code reviews, microcontroller logic analysis, and debugging sessions for academic research applications.",
-        "Explored emerging technologies including markerless Augmented Reality (Unity 3D/Vuforia) and web frontend frameworks."
+        "Restructured freshman orientation from traditional hazing into an educational engineering project workshop.",
+        "Designed interactive event rundowns and hands-on microcontroller introduction sessions for new students.",
+        "Mentored freshmen in basic Computer Engineering concepts and teamwork collaboration.",
+        "Achieved high participant satisfaction through an inspiring and technically engaging orientation model."
       ],
       gallery: ["cmd1.jpeg"],
-      techStack: ['IoT & Firebase', 'Code Review', 'Unity 3D/AR', 'Frontend Web']
+      techStack: ['Event Design', 'Mentorship', 'Workshop Planning']
     }
   ];
 
@@ -1441,6 +1482,7 @@ const App = () => {
                   title={project.title}
                   category={project.category}
                   images={project.gallery}
+                  color={project.color}
                   onOpenModal={() => openCaseModal(project)}
                 />
               </Reveal>
@@ -1518,27 +1560,22 @@ const App = () => {
                             </div>
                         </div>
 
-                        {/* Poin-poin rincian kontribusi magang langsung di halaman utama */}
                         <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.</span>
+                            <span>Supported daily corporate IT operations by configuring employee laptops, performing hardware/software troubleshooting, and conducting system license compliance checks.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.</span>
+                            <span>Designed and developed responsive web landing pages (including ArtBuild and Fleedy) using React.js and Tailwind CSS, featuring smooth horizontal scrolling and optimized mobile layouts.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.</span>
+                            <span>Managed corporate digital assets and shared file access across internal departments to streamline employee workstation setups.</span>
                           </li>
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
-                            <span>Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <span className="text-black font-black">•</span>
-                            <span>Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines.</span>
+                            <span>Produced professional visual and graphic design assets aligned with corporate branding standards for internal communications.</span>
                           </li>
                         </ul>
                     </div>
@@ -1556,16 +1593,15 @@ const App = () => {
                               year: "2026",
                               institution: "PT Permata Graha Nusantara",
                               location: "Jakarta, Indonesia",
-                              summary: "Served as an IT Support and Graphic Design Intern at PT Permata Graha Nusantara (PGNMAS), supporting corporate IT infrastructure and leading frontend web development initiatives.",
+                              summary: "Completed a regular professional internship at PT Permata Graha Nusantara (PGNMAS) in the IT Support and Graphic Design Division.",
                               details: [
-                                "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
-                                "Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.",
-                                "Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.",
-                                "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.",
-                                "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
+                                "Supported daily corporate IT operations by configuring employee laptops, performing hardware/software troubleshooting, and conducting system license compliance checks.",
+                                "Designed and developed responsive web landing pages (including ArtBuild and Fleedy) using React.js and Tailwind CSS, featuring smooth horizontal scrolling and optimized mobile layouts.",
+                                "Managed corporate digital assets and shared file access across internal departments to streamline employee workstation setups.",
+                                "Produced professional visual and graphic design assets aligned with corporate branding standards for internal communications."
                               ],
                               gallery: ["pgnmas.png", "fleedy.png", "artbuild.png", "filexpert.png", "spativm.png"],
-                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation"]
+                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "System Admin"]
                             })} 
                             className="group relative inline-flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-4 py-1.5 rounded font-black uppercase text-xs shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-yellow-400 transition-all ml-auto"
                         >
@@ -1615,7 +1651,6 @@ const App = () => {
                             </div>
                         </div>
 
-                        {/* Poin-poin rincian kontribusi magang langsung di halaman utama */}
                         <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
