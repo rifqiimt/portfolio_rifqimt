@@ -136,6 +136,18 @@ const getTechIconBadge = (techName) => {
   if (name.includes("firebase") || name.includes("cloud") || name.includes("database")) {
     return <Database size={14} className="text-amber-500" />;
   }
+  if (name.includes("budget") || name.includes("revenue") || name.includes("financial") || name.includes("merchandising")) {
+    return <TrendingUp size={14} className="text-emerald-600" />;
+  }
+  if (name.includes("leadership") || name.includes("management") || name.includes("operations") || name.includes("coordination") || name.includes("moderation")) {
+    return <Briefcase size={14} className="text-purple-600" />;
+  }
+  if (name.includes("community") || name.includes("relations") || name.includes("user")) {
+    return <Users size={14} className="text-blue-600" />;
+  }
+  if (name.includes("water") || name.includes("agriculture") || name.includes("rural") || name.includes("sustainable")) {
+    return <Globe size={14} className="text-teal-600" />;
+  }
   return <Terminal size={14} className="text-gray-700" />;
 };
 
@@ -147,7 +159,6 @@ const CVModal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-yellow-300/90 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-300" onClick={onClose}>
       <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
       
-      {/* Tombol Tutup Modal */}
       <button 
         onClick={onClose} 
         className="absolute top-5 right-5 sm:top-6 sm:right-6 bg-black text-white p-2.5 sm:p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all z-50 rounded-xl"
@@ -155,10 +166,8 @@ const CVModal = ({ isOpen, onClose }) => {
         <X size={20} />
       </button>
 
-      {/* Container Utama Modal CV */}
       <div className="relative w-full max-w-5xl h-full max-h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
         
-        {/* Header Bar */}
         <div className="flex justify-between items-center px-6 py-3 border-b-2 border-black bg-gray-100 shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-red-400 border border-black"></span>
@@ -173,14 +182,12 @@ const CVModal = ({ isOpen, onClose }) => {
           </span>
         </div>
 
-        {/* PDF Embed / Iframe */}
         <div className="flex-grow bg-gray-200 relative overflow-hidden flex items-center justify-center">
           <iframe 
             src="cv.pdf#toolbar=0" 
             title="CV Rifqi Mubarak Tampeng" 
             className="w-full h-full min-h-[55vh] border-0 relative z-10"
           />
-          {/* Fallback info jika browser HP tidak mendukung render iframe PDF */}
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 p-6 text-center z-0">
             <p className="text-sm font-bold text-gray-600 mb-4">Pratinjau PDF tidak didukung secara langsung di peramban ini.</p>
             <a 
@@ -193,7 +200,6 @@ const CVModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Footer Action Bar */}
         <div className="p-4 sm:px-6 bg-white border-t-2 border-black flex flex-wrap items-center justify-between gap-3 shrink-0">
           <span className="font-mono text-xs text-gray-400 font-bold">CURRICULUM VITAE // PROFESSIONAL RESUME</span>
           <div className="flex gap-2">
@@ -220,7 +226,7 @@ const CVModal = ({ isOpen, onClose }) => {
   );
 };
 
-/* --- MODAL STUDI KASUS & SERTIFIKAT (GAMBAR STATIS/STICKY + CLIENT & LOCATION 1 BARIS) --- */
+/* --- MODAL STUDI KASUS & SERTIFIKAT --- */
 const CaseStudyModal = ({ isOpen, data, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -247,7 +253,6 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-yellow-300/90 backdrop-blur-md p-4 sm:p-6 animate-in fade-in duration-300" onClick={onClose}>
       <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
       
-      {/* Tombol Tutup Modal */}
       <button 
         onClick={onClose} 
         className="absolute top-5 right-5 sm:top-6 sm:right-6 bg-black text-white p-2.5 sm:p-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] transition-all z-50 rounded-xl"
@@ -255,7 +260,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
         <X size={20} />
       </button>
 
-      {/* Container Utama Modal (Tinggi dikunci 88vh agar kolom anak bisa mandiri/statis) */}
+      {/* Container Utama Modal (Tinggi dikunci tepat 88vh agar kolom gambar statis dan kolom teks mandiri) */}
       <div className="relative w-full max-w-6xl h-[88vh] bg-white border-4 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
         
         {/* Header Bar */}
@@ -273,7 +278,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
           </span>
         </div>
 
-        {/* Konten 2 Kolom: Kolom Kiri Dikunci h-full (Statis), Kolom Kanan Bisa Scroll (overflow-y-auto) */}
+        {/* Konten 2 Kolom */}
         <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 overflow-hidden h-full">
           
           {/* === KOLOM KIRI: GAMBAR STATIS (TIDAK IKUT SCROLL) & OBJECT-CONTAIN (TIDAK TERPOTONG) === */}
@@ -309,7 +314,6 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
               </div>
             </div>
 
-            {/* Thumbnail Indicator Dots */}
             <div className="absolute bottom-4 left-0 right-0 flex gap-2 overflow-x-auto max-w-full px-4 hide-scrollbar justify-center z-10">
               {images.map((_, idx) => (
                 <button
@@ -337,7 +341,7 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                   {data.title}
                 </h2>
                 
-                {/* === CLIENT (KIRI) & LOCATION (KANAN) DALAM 1 BARIS YANG SAMA === */}
+                {/* === CLIENT (RATA KIRI) & LOCATION (RATA KANAN) DALAM 1 BARIS YANG SAMA === */}
                 {(data.institution || data.client || data.location) && (
                   <div className="flex items-center justify-between gap-4 mt-3 pt-2.5 border-t border-black/10 text-xs sm:text-sm font-black text-gray-800">
                     <span className="text-left font-extrabold text-black">
@@ -374,17 +378,15 @@ const CaseStudyModal = ({ isOpen, data, onClose }) => {
                   )}
                 </div>
               ) : (
-                /* TAMPILAN STUDI KASUS PROYEK & EXPERIENCE */
+                /* TAMPILAN STUDI KASUS PROYEK & EXPERIENCE (SEMUA DATA PGNMAS & LAINNYA 100% UTUH) */
                 <div className="space-y-5 animate-in fade-in duration-200">
                   
-                  {/* Executive Summary Paragraph */}
                   {data.summary && (
                     <p className="text-sm sm:text-base font-medium text-gray-800 leading-relaxed border-l-4 border-black pl-3 bg-yellow-50 py-2.5 pr-2">
                       {data.summary}
                     </p>
                   )}
 
-                  {/* Bullet Points Details (Semua informasi penting termasuk webinar moderator terjamin tampil utuh) */}
                   {data.details && data.details.length > 0 && (
                     <div>
                       <h4 className="font-black text-xs uppercase tracking-wider text-black mb-2 flex items-center gap-1.5">
@@ -725,7 +727,7 @@ const App = () => {
   };
 
   // ==========================================
-  // DATA MASTER: 12 PROJECTS
+  // DATA MASTER: 11 PROJECTS (WEB DEV -> UI/UX -> AR/VR -> IOT)
   // ==========================================
   const projectsData = [
     // --- 1. WEB DEVELOPMENT (4 PROYEK PGNMAS DENGAN TOMBOL LIVE WEBSITE) ---
@@ -896,7 +898,7 @@ const App = () => {
       ]
     },
 
-    // --- 4. IOT SOLUTION (3 PROYEK) ---
+    // --- 4. IOT SOLUTION ---
     {
       title: "Gula Cerdas",
       category: "IoT Solution",
@@ -990,45 +992,45 @@ const App = () => {
   const experiencesList = [
     {
       role: "Organizing Chairman (Chief Organizer)",
-      title: "CMD 2025",
-      year: "2025 – 2026",
-      institution: "Computer Engineering Department • Universitas Syiah Kuala",
+      title: "Computer Multi-Challenge Day (CMD) 2025 - National Tech Festival",
+      year: "2025",
+      client: "HIMATEKKOM, Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "cmd.png",
       categoryBadgeColor: "bg-yellow-300",
-      summary: "Selected as Organizing Chairman for Computer Multi-Challenge Day (CMD) 2025, leading 120 coordinators in executing a national-scale IT competition and seminar.",
+      summary: "Served as the Chairman for CMD 2025, directing a national-scale technology festival featuring 24-hour hackathons, workshops, and AI seminars. Simultaneously spearheaded the event's primary revenue generation by directly managing the end-to-end design, production, and sales campaign of official merchandise, successfully funding over 46% of the entire event budget.",
       details: [
-        "Led and managed a cross-functional team of 120 coordinators across 6 national IT competition divisions and seminars.",
-        "Managed corporate partnerships, sponsorship acquisition, and event budgeting under realistic financial constraints.",
-        "Restructured competition prize pools to under 10 million IDR to ensure long-term financial sustainability.",
-        "Delivered a successful national campus event with high participant satisfaction and optimal budget efficiency."
+        "Led and coordinated a multidisciplinary organizing committee of 7 divisions to execute a national-level technology festival hosting a 24-hour Hackathon, UI/UX Design contests, and national seminars on Deep Learning.",
+        "Directly spearheaded the event's merchandising business unit, managing vendor negotiation for IDR 7.20 Million in production costs and executing a strategic sales campaign that generated IDR 9.74 Million in gross revenue to anchor the event's financial viability.",
+        "Architected and managed the overall event budget of IDR 21.04 Million, demonstrating exceptional fiscal responsibility by delivering the entire operational pipeline with a balanced sheet and absolute transparency.",
+        "Resolved complex operational and logistics challenges during the highly intense 24-hour continuous Hackathon program, ensuring continuous mentor-student coordination and seamless event execution."
       ],
       gallery: ["cmd.png", "cmd1.jpeg", "cmd2.jpeg", "cmd3.jpeg", "cmd4.jpeg", "cmd5.jpeg"],
-      techStack: ['Project Management', 'Sponsorship Relations', 'Team Leadership', 'Budgeting']
+      techStack: ["Event Operations & Leadership", "Strategic Merchandising", "Financial Planning & Budgeting", "Vendor Negotiation", "Logistics Coordination", "Revenue Optimization"]
     },
     {
-      role: "Vice Chairman",
-      title: "PBMT XI - KKN",
+      role: "Vice Chairman of the Organizing Committee",
+      title: "Pekan Bakti Mahasiswa Teknik (PBMT) XI - Rural Technology & Community Empowerment",
       year: "2024",
-      institution: "Community Service Initiative • Desa Luthu Lamwu",
-      location: "Aceh, Indonesia",
+      client: "BEM Fakultas Teknik, Universitas Syiah Kuala",
+      location: "Aceh Besar, Indonesia",
       image: "pbmt.png",
       categoryBadgeColor: "bg-blue-300",
-      summary: "Served as Vice Chairman for a technology-focused community service program (PBMT XI) addressing rural clean water infrastructure.",
+      summary: "Served as the Vice Chairman of the Organizing Committee for PBMT XI, a massive 6-month community development initiative in Luthu Lamweu Village, Aceh Besar. Co-led a multidisciplinary engineering student delegation to deploy sustainable technological and infrastructural solutions for local farmers and residents.",
       details: [
-        "Co-led engineering field teams to assess and resolve clean water accessibility challenges in rural village households.",
-        "Designed and distributed ready-to-use automated drinking water refilling filtration systems for local residents.",
-        "Coordinated with village authorities and university faculty supervisors to ensure sustainable technical deployment.",
-        "Improved daily clean water distribution and long-term water quality for the local village community."
+        "Co-managed overall project operations, scheduling, and volunteer coordination for a multi-month community empowerment program, facilitating strategic collaboration between university academics, local village authorities, and over hundreds of community participants.",
+        "Supervised the successful engineering and deployment of agricultural innovations, notably an IoT-based Automatic Fertigation System (AFS) to automate watering and fertilization, alongside organizing bio-pesticide and waste-management compost barrel initiatives.",
+        "Directed village infrastructure and water security projects, leading the technical rehabilitation and optimization of local deep-bore wells (Sumur Bor) to establish stable, clean water distribution networks for both household and agricultural consumption.",
+        "Oversaw the program's budgeting, procurement of technical and raw materials, and co-drafted the final institutional Accountability Report (LPJ) to ensure complete fiscal transparency and program compliance."
       ],
       gallery: ["pbmt.png"],
-      techStack: ['Community Outreach', 'System Engineering', 'Field Leadership']
+      techStack: ["Program Operations & Leadership", "IoT Fertigation (AFS)", "Water Security Engineering", "Community Relations", "Budgeting & Financial Reporting", "Sustainable Agriculture Systems"]
     },
     {
       role: "Vice Head of Student Welfare (Kesma)",
       title: "HIMATEKKOM",
       year: "2024",
-      institution: "Computer Engineering Student Association • Universitas Syiah Kuala",
+      client: "Computer Engineering Student Association • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "kesma.jpg",
       categoryBadgeColor: "bg-purple-300",
@@ -1046,7 +1048,7 @@ const App = () => {
       role: "Public Relations Staff",
       title: "BEM Fakultas Teknik USK",
       year: "2024",
-      institution: "Student Executive Board • Universitas Syiah Kuala",
+      client: "Student Executive Board • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "humas.png",
       categoryBadgeColor: "bg-pink-300",
@@ -1064,7 +1066,7 @@ const App = () => {
       role: "Event Coordinator",
       title: "BIOS Orientation",
       year: "2025",
-      institution: "Computer Engineering Freshman Orientation • Universitas Syiah Kuala",
+      client: "Computer Engineering Freshman Orientation • Universitas Syiah Kuala",
       location: "Banda Aceh, Indonesia",
       image: "cmd1.jpeg",
       categoryBadgeColor: "bg-green-300",
@@ -1084,6 +1086,26 @@ const App = () => {
   // DATA MASTER: CERTIFICATIONS
   // ==========================================
   const certsData = [
+    {
+      isCert: true,
+      title: "Public Speaking & Special Event Specialist",
+      subtitle: "BPVP Bandung Barat / KEMNAKER RI",
+      year: "2026",
+      description: "Sertifikasi dan pelatihan keahlian komunikasi profesional yang diselenggarakan oleh Balai Pelatihan Vokasi dan Produktivitas (BPVP) Bandung Barat di bawah Kementerian Ketenagakerjaan Republik Indonesia. Program ini menguji dan memvalidasi kompetensi dalam penyampaian pesan publik yang efektif serta perancangan acara khusus secara sistematis.",
+      issuer: "BPVP Bandung Barat - Kementerian Ketenagakerjaan R.I.",
+      keyInfo: "Lulus sertifikasi pelatihan intensif dengan pencapaian Unit Kompetensi resmi 'Melaksanakan Special Event' (Kode Unit: M.70HMS00.028.3).",
+      gallery: ["public_speaking.jpg", "special_event_cert.jpg"]
+    },
+    {
+      isCert: true,
+      title: "Innovillage 2025 - Top 180 Social Project",
+      subtitle: "Telkom Indonesia & Witel",
+      year: "2025",
+      description: "Ajang kompetisi inovasi sosial digital tingkat nasional berskala besar yang diselenggarakan oleh PT Telkom Indonesia. Lolos seleksi pendanaan riset untuk proyek 'Gula Cerdas' (Sistem standarisasi dan pemantauan viskositas produksi gula aren berbasis IoT untuk UMKM petani tradisional di Aceh).",
+      issuer: "PT Telkom Indonesia (Persero) Tbk",
+      keyInfo: "Lolos pendanaan nasional Top 180 Innovillage 2025 & implementasi teknologi tepat guna UMKM.",
+      gallery: ["innovillage.jpg", "gula.JPG"]
+    },
     {
       isCert: true,
       title: "Bangkit Academy 2024",
@@ -1521,7 +1543,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Experience Section (5 POIN KONTRIBUSI PGNMAS UTUH + WEBAR BMKG UTUH) */}
+      {/* Experience Section (5 POIN KONTRIBUSI PGNMAS UTUH + CORE SCOPE BOX + WEBAR BMKG UTUH) */}
       <section id="experience" className="py-28 bg-blue-50 border-y-4 border-black">
         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
           <Reveal>
@@ -1537,7 +1559,7 @@ const App = () => {
 
           {/* FEATURED PROFESSIONAL INTERNSHIPS (Grid 2 Kolom: PGNMAS & BMKG Aceh) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-20">
-            {/* 1. PT PERMATA GRAHA NUSANTARA (PGNMAS) - LENGKAP DENGAN 5 POIN PRESTASI & MODERATOR WEBINAR */}
+            {/* 1. PT PERMATA GRAHA NUSANTARA (PGNMAS) - LENGKAP DENGAN 5 POIN PRESTASI, CORE SCOPE BOX & MODERATOR WEBINAR */}
             <Reveal delay={100}>
               <div className="relative h-full">
                 <div className="absolute -top-4 left-4 bg-green-400 border-2 border-black px-3.5 py-1 font-black uppercase text-xs transform -rotate-1 z-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
@@ -1565,7 +1587,7 @@ const App = () => {
                                 <div className="flex justify-between items-start gap-2">
                                     <h3 className="text-lg sm:text-xl font-black uppercase leading-tight">PGNMAS</h3>
                                     <span className="font-mono font-bold bg-black text-white px-2.5 py-1 text-xs shadow-[2px_2px_0px_0px_#22c55e]">
-                                        2026
+                                        Jan 2026 – Apr 2026
                                     </span>
                                 </div>
                                 <div className="inline-block bg-gray-100 border border-black px-2 py-0.5 mt-1">
@@ -1575,7 +1597,17 @@ const App = () => {
                             </div>
                         </div>
 
-                        {/* 5 Poin rincian kontribusi magang langsung di halaman utama */}
+                        {/* Kotak Core Scope & Responsibilities dikembalikan utuh */}
+                        <div className="bg-green-50 border-l-4 border-black p-4 mb-4 relative">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-green-700 mb-1 block">
+                                Core Scope & Responsibilities
+                            </span>
+                            <h4 className="font-bold text-xs sm:text-sm leading-relaxed text-black">
+                                IT Infrastructure Support, Corporate Web Platform Development & Webinar Moderation
+                            </h4>
+                        </div>
+                        
+                        {/* 5 Poin rincian kontribusi magang langsung di halaman utama tanpa pemotongan */}
                         <ul className="space-y-2 text-gray-800 font-medium text-xs sm:text-sm leading-relaxed mb-6">
                           <li className="flex items-start gap-2">
                             <span className="text-black font-black">•</span>
@@ -1610,7 +1642,7 @@ const App = () => {
                             onClick={() => openCaseModal({
                               title: "PT Permata Graha Nusantara (PGNMAS)",
                               role: "IT Support & Graphic Design Intern",
-                              year: "2026",
+                              year: "Januari 2026 – April 2026",
                               institution: "PT Permata Graha Nusantara",
                               location: "Jakarta, Indonesia",
                               summary: "Completed a regular professional internship at PT Permata Graha Nusantara (PGNMAS) in the IT Support and Graphic Design Division, supporting enterprise IT operations, moderating corporate webinars, and leading front-end web development.",
@@ -1622,7 +1654,7 @@ const App = () => {
                                 "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
                               ],
                               gallery: ["pgnmas.png", "fleedy.png", "artbuild.png", "filexpert.png", "spativm.png"],
-                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation"]
+                              techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation", "System Admin", "Static HTML5"]
                             })} 
                             className="group relative inline-flex items-center gap-1.5 bg-yellow-300 border-2 border-black px-4 py-1.5 rounded font-black uppercase text-xs shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none hover:bg-yellow-400 transition-all ml-auto"
                         >
@@ -1634,7 +1666,7 @@ const App = () => {
               </div>
             </Reveal>
 
-            {/* 2. BMKG ACEH */}
+            {/* 2. BMKG ACEH (UPDATED WEBAR BMKG INTERNSHIP DETAILS) */}
             <Reveal delay={150}>
               <div className="relative h-full">
                 <div className="absolute -top-4 left-4 bg-green-400 border-2 border-black px-3.5 py-1 font-black uppercase text-xs transform -rotate-1 z-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
