@@ -412,7 +412,7 @@ export const internshipsList = [
     role: "IT Support & Graphic Design Intern",
     company: "PT Permata Graha Nusantara",
     location: "Jakarta, Indonesia",
-    logo: "src/assets/experience/pgnmas.jpeg",
+    logo: "pgnmas.jpeg",
     coreScope: "IT Infrastructure Support, Corporate Web Platform Development & Webinar Moderation",
     responsibilities: [
       "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
