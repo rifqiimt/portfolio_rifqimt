@@ -341,7 +341,7 @@ export const certsData = [
     description: "Professional communication skills certification and training organized by the West Bandung Vocational and Productivity Training Center (BPVP) under the Indonesian Ministry of Manpower. This program tests and validates competencies in effective public speaking and systematic special event planning.",
     issuer: "BPVP Bandung Barat - Ministry of Manpower R.I.",
     keyInfo: "Passed the intensive training certification with the official Competency Unit achievement 'Executing Special Events' (Unit Code: M.70HMS00.028.3).",
-    gallery: ["src/assets/certificate/bpvp.jpg", "src/assets/certificate/bpvp1.jpg", "src/assets/certificate/bpvp2.jpg"]
+    gallery: ["certificate/bpvp.jpg", "certificate/bpvp1.jpg", "certificate/bpvp2.jpg"]
   },
   {
     isCert: true,
