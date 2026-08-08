@@ -19,7 +19,7 @@ export const projectsData = [
     ],
     techStack: ["React.js", "Tailwind CSS", "Lucide Icons", "Custom IntersectionObserver", "Responsive UI/UX"],
     color: "bg-blue-300",
-    gallery: ["src/assets/projects/ui.fleedy.jpg"],
+    gallery: ["projects/ui.fleedy.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/fleedy/", icon: <Globe size={14}/>, className: "bg-blue-300 text-black hover:bg-blue-400" }
     ]
@@ -40,7 +40,7 @@ export const projectsData = [
     ],
     techStack: ["React.js", "Tailwind CSS", "Custom Easing Animation Hooks", "Interactive UI", "Front-End Engineering"],
     color: "bg-orange-300",
-    gallery: ["src/assets/projects/ui.spativm.jpg"],
+    gallery: ["projects/ui.spativm.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/spativm/", icon: <Globe size={14}/>, className: "bg-orange-300 text-black hover:bg-orange-400" }
     ]
@@ -61,7 +61,7 @@ export const projectsData = [
     ],
     techStack: ["React.js", "Tailwind CSS", "CSS Keyframe Animations", "B2B UI/UX Design", "Neo-Brutalist Layouts"],
     color: "bg-green-300",
-    gallery: ["src/assets/projects/ui.filexpert.jpg"],
+    gallery: ["projects/ui.filexpert.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/filexpert/", icon: <Globe size={14}/>, className: "bg-green-300 text-black hover:bg-green-400" }
     ]
@@ -82,7 +82,7 @@ export const projectsData = [
     ],
     techStack: ["React.js", "Tailwind CSS", "Playfair Display Typography", "Interactive Modals", "Video Hero Integration"],
     color: "bg-purple-300",
-    gallery: ["src/assets/projects/ui.artbuild.jpg"],
+    gallery: ["projects/ui.artbuild.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/artbuild/", icon: <Globe size={14}/>, className: "bg-purple-300 text-black hover:bg-purple-400" }
     ]
@@ -143,7 +143,7 @@ export const projectsData = [
     ],
     techStack: ['Unity3D', 'Vuforia AR', 'Blender 3D Modeling', 'Android SDK'],
     color: "bg-orange-300",
-    gallery: ["src/assets/projects/ar.hardware.jpg"],
+    gallery: ["projects/ar.hardware.jpg"],
     links: [
       { text: "App, Walkthrough & Research Data", url: "https://drive.google.com/drive/folders/1d3CT7M3wk4dY-DI3fOsczbqzrCtGB6by?usp=sharing", icon: <ExternalLink size={14}/>, className: "bg-orange-300 text-black hover:bg-orange-400" }
     ]
@@ -189,7 +189,7 @@ export const projectsData = [
     ],
     techStack: ['ESP32', 'Firebase IoT', 'MAX6675 / INA219', 'Web Dashboard', 'C++ / Arduino IDE'],
     color: "bg-green-300",
-    gallery: ["src/assets/projects/gula1.jpeg", "src/assets/projects/gula2.jpeg", "src/assets/projects/gula3.jpeg", "src/assets/certificate/innovillage.jpg"],
+    gallery: ["projects/gula1.jpeg", "projects/gula2.jpeg", "projects/gula3.jpeg", "certificate/innovillage.jpg"],
     links: [
       { text: "Github Repo", url: "https://github.com/rifqiimt/Gula-Cerdas.git", icon: <Github size={14}/> },
       { text: "Video Demo", url: "https://www.youtube.com/@rifqimubaraktampeng5034/videos", icon: <Youtube size={14}/>, className: "bg-red-100 text-black hover:bg-red-200" }
@@ -246,7 +246,7 @@ export const experiencesList = [
     year: "2025",
     client: "HIMATEKKOM, Universitas Syiah Kuala",
     location: "Banda Aceh, Indonesia",
-    image: "src/assets/experience/cmd.png",
+    image: "experience/cmd.png",
     categoryBadgeColor: "bg-yellow-300",
     summary: "Served as the Chairman for CMD 2025, directing a national-scale technology festival featuring 24-hour hackathons, workshops, and AI seminars. Simultaneously spearheaded the event's primary revenue generation by directly managing the end-to-end design, production, and sales campaign of official merchandise, successfully funding over 46% of the entire event budget.",
     details: [
@@ -255,7 +255,7 @@ export const experiencesList = [
       "Architected and managed the overall event budget of IDR 21.04 Million, demonstrating exceptional fiscal responsibility by delivering the entire operational pipeline with a balanced sheet and absolute transparency.",
       "Resolved complex operational and logistics challenges during the highly intense 24-hour continuous Hackathon program, ensuring continuous mentor-student coordination and seamless event execution."
     ],
-    gallery: ["src/assets/experience/cmd.png", "src/assets/experience/cmd1.jpeg", "src/assets/experience/cmd2.jpeg", "src/assets/experience/cmd3.jpeg", "src/assets/experience/cmd4.jpeg", "src/assets/experience/cmd5.jpeg"],
+    gallery: ["experience/cmd.png", "experience/cmd1.jpeg", "experience/cmd2.jpeg", "experience/cmd3.jpeg", "experience/cmd4.jpeg", "experience/cmd5.jpeg"],
     techStack: ["Event Operations & Leadership", "Strategic Merchandising", "Financial Planning & Budgeting", "Vendor Negotiation", "Logistics Coordination", "Revenue Optimization"]
   },
   {
@@ -351,7 +351,7 @@ export const certsData = [
     description: "A large-scale national digital social innovation competition organized by PT Telkom Indonesia. Passed the research funding selection for the 'Gula Cerdas' project (An IoT-based palm sugar production standardization and viscosity monitoring system for traditional farmer SMEs in Aceh).",
     issuer: "PT Telkom Indonesia (Persero) Tbk",
     keyInfo: "Secured Top 180 Innovillage 2025 national funding & implemented appropriate technology for SMEs.",
-    gallery: ["src/assets/certificate/innovillage.jpg"]
+    gallery: ["certificate/innovillage.jpg"]
   },
   {
     isCert: true,
@@ -361,7 +361,7 @@ export const certsData = [
     description: "An industry-standard certified independent study program in Machine Learning and AI development. Includes an in-depth understanding of data processing, predictive model creation, and a collaborative final Capstone Project with cross-disciplinary participants.",
     issuer: "Google, GoTo, & Traveloka (Kampus Merdeka)",
     keyInfo: "Graduated with a Google-standard competency certificate & completed an AI Capstone Project.",
-    gallery: ["src/assets/certificate/bangkit.jpg", "src/assets/certificate/bangkit1.jpg", "src/assets/certificate/bangkit2.jpg"]
+    gallery: ["certificate/bangkit.jpg", "certificate/bangkit1.jpg", "certificate/bangkit2.jpg"]
   },
   {
     isCert: true,
@@ -412,7 +412,7 @@ export const internshipsList = [
     role: "IT Support & Graphic Design Intern",
     company: "PT Permata Graha Nusantara",
     location: "Jakarta, Indonesia",
-    logo: "pgnmas.jpeg",
+    logo: "experience/pgnmas.jpeg",
     coreScope: "IT Infrastructure Support, Corporate Web Platform Development & Webinar Moderation",
     responsibilities: [
       "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
@@ -436,7 +436,7 @@ export const internshipsList = [
         "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.",
         "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
       ],
-      gallery: ["src/assets/experience/pgnmas.jpg", "src/assets/experience/pgnmas1.jpg", "src/assets/experience/pgnmas2.jpg", "src/assets/experience/pgnmas3.jpg"],
+      gallery: ["experience/pgnmas.jpg", "experience/pgnmas1.jpg", "experience/pgnmas2.jpg", "experience/pgnmas3.jpg"],
       techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation", "System Admin", "Static HTML5"]
     }
   },

@@ -33,14 +33,14 @@ export const CVModal = ({ isOpen, onClose }) => {
 
         <div className="flex-grow bg-gray-200 relative overflow-hidden flex items-center justify-center">
           <iframe 
-            src="src/assets/cv.pdf" 
+            src="cv.pdf" 
             title="CV Rifqi Mubarak Tampeng" 
             className="w-full h-full min-h-[55vh] border-0 relative z-10"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 p-6 text-center z-0">
             <p className="text-sm font-bold text-gray-600 mb-4">PDF preview is not directly supported in this browser.</p>
             <a 
-              href="src/assets/cv.pdf" 
+              href="cv.pdf" 
               download="CV_Rifqi_Mubarak_Tampeng.pdf"
               className="px-6 py-3 bg-yellow-300 border-2 border-black font-black text-xs uppercase rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
             >
@@ -53,7 +53,7 @@ export const CVModal = ({ isOpen, onClose }) => {
           <span className="font-mono text-xs text-gray-400 font-bold">CURRICULUM VITAE // PROFESSIONAL RESUME</span>
           <div className="flex gap-2">
             <a
-              href="src/assets/cv.pdf"
+              href="cv.pdf"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase bg-white border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-100 transition-all"
@@ -61,7 +61,7 @@ export const CVModal = ({ isOpen, onClose }) => {
               <ExternalLink size={14} /> Open in New Tab
             </a>
             <a
-              href="src/assets/cv.pdf"
+              href="cv.pdf"
               download="CV_Rifqi_Mubarak_Tampeng.pdf"
               className="flex items-center gap-1.5 px-4 py-2 text-xs font-black uppercase bg-yellow-300 border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-400 transition-all"
             >
