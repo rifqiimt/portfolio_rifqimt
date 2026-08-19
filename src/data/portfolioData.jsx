@@ -10,11 +10,11 @@ export const projectsData = [
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Designed and engineered the official web landing platform for Fleedy, an integrated enterprise transportation and fleet management service managing over 964 vehicle units and IDR 189.88 Billion in total assets.",
+    summary: "Designed and engineered the official web landing platform for Fleedy, an integrated enterprise transportation and fleet management service, visually showcasing their 2025 annual report data of over 964 vehicle units and IDR 189.88 Billion in total assets.",
     details: [
       "Engineered a highly responsive and modern corporate front-end using React.js and Tailwind CSS, featuring custom viewport-triggered reveal animations (RevealOnScroll).",
       "Architected clean UI sections to present real-time GPS tracking capabilities, EV/Hybrid energy transition readiness, and comprehensive driver management workflows.",
-      "Visually structured complex 2024 annual operational metrics (19.16% YoY asset growth and IDR 153.05 Billion business revenue) into scannable, interactive data cards.",
+      "Visually structured complex 2025 annual operational metrics (19.16% YoY asset growth and IDR 153.05 Billion business revenue) into scannable, interactive data cards to highlight the company's scale.",
       "Optimized multi-device navigation and integrated direct cross-platform communication links (WhatsApp API, App Store, and Google Play ecosystem)."
     ],
     techStack: ["React.js", "Tailwind CSS", "Lucide Icons", "Custom IntersectionObserver", "Responsive UI/UX"],
@@ -31,7 +31,7 @@ export const projectsData = [
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Developed the corporate web portal for SPATIVM, showcasing regional facility management, HSE, and building maintenance services covering over 419,000 m² of corporate and government property assets.",
+    summary: "Developed the corporate web portal for SPATIVM, structuring the UI to visually highlight their operational scale covering over 419,000 m² of corporate and government property assets.",
     details: [
       "Built a sophisticated front-end experience using React.js featuring custom frame-by-frame mathematical easing hooks (CountUp) for dynamic annual performance statistics.",
       "Implemented a trigger-once IntersectionObserver architecture (FadeInSection) to deliver smooth, staggered entrance animations across multi-column service grids.",
@@ -52,12 +52,12 @@ export const projectsData = [
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Engineered a high-impact B2B web platform for FileExpert, an ANRI-accredited archive management and DOX OCR technology solution handling over 153,446 corporate archive boxes.",
+    summary: "Engineered a high-impact B2B web platform for FileExpert, an ANRI-accredited archive management and DOX OCR technology solution, designing statistical dashboards to showcase their capability in handling over 153,446 corporate archive boxes.",
     details: [
       "Designed a bold, neo-brutalist corporate visual identity using React.js and Tailwind CSS with a distinctive green-and-yellow high-contrast color palette.",
       "Implemented an infinite CSS linear marquee animation to dynamically showcase trust from vital enterprise partners (Pertamina Group, MIND ID, Bank BTN, and JAKPRO).",
       "Created interactive feature showcases explaining DOX Optical Character Recognition (OCR) technology, metadata search capabilities, and certified archive management workflows.",
-      "Built an optimized, scannable statistical dashboard section displaying IDR 25.96 Billion in annual revenue and 12.72% YoY business growth."
+      "Built an optimized, scannable statistical dashboard section visualizing their 2025 report data of IDR 25.96 Billion in annual revenue and 12.72% YoY business growth."
     ],
     techStack: ["React.js", "Tailwind CSS", "CSS Keyframe Animations", "B2B UI/UX Design", "Neo-Brutalist Layouts"],
     color: "bg-green-300",
@@ -73,12 +73,12 @@ export const projectsData = [
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Created an elegant, luxury-focused web showcase for ArtBuild, presenting architectural design, interior fitting-out, and construction projects for PGN Group and Pertamina subsidiaries.",
+    summary: "Created an elegant, luxury-focused web showcase for ArtBuild, presenting a digital gallery of architectural design, interior fitting-out, and construction projects for PGN Group and Pertamina subsidiaries.",
     details: [
       "Crafted a refined editorial visual experience utilizing serif typography (Playfair Display), interactive Polaroid-style photo grids, and video background hero headers.",
-      "Developed a responsive, full-screen interactive project modal listing 20+ major 2024 Design & Build portfolios across internal PGN and external Pertamina Group facilities.",
+      "Developed a responsive, full-screen interactive project modal listing 20+ major 2025 Design & Build portfolios across internal PGN and external Pertamina Group facilities.",
       "Engineered dynamic hover-reveal accordion components that expand to display detailed technical scopes (Preliminary Design, DED, RAB, and Custom Furniture production).",
-      "Structured performance metrics highlighting IDR 38.25 Billion in revenue contribution and high tender win rates across state-owned enterprise projects."
+      "Structured performance metric layouts highlighting IDR 38.25 Billion in revenue contribution and high tender win rates based on their 2025 annual project data."
     ],
     techStack: ["React.js", "Tailwind CSS", "Playfair Display Typography", "Interactive Modals", "Video Hero Integration"],
     color: "bg-purple-300",
@@ -136,7 +136,7 @@ export const projectsData = [
     location: "Banda Aceh, Indonesia",
     summary: "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
     details: [
-      "Engineered a markerless mobile Augmented Reality (AR) Android application using Unity 3D and Vuforia SDK for interactive 3D computer hardware learning.",
+      "Conducted comprehensive R&D to translate physical computer hardware into detailed spatial 3D learning modules for educational purposes.",
       "Designed and animated detailed 3D models of computer components (Motherboard, CPU, RAM, GPU) using Blender with interactive 360-degree rotation and zoom.",
       "Implemented Research and Development (R&D) prototyping methodologies and conducted System Usability Scale (SUS) and N-Gain cognitive evaluations with 20+ respondents.",
       "Successfully defended the research as the final requirement for the Bachelor of Engineering (S.T.) degree."
@@ -234,8 +234,7 @@ export const projectsData = [
     techStack: ['Arduino Uno', 'Water Flow Sensor', 'C++ Embedded', 'Hardware Assembly'],
     color: "bg-green-300",
     gallery: ["swms.jpeg", "swm1.jpeg", "swm2.jpeg", "swm3.jpeg"],
-    links: [
-    ]
+    links: []
   }
 ];
 
@@ -447,7 +446,7 @@ export const internshipsList = [
     company: "BMKG Kelas I SIM",
     location: "Banda Aceh, Indonesia",
     logo: "bmkg.png",
-    coreScope: "", // BMKG tidak memiliki kotak hijau core scope
+    coreScope: "",
     responsibilities: [
       "Designed and developed an interactive Web-Based Augmented Reality (WebAR) educational application to visualize complex meteorological equipment (such as Campbell Stokes) as interactive 3D models.",
       "Reconstructed high-fidelity 3D assets from physical photos using Meshroom photogrammetry engine and optimized topology/texturing in Blender for mobile browser performance.",
