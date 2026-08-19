@@ -408,7 +408,7 @@ export const internshipsList = [
   {
     title: "PGNMAS",
     period: "Jan 2026 – Apr 2026",
-    role: "IT Support & Graphic Design Intern",
+    role: "IT Support & Web Developer Intern", // Graphic Design resmi dicoret!
     company: "PT Permata Graha Nusantara",
     location: "Jakarta, Indonesia",
     logo: "experience/pgnmas.jpeg",
@@ -417,26 +417,25 @@ export const internshipsList = [
       "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
       "Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.",
       "Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.",
-      "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.",
-      "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
+      "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations."
+      // Poin Graphic Design sudah dihapus bersih dari sini!
     ],
-    tags: ["IT Support", "React.js"],
+    tags: ["IT Support", "React.js", "Front-End"], // Tag Graphic Design diganti Front-End
     caseStudyData: {
       title: "PT Permata Graha Nusantara (PGNMAS)",
-      role: "IT Support & Graphic Design Intern",
+      role: "IT Support & Web Developer Intern",
       year: "Januari 2026 – April 2026",
       institution: "PT Permata Graha Nusantara",
       location: "Jakarta, Indonesia",
-      summary: "Completed a regular professional internship at PT Permata Graha Nusantara (PGNMAS) in the IT Support and Graphic Design Division, supporting enterprise IT operations, moderating corporate webinars, and leading front-end web development.",
+      summary: "Completed a regular professional internship at PT Permata Graha Nusantara (PGNMAS) supporting enterprise IT operations, moderating corporate webinars, and leading front-end web development for corporate platforms.",
       details: [
         "Supported daily corporate IT infrastructure operations, hardware/software troubleshooting, and system license compliance checks across internal departments.",
         "Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.",
         "Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.",
-        "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations.",
-        "Produced professional graphic design and visual communication materials aligned with PT Permata Graha Nusantara branding guidelines."
+        "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations."
       ],
       gallery: ["experience/pgnmas.jpg", "experience/pgnmas1.jpg", "experience/pgnmas2.jpg", "experience/pgnmas3.jpg"],
-      techStack: ["React.js", "Tailwind CSS", "IT Support", "Graphic Design", "Webinar Moderation", "System Admin", "Static HTML5"]
+      techStack: ["React.js", "Tailwind CSS", "IT Support", "Front-End Development", "Webinar Moderation", "System Admin", "Static HTML5"] // Graphic Design hilang dari Tech Stack
     }
   },
   {
