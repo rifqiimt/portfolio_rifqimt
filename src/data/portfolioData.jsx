@@ -440,7 +440,7 @@ export const internshipsList = [
   },
   {
     title: "BMKG Aceh",
-    period: "2025",
+    period: "Dec 2024 - Jan 2025",
     role: "AR & WebAR Developer Intern",
     company: "BMKG Kelas I SIM",
     location: "Banda Aceh, Indonesia",
