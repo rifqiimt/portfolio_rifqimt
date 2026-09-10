@@ -199,7 +199,7 @@ const App = () => {
             
             <div className="relative">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-2 text-transparent bg-clip-text bg-black" style={{WebkitTextStroke: '2px black'}}>
-                  RIFQI M.
+                  RIFQI MUBARAK
                 </h1>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-black absolute top-1 left-1 -z-10 opacity-0 lg:opacity-100 text-stroke">
                     RIFQI MUBARAK
@@ -253,7 +253,7 @@ const App = () => {
               
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-black bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] z-10 hover:scale-105 transition-transform duration-500">
                  <img 
-                  src="p.jpeg"
+                  src="ppp.jpeg"
                   alt="Rifqi Mubarak" 
                   className="w-full h-full object-cover"
                   onError={(e) => {e.target.src = "https://api.dicebear.com/9.x/avataaars/svg?seed=Rifqi"}} 
