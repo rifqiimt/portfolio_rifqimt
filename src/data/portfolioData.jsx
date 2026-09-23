@@ -6,41 +6,76 @@ export const projectsData = [
   {
     title: "Fleedy - Corporate Fleet & Transportation Management Web Platform",
     category: "Web Development",
-    subtitle: "Corporate Landing Page / Web Application",
+    subtitle: "Corporate Landing Page / Transportation Management Services",
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Designed and engineered the official web landing platform for Fleedy, an integrated enterprise transportation and fleet management service, visually showcasing their 2025 annual report data of over 964 vehicle units and IDR 189.88 Billion in total assets.",
+    summary: "Unit Jasa Pengelolaan Transportasi (Fleedy) dari PERMATA Group. Platform web yang menampilkan layanan terintegrasi: sewa kendaraan, manajemen pengemudi, operasi armada, GPS tracking, dan layanan administratif untuk klien BUMN, KKKS Migas, dan pemerintah.",
     details: [
-      "Engineered a highly responsive and modern corporate front-end using React.js and Tailwind CSS, featuring custom viewport-triggered reveal animations (RevealOnScroll).",
-      "Architected clean UI sections to present real-time GPS tracking capabilities, EV/Hybrid energy transition readiness, and comprehensive driver management workflows.",
-      "Visually structured complex 2025 annual operational metrics (19.16% YoY asset growth and IDR 153.05 Billion business revenue) into scannable, interactive data cards to highlight the company's scale.",
-      "Optimized multi-device navigation and integrated direct cross-platform communication links (WhatsApp API, App Store, and Google Play ecosystem)."
+      "Engineered a highly responsive corporate front-end using React.js and Tailwind CSS, featuring custom viewport-triggered reveal animations (RevealOnScroll component with IntersectionObserver API)",
+      "Architected clean UI sections to present real-time GPS tracking capabilities, EV/Hybrid energy transition readiness (3 EV units + 10 Hybrid units in fleet), and comprehensive driver management workflows",
+      "Visually structured complex 2024 annual operational metrics (19.16% YoY asset growth and IDR 153.05 Billion business revenue from transportation management services) into scannable, interactive data cards using custom CountUp animation hook with ease-out exponential easing",
+      "Designed multi-device navigation with direct cross-platform communication links: WhatsApp API integration, App Store, and Google Play ecosystem links for seamless user engagement",
+      "Built comprehensive services section covering 3 core offerings: Jasa Pengelolaan Transportasi (transportation services), Manajemen Pengemudi & SDM (driver & HR management), and Fleet Management System (integrated asset management)",
+      "Created 4 feature highlight cards: Real-Time Tracking (GPS + Google Maps integration), Cost Efficiency (centralized BBM, Toll, and preventive maintenance management), Energy Transition Ready (EV/Hybrid fleet adaptation for energy transition era), and Comprehensive Care (All-Risk insurance, official workshop partners, STNK/KIR document management)",
+      "Developed client logo grid showcasing 12 corporate partners: SKK Migas, Pertamina, Pertagas, Perta Samtan, EP Cepu, Patra Niaga, Hulu Rokan, Nusantara Regas, Pertamina Power, Hulu Energi, TGI, Petrochina — all with hover-grayscale-to-full-color transition effects",
+      "Implemented dynamic statistics section with animated counters: 964 total units (764 internal + 200 external), 19.16% YOY asset growth, IDR 153.05 Billion business revenue, and IDR 189.88 Billion total asset value"
     ],
-    techStack: ["React.js", "Tailwind CSS", "Lucide Icons", "Custom IntersectionObserver", "Responsive UI/UX"],
+    techStack: [
+      "React.js",
+      "Tailwind CSS",
+      "Lucide Icons",
+      "Custom IntersectionObserver (RevealOnScroll component)",
+      "Custom CountUp Animation Hook (Ease Out Expo)",
+      "Google Maps & GPS Integration",
+      "WhatsApp API Link",
+      "App Store & Google Play Integration",
+      "Responsive UI/UX (mobile-first with hamburger menu)",
+      "FadeInSection Entrance Animations"
+    ],
     color: "bg-blue-300",
-    gallery: ["projects/ui.fleedy.jpg"],
+    gallery: ["projects/ui.fleedy.jpg", "projects/ui.fleedy1.jpg"],
     links: [
-      { text: "Live Website", url: "https://pgnmas.co.id/fleedy/", icon: <Globe size={14}/>, className: "bg-blue-300 text-black hover:bg-blue-400" }
+      { text: "Live Website", url: "https://pgnmas.co.id/fleedy/", icon: <Globe size={14}/>, className: "bg-blue-300 text-black hover:bg-blue-400" },
+      { text: "Download iOS App", url: "https://apps.apple.com/us/app/fleedy/id1605578677", icon: <Code size={14}/>, className: "bg-white text-[#1f4374] hover:bg-gray-50" },
+      { text: "Download Android App", url: "https://play.google.com/store/apps/details?id=com.pgnmas.fleedy&hl=id", icon: <Code size={14}/>, className: "bg-white text-[#1f4374] hover:bg-gray-50" }
     ]
   },
   {
     title: "Spativm - Regional Facility & Building Management Portal",
     category: "Web Development",
-    subtitle: "Corporate Web Portal / Facility Management",
+    subtitle: "Corporate Web Portal / Facility Management Services",
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Developed the corporate web portal for SPATIVM, structuring the UI to visually highlight their operational scale covering over 419,000 m² of corporate and government property assets.",
+    summary: "Corporate web portal for SPATIVM, a facility management business unit under PERMATA Group. Provides comprehensive building management services: maintenance, housekeeping, HSE & security, office support, and parking/valet services for corporate, government, and commercial properties.",
     details: [
-      "Built a sophisticated front-end experience using React.js featuring custom frame-by-frame mathematical easing hooks (CountUp) for dynamic annual performance statistics.",
-      "Implemented a trigger-once IntersectionObserver architecture (FadeInSection) to deliver smooth, staggered entrance animations across multi-column service grids.",
-      "Designed intuitive UI layouts highlighting core facility services (Building Maintenance, Housekeeping, HSE & Security, and Office Support) with high-contrast visual hierarchy.",
-      "Showcased enterprise credibility by structuring strategic client ecosystems including Kementerian BUMN, SKK Migas, Pertamina, and PGN Group."
+      "Built sophisticated front-end experience using React.js featuring custom frame-by-frame mathematical easing hooks (CountUp with Ease Out Expo formula: 1 - 2^(-10x)) for dynamic annual performance statistics",
+      "Implemented trigger-once IntersectionObserver architecture (FadeInSection with 0.15 threshold and -50px rootMargin) to deliver smooth, staggered entrance animations across multi-column service grids — animations trigger only once per element",
+      "Designed intuitive UI layouts highlighting core facility services (Building Maintenance, Housekeeping & Hygiene, HSE & Security, and Office Support) with high-contrast visual hierarchy and cyan (#005494) color accent",
+      "Showcased enterprise credibility by structuring strategic client ecosystems including Kementerian BUMN, SKK Migas, Pertamina, PGN Group, Pertamina EP, BULOG, Bank Mega, ASDP, Medco E&P, Pertamina Hulu Energi, Pertagas, and Saka Indonesia — with grayscale-to-color hover logo transition effects",
+      "Developed 4 main service detail cards with images, category badges, and descriptions: Building Maintenance (listrik/air/AC systems), Housekeeping & Hygiene (sanitization), HSE & Security (K3 compliance), and Office Support (resepsionis/operator/meeting room management)",
+      "Created additional services section: Parking & Valet Management, Coworking Space & Meeting Management, Diklat & Rumah Dinas Units, Building Accessories Supply",
+      "Included internal PGN services description: data aset non-jaringan updates, utilitas & atap repairs, fire alarm system maintenance, waterproofing (Kantor Pusat Ketapang), and archive building repairs in Klender — demonstrating deep understanding of internal PGN operations",
+      "Implemented custom CountUp hook with ease-out exponential easing for animated statistics display: Rp425+ Million facility management revenue, 20.35% YOY growth, 419,000+ m² total building area, and 14 strategic tender participations — with delayed trigger per item (100ms * index)",
+      "Built fully functional contact form with company name, email, and detailed needs textarea fields; integrated social media links (Instagram, Facebook, Email) with hover effects",
+      "Developed mobile-responsive design with hamburger menu overlay, smooth scroll navigation with 65px header offset, and sticky navigation that transitions from transparent to white on scroll",
+      "Presented additional 2024 metrics: 228,058.97 m² building area and 191,363.53 m² empty land managed, with specific building management revenue of IDR 174.99 Billion"
     ],
-    techStack: ["React.js", "Tailwind CSS", "Custom Easing Animation Hooks", "Interactive UI", "Front-End Engineering"],
+    techStack: [
+      "React.js",
+      "Tailwind CSS",
+      "Custom CountUp Animation Hook (Ease Out Expo: 1 - 2^(-10x))",
+      "Custom FadeInSection (IntersectionObserver with unobserve-once pattern)",
+      "Smooth Scroll Navigation (65px header offset)",
+      "Mobile Responsive (hamburger menu with full-screen overlay)",
+      "Client Logo Grid with Grayscale-to-Color Hover Effects",
+      "Contact Form Integration (name, email, message fields)",
+      "Sticky Navigation with Scroll-State Transition",
+      "Dark Section Design (#0f172a background)"
+    ],
     color: "bg-orange-300",
-    gallery: ["projects/ui.spativm.jpg"],
+    gallery: ["projects/ui.spativm.jpg", "projects/ui.spativm1.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/spativm/", icon: <Globe size={14}/>, className: "bg-orange-300 text-black hover:bg-orange-400" }
     ]
@@ -48,20 +83,38 @@ export const projectsData = [
   {
     title: "FileExpert - ANRI-Accredited Digital Archive & DOX Solution",
     category: "Web Development",
-    subtitle: "B2B Digital Solution / Archive Management Web",
+    subtitle: "B2B Digital Solution / Archive Management Web Platform",
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Engineered a high-impact B2B web platform for FileExpert, an ANRI-accredited archive management and DOX OCR technology solution, designing statistical dashboards to showcase their capability in handling over 153,446 corporate archive boxes.",
+    summary: "High-impact B2B web platform for FileExpert, an ANRI-accredited archive management and DOX OCR technology solution under PERMATA Group. Showcases capability in managing over 153,446 corporate archive boxes with national archival standards, serving clients including Pertamina Group, Kementerian BUMN, Jiwasraya, ASDP, and government institutions.",
     details: [
-      "Designed a bold, neo-brutalist corporate visual identity using React.js and Tailwind CSS with a distinctive green-and-yellow high-contrast color palette.",
-      "Implemented an infinite CSS linear marquee animation to dynamically showcase trust from vital enterprise partners (Pertamina Group, MIND ID, Bank BTN, and JAKPRO).",
-      "Created interactive feature showcases explaining DOX Optical Character Recognition (OCR) technology, metadata search capabilities, and certified archive management workflows.",
-      "Built an optimized, scannable statistical dashboard section visualizing their 2025 report data of IDR 25.96 Billion in annual revenue and 12.72% YoY business growth."
+      "Designed bold, neo-brutalist corporate visual identity using React.js and Tailwind CSS with distinctive green-and-yellow high-contrast color palette — FileExpert brand identity with rotated logo elements (rotate-1, rotate-3 on hover)",
+      "Implemented infinite CSS linear marquee animation (35s linear infinite loop) to dynamically showcase trust from vital enterprise partners (Pertamina Group, MIND ID, Bank BTN, JAKPRO, KemenBUMN, ASDP) — with grayscale-to-full-color hover transition effects on each logo",
+      "Created interactive feature showcases explaining DOX Optical Character Recognition (OCR) technology, metadata search capabilities, and certified archive management workflows — with feature badges (Metadata Search, Mobile Apps, OCR Tech) using Zap icon with yellow fill",
+      "Built optimized, scannable statistical dashboard section visualizing 2024 report data: 153,446 total boxes managed (2,500 large boxes + 150,946 standard ANRI boxes), 15,010 boxes organized using ML-assisted methods, and annual revenue of IDR 25.96 Billion with 12.72% year-over-year growth",
+      "Developed 4 comprehensive service sections with distinct visual treatments: (1) Penataan Arsip — green card with Database icon, ANRI national archival standards; (2) Penyimpanan Terkelola — dark green card with ShieldCheck icon, 24-hour monitor + barcode tracking; (3) Manage Service — yellow card with Users icon, outsourcing with certified archive specialists; (4) Teknologi DOX — featured section with DOX hero image, Cpu icon, and feature badges (Metadata Search, Mobile Apps, OCR Tech)",
+      "Created client statistics cards with hover shadow effects: Pertamina Tbk (62,032 boxes), Kementerian BUMN (19,087 boxes), Jiwasraya (15,615 boxes), ASDP (2,845 boxes with impressive +264% growth) — each card showing sub-label, client name, and box count",
+      "Designed 'Ekspansi Bisnis' section with dark green card (bg-green-950) featuring PieChart icon, 'Facility Management 2024' title, quote about holistic archival management, and metrics: 15 tender wins, 14% YoY growth, IDR 25.96 Million revenue, Audit Selesai status",
+      "Built animated client logo marquee with duplicate loop (2x) for seamless infinite scroll, grayscale opacity-40 default with hover grayscale-0 + opacity-100 transition, yellow dot separators between logos",
+      "Implemented custom scrollbar styling (8px width, green thumb #15803d with hover #166534) and marquee animation keyframes for professional polished feel",
+      "Created CTA section with large yellow-400 rounded-[3rem] card: 'Optimalkan Ruang Kantor Anda' headline, italic description, and 'Konsultasi Sekarang' button with scale-105 hover and active:scale-95 transform effects"
     ],
-    techStack: ["React.js", "Tailwind CSS", "CSS Keyframe Animations", "B2B UI/UX Design", "Neo-Brutalist Layouts"],
+    techStack: [
+      "React.js",
+      "Tailwind CSS",
+      "Neo-Brutalist Design (green-yellow high-contrast palette)",
+      "CSS Keyframe Animations (infinite marquee, 35s linear)",
+      "B2B UI/UX Design",
+      "DOX OCR Technology Concept (Optical Character Recognition)",
+      "ANRI Archival Standards (National Archive Accreditation)",
+      "Interactive Hover Effects (logo grayscale transition, card shadow, button scale)",
+      "Feature Badge System (Zap icon with yellow fill)",
+      "Custom Scrollbar Styling",
+      "Rotated Image Containers (rotate-1, rotate-3 CSS transforms)"
+    ],
     color: "bg-green-300",
-    gallery: ["projects/ui.filexpert.jpg"],
+    gallery: ["projects/ui.filexpert.jpg", "projects/ui.filexpert1.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/filexpert/", icon: <Globe size={14}/>, className: "bg-green-300 text-black hover:bg-green-400" }
     ]
@@ -73,16 +126,35 @@ export const projectsData = [
     year: "2026",
     client: "PT Permata Graha Nusantara (PERMATA / PGN Group)",
     location: "Jakarta, Indonesia",
-    summary: "Created an elegant, luxury-focused web showcase for ArtBuild, presenting a digital gallery of architectural design, interior fitting-out, and construction projects for PGN Group and Pertamina subsidiaries.",
+    summary: "Elegant, luxury-focused web showcase for ArtBuild, presenting digital gallery of architectural design, interior fitting-out, and construction projects for PGN Group and Pertamina subsidiaries. Showcases 2024 design & build portfolios with IDR 38.25 Billion revenue contribution and 5/8 tender win rate (62.5%).",
     details: [
-      "Crafted a refined editorial visual experience utilizing serif typography (Playfair Display), interactive Polaroid-style photo grids, and video background hero headers.",
-      "Developed a responsive, full-screen interactive project modal listing 20+ major 2025 Design & Build portfolios across internal PGN and external Pertamina Group facilities.",
-      "Engineered dynamic hover-reveal accordion components that expand to display detailed technical scopes (Preliminary Design, DED, RAB, and Custom Furniture production).",
-      "Structured performance metric layouts highlighting IDR 38.25 Billion in revenue contribution and high tender win rates based on their 2025 annual project data."
+      "Crafted refined editorial visual experience utilizing serif typography (Playfair Display for headlines) and sans-serif body (Inter), interactive Polaroid-style photo grids with CSS rotation effects (rotate-6, rotate-0, rotate-0) in about section",
+      "Developed full-screen interactive project modal listing 20+ major 2024 Design & Build portfolios across internal PGN and external Pertamina Group facilities — accessible via 'Lihat Daftar Lengkap Proyek' button, modal shows internal (PN Group) and external (Pertamina Group) project lists with numbered items",
+      "Engineered dynamic hover-reveal accordion components that expand to display detailed technical scopes — 6 service items (Interior & Arsitektur Design, Konstruksi & Renovasi, Fitting Out Ruang Kantor, Penyusunan RAB & Penjadwalan, Detail Engineering Design/DED, Custom Furniture) — each with hover-to-expand description using max-h-0 to max-h-24 transition with left border reveal",
+      "Structured performance metric layouts in 'Pencapaian & Kinerja' dark section (#1a1a1a background): Tingkat Kemenangan Tinggi (5/8 lelang = 62.5% win rate), Ekspansi Pasar Luas (Pertamina Group across Lubricants, Gas, Retail, NRE divisions), Pendapatan Signifikan (IDR 38.25 Billion contribution in 2024) — all with white bullet points and left border accent",
+      "Implemented video background hero section with 'Enduro x Fastron' featured project (Lounge & Exhibition for PT Pertamina Lubricants) — video autoplay, loop, muted, playsinline with poster image fallback, overlaid with clean info box showing client (PT Pertamina Lubricants), year (2024), and status (Completed)",
+      "Built 5-project horizontal scrollable gallery (scrollbar-hide class): Graha PGAS (Furniture Lt. 9-11), Pertamina Lubricants (Showroom Interior), Bright Store Bintaro (Renovasi Store), Sport Center Udayana (Konstruksi Lapangan), Kantor Pertamina NRE (Renovasi R. Komisaris) — each with image hover scale-110 effect and project number/title/location metadata",
+      "Created blueprint/detail section with grid layout: left side with technical drawing image (grayscale, mix-blend-multiply), right side with stats card showing IDR 38.25 Billion kontribusi 2024, fokus pasar (BUMN & Swasta), and klien strategis (SKK Migas, Pertamina Group, PGN) — with DOC. 2024 label",
+      "Developed 6-item service navigation with numbered headings (01-06), hover translate-x-2 effect, and hidden description text that expands from max-h-0 to max-h-24 on hover with left border reveal — smooth 500ms ease-in-out transition",
+      "Implemented dark section with full-screen background image (service0.jpg, grayscale, opacity-40 overlay), left-aligned content with border-l border-white/20 pl-8 indent, showing 3 achievement items with animated bullet points",
+      "Created CTA section with clean design: 'Mulai Proyek Anda' label, large serif headline (4xl/5xl), description, and dark button (bg-[#2A2A2A]) with hover:bg-black transition, leading to contact@artbuild.co.id mailto link"
     ],
-    techStack: ["React.js", "Tailwind CSS", "Playfair Display Typography", "Interactive Modals", "Video Hero Integration"],
+    techStack: [
+      "React.js",
+      "Tailwind CSS",
+      "Playfair Display Typography (Serif - headlines)",
+      "Inter Font (Sans-Serif - body text)",
+      "Custom FadeInSection (IntersectionObserver with delay support)",
+      "Video Background Integration (autoplay, loop, muted, playsinline with poster)",
+      "Polaroid-Style Photo Grids (CSS transform: rotate-6, rotate-0 with shadow effects)",
+      "Accordion Hover-Reveal Components (max-h-0 to max-h-24, 500ms ease-in-out)",
+      "Horizontal Scroll Project Gallery (scrollbar-hide, hover scale-110)",
+      "Project Modal (full project list with internal/external sections)",
+      "Dark Section Design (#1a1a1a background with left border accent)",
+      "Blueprint-Style Detail Section (technical drawing aesthetic)"
+    ],
     color: "bg-purple-300",
-    gallery: ["projects/ui.artbuild.jpg"],
+    gallery: ["projects/ui.artbuild.jpg", "projects/ui.artbuild1.jpg"],
     links: [
       { text: "Live Website", url: "https://pgnmas.co.id/artbuild/", icon: <Globe size={14}/>, className: "bg-purple-300 text-black hover:bg-purple-400" }
     ]
@@ -408,7 +480,7 @@ export const internshipsList = [
   {
     title: "PGNMAS",
     period: "Jan 2026 – Apr 2026",
-    role: "IT Support & Web Developer Intern", // Graphic Design resmi dicoret!
+    role: "IT Support & Web Developer Intern",
     company: "PT Permata Graha Nusantara",
     location: "Jakarta, Indonesia",
     logo: "experience/pgnmas.jpeg",
@@ -418,9 +490,8 @@ export const internshipsList = [
       "Designed and developed 4 production-ready corporate web platforms (Fleedy, ArtBuild, FileExpert, and Spativm) using React.js and Tailwind CSS, while generating static HTML5 bundles to comply with corporate server deployment standards.",
       "Trusted by corporate leadership to moderate 2 official knowledge-sharing webinars ('Cross Sharing' on AI and 'Pairing' on Digital Cybersecurity), facilitating high-level discussions between university professors and corporate executives.",
       "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations."
-      // Poin Graphic Design sudah dihapus bersih dari sini!
     ],
-    tags: ["IT Support", "React.js", "Front-End"], // Tag Graphic Design diganti Front-End
+    tags: ["IT Support", "React.js", "Front-End"],
     caseStudyData: {
       title: "PT Permata Graha Nusantara (PGNMAS)",
       role: "IT Support & Web Developer Intern",
@@ -435,7 +506,7 @@ export const internshipsList = [
         "Managed corporate digital assets, shared file accessibility, and employee workstation configurations to streamline daily business support operations."
       ],
       gallery: ["experience/pgnmas.jpg", "experience/pgnmas1.jpg", "experience/pgnmas2.jpg", "experience/pgnmas3.jpg"],
-      techStack: ["React.js", "Tailwind CSS", "IT Support", "Front-End Development", "Webinar Moderation", "System Admin", "Static HTML5"] // Graphic Design hilang dari Tech Stack
+      techStack: ["React.js", "Tailwind CSS", "IT Support", "Front-End Development", "Webinar Moderation", "System Admin", "Static HTML5"]
     }
   },
   {
