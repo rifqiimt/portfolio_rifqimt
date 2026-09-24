@@ -279,7 +279,7 @@ const App = () => {
                  { icon: <Github size={18}/>, href: "https://github.com/rifqiimt" },
                  { icon: <Instagram size={18}/>, href: "https://www.instagram.com/rifqiimt/" },
                  { icon: <Linkedin size={18}/>, href: "https://www.linkedin.com/in/rifqiimt/" },
-                 { icon: <Mail size={18}/>, href: "mailto:tampengrifqmubarak@gmail.com" },
+                 { icon: <Mail size={18}/>, href: "mailto:rifqim.tmpg@gmail.com" },
                  { icon: <Phone size={18}/>, href: "https://wa.me/85214006701" }
                ].map((social, idx) => (
                  <SocialLink key={idx} href={social.href} icon={social.icon} />
