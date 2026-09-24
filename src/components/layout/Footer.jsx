@@ -4,7 +4,7 @@ import { Github, Instagram, Linkedin, Mail, Phone } from 'lucide-react';
 export const Footer = () => {
   return (
     <footer className="py-20 bg-black text-white border-t-8 border-yellow-400">
-      <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16 text-center">
+      <div className="w-full max-w-[1520px] mx-auto px-3 sm:px-4 lg:px-6 text-center">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-black mb-8 uppercase tracking-widest">Ready to Collaborate?</h2>
         <div className="flex justify-center gap-4 mb-12 flex-wrap">
             {[

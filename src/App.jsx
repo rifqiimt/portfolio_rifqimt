@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { 
   Menu, X, FileText, Mail, ArrowUpRight, Zap, 
   MousePointer2, Github, Instagram, Linkedin, 
@@ -23,6 +23,38 @@ import { SocialLink, QuoteIcon } from './components/ui/Misc';
 // Modals
 import { CVModal } from './components/modals/CVModal';
 import { CaseStudyModal } from './components/modals/CaseStudyModal';
+
+const ExpandableContent = ({ isOpen, children }) => {
+  const contentRef = useRef(null);
+  const [height, setHeight] = useState('0px');
+
+  useLayoutEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const contentHeight = `${content.scrollHeight}px`;
+    if (isOpen) {
+      setHeight(contentHeight);
+    } else if (height !== '0px') {
+      setHeight(contentHeight);
+      requestAnimationFrame(() => setHeight('0px'));
+    }
+  }, [isOpen]);
+
+  const handleTransitionEnd = () => {
+    if (isOpen) setHeight('auto');
+  };
+
+  return (
+    <div
+      className="overflow-hidden transition-[height,opacity] duration-700 ease-in-out"
+      style={{ height, opacity: isOpen ? 1 : 0 }}
+      onTransitionEnd={handleTransitionEnd}
+    >
+      <div ref={contentRef}>{children}</div>
+    </div>
+  );
+};
 
 const App = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -123,11 +155,19 @@ const App = () => {
         return true;
       });
 
-  const displayedProjects = (selectedCategory === 'ALL' && !showAllProjects) 
-    ? filteredProjects.slice(0, 6) 
-    : filteredProjects;
+  const initialProjects = selectedCategory === 'ALL' ? filteredProjects.slice(0, 6) : filteredProjects;
+  const additionalProjects = selectedCategory === 'ALL' ? filteredProjects.slice(6) : [];
 
-  const displayedExp = showAllExp ? experiencesList : experiencesList.slice(0, 3);
+  const initialExp = experiencesList.slice(0, 3);
+  const additionalExp = experiencesList.slice(3);
+
+  const handleToggleProjects = () => {
+    setShowAllProjects((current) => !current);
+  };
+
+  const handleToggleExp = () => {
+    setShowAllExp((current) => !current);
+  };
 
   return (
     <div className="min-h-screen bg-[#fffdf5] text-black font-sans selection:bg-black selection:text-white overflow-x-hidden">
@@ -188,9 +228,9 @@ const App = () => {
         <div className="absolute top-1/4 -left-10 w-40 h-40 bg-purple-400 rounded-full border-2 border-black mix-blend-multiply filter blur-xl opacity-50"></div>
         <div className="absolute bottom-1/4 -right-10 w-60 h-60 bg-yellow-300 rounded-full border-2 border-black mix-blend-multiply filter blur-xl opacity-50"></div>
         
-        <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16 flex flex-col-reverse lg:flex-row items-center justify-between gap-16 relative z-10">
+        <div className="w-full max-w-[1520px] mx-auto px-3 sm:px-4 lg:px-6 flex flex-col-reverse lg:flex-row items-center justify-between gap-16 relative z-10">
           <Reveal className="lg:w-7/12 text-center lg:text-left space-y-6">
-            <div className="inline-block bg-white border-2 border-black px-4 py-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transform -rotate-2">
+            <div className="inline-block bg-white border border-black px-3.5 py-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transform -rotate-2">
               <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse border border-black"></span> 
                 Status: Available for work
@@ -204,13 +244,13 @@ const App = () => {
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-black absolute top-1 left-1 -z-10 opacity-0 lg:opacity-100 text-stroke">
                     RIFQI MUBARAK
                 </h1>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold bg-yellow-300 inline-block px-3 border-2 border-black transform rotate-1 mt-1">
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold bg-yellow-300 inline-block px-3 border border-black transform rotate-1 mt-1">
                     TAMPENG
                 </p>
             </div>
             
-            <div className="bg-white border-2 border-black p-4 lg:mr-12 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-xl relative">
-                <div className="absolute -top-3 -right-3 bg-blue-400 border-2 border-black p-1.5 rounded-full z-10">
+            <div className="bg-white border border-black p-3.5 lg:mr-10 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-xl relative">
+                <div className="absolute -top-2.5 -right-2.5 bg-blue-400 border border-black p-1.5 rounded-full z-10">
                     <Terminal size={20} className="text-white"/>
                 </div>
                 <p className="text-sm sm:text-base font-medium leading-relaxed">
@@ -219,15 +259,15 @@ const App = () => {
             </div>
             
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
-              <button onClick={() => scrollTo('projects')} className="group px-7 py-3.5 bg-black text-white text-xs sm:text-sm font-bold uppercase border-2 border-black rounded-lg shadow-[6px_6px_0px_0px_#22d3ee] hover:shadow-[2px_2px_0px_0px_#22d3ee] hover:translate-x-[4px] hover:translate-y-[4px] transition-all flex items-center gap-2">
+              <button onClick={() => scrollTo('projects')} className="group px-6 py-3 bg-black text-white text-xs sm:text-sm font-bold uppercase border border-black rounded-lg shadow-[3px_3px_0px_0px_#22d3ee] hover:shadow-[1.5px_1.5px_0px_0px_#22d3ee] hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex items-center gap-2">
                 View Projects <MousePointer2 size={18} className="group-hover:rotate-12 transition-transform" />
               </button>
-              <button onClick={() => scrollTo('experience')} className="px-7 py-3.5 bg-white text-black text-xs sm:text-sm font-bold uppercase border-2 border-black rounded-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] transition-all">
+              <button onClick={() => scrollTo('experience')} className="px-6 py-3 bg-white text-black text-xs sm:text-sm font-bold uppercase border border-black rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all">
                 Experience
               </button>
               <button
                 onClick={openCVModal}
-                className="px-7 py-3.5 bg-yellow-300 text-black text-xs sm:text-sm font-black uppercase border-2 border-black rounded-lg shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[4px] hover:translate-y-[4px] hover:bg-yellow-400 transition-all flex items-center gap-2"
+                className="px-6 py-3 bg-yellow-300 text-black text-xs sm:text-sm font-black uppercase border border-black rounded-lg shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:bg-yellow-400 transition-all flex items-center gap-2"
               >
                 <FileText size={18} /> View CV / Resume
               </button>
@@ -249,9 +289,9 @@ const App = () => {
 
           <Reveal delay={200} className="lg:w-5/12 flex justify-center relative">
             <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-[26rem] lg:h-[26rem]">
-              <div className="absolute top-0 right-0 w-full h-full bg-blue-400 border-2 border-black rounded-full mix-blend-normal z-0 translate-x-4 translate-y-4"></div>
+              <div className="absolute top-0 right-0 w-full h-full bg-blue-400 border border-black rounded-full mix-blend-normal z-0 translate-x-3 translate-y-3"></div>
               
-              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-black bg-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] z-10 hover:scale-105 transition-transform duration-500">
+              <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-10 hover:scale-[1.015] transition-transform duration-300">
                  <img 
                   src="ppp.jpeg"
                   alt="Rifqi Mubarak" 
@@ -260,14 +300,14 @@ const App = () => {
                 />
               </div>
 
-              <div className="absolute -right-4 top-10 bg-white border-2 border-black p-3 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 flex items-center gap-2 transform rotate-3 hover:scale-105 transition-transform">
-                 <Figma size={20} className="text-black"/>
-                 <span className="font-black text-[11px] sm:text-xs uppercase">UI/UX<br/>MASTER</span>
+              <div className="absolute -right-3 top-10 bg-white border border-black p-2.5 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-20 flex items-center gap-2 transform rotate-3 hover:scale-[1.015] transition-transform">
+                 <Figma size={18} className="text-black"/>
+                 <span className="font-black text-[10px] sm:text-xs uppercase">UI/UX<br/>MASTER</span>
               </div>
               
-              <div className="absolute -left-2 bottom-12 bg-yellow-300 border-2 border-black p-3 rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-20 flex items-center gap-2 transform -rotate-2 hover:scale-105 transition-transform">
-                 <Code size={20} className="text-black"/>
-                 <span className="font-black text-[11px] sm:text-xs uppercase">WEB DEV<br/>REACT & TAILWIND</span>
+              <div className="absolute -left-2 bottom-12 bg-yellow-300 border border-black p-2.5 rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] z-20 flex items-center gap-2 transform -rotate-2 hover:scale-[1.015] transition-transform">
+                 <Code size={18} className="text-black"/>
+                 <span className="font-black text-[10px] sm:text-xs uppercase">WEB DEV<br/>REACT & TAILWIND</span>
               </div>
             </div>
           </Reveal>
@@ -285,13 +325,13 @@ const App = () => {
       </section>
 
       {/* About & Skills */}
-      <section id="about" className="py-28 bg-purple-50 border-t-4 border-black relative">
+      <section id="about" className="py-28 bg-purple-50 border-t-2 border-black relative">
         <div className="absolute top-0 left-0 w-full h-4 bg-[repeating-linear-gradient(45deg,black,black_10px,transparent_10px,transparent_20px)] opacity-20"></div>
         
-        <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
+        <div className="w-full max-w-[1520px] mx-auto px-3 sm:px-4 lg:px-6">
           <Reveal>
              <div className="flex flex-col items-center mb-16">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-center bg-white border-2 border-black px-6 py-2 shadow-[6px_6px_0px_0px_#f472b6] transform -rotate-1">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-center bg-white border border-black px-5 py-1.5 shadow-[3px_3px_0px_0px_#f472b6] transform -rotate-1">
                     About Me
                 </h2>
              </div>
@@ -300,8 +340,8 @@ const App = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-7">
                <Reveal delay={100}>
-                  <div className="bg-white border-2 border-black p-6 md:p-8 rounded-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
-                    <QuoteIcon className="absolute -top-4 -left-4 w-10 h-10 bg-yellow-400 border-2 border-black text-black p-2 rounded-full z-10" />
+                  <div className="bg-white border border-black p-5 md:p-6 rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] relative">
+                    <QuoteIcon className="absolute -top-3.5 -left-3.5 w-9 h-9 bg-yellow-400 border border-black text-black p-2 rounded-full z-10" />
                     <div className="text-black font-medium text-sm sm:text-base leading-relaxed space-y-5">
                         <p>
                         I am a Bachelor of Engineering (S.T.) graduate in Computer Engineering from Universitas Syiah Kuala with a <span className="bg-green-200 px-1.5 py-0.5 border border-black font-bold">GPA of 3.55/4.00</span>. I have a strong passion for creating aesthetic and functional digital solutions.
@@ -323,9 +363,9 @@ const App = () => {
                      { val: "120+", label: "Team Led", color: "bg-blue-300" },
                      { val: "6+", label: "Projects Done", color: "bg-green-300" }
                    ].map((stat, i) => (
-                     <div key={i} className={`p-4 border-2 border-black text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${stat.color} rounded-lg`}>
+                     <div key={i} className={`p-3.5 border border-black text-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all ${stat.color} rounded-lg`}>
                          <h3 className="text-2xl sm:text-3xl font-black text-black">{stat.val}</h3>
-                         <p className="text-[11px] font-bold uppercase border-t-2 border-black mt-1 pt-1">{stat.label}</p>
+                         <p className="text-[11px] font-bold uppercase border-t border-black mt-1 pt-1">{stat.label}</p>
                      </div>
                    ))}
                  </div>
@@ -334,8 +374,8 @@ const App = () => {
 
             <div className="lg:col-span-5">
                <Reveal delay={300}>
-                 <div className="bg-gray-100 border-2 border-black p-6 rounded-xl relative">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 text-xs sm:text-sm font-bold uppercase rounded border-2 border-white transform skew-x-12">
+                 <div className="bg-gray-100 border border-black p-4 sm:p-5 rounded-xl relative">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white px-3.5 py-0.5 text-xs sm:text-sm font-bold uppercase rounded border border-white transform skew-x-12">
                          My Arsenal
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-4">
@@ -356,8 +396,8 @@ const App = () => {
       </section>
 
       {/* PROJECTS SECTION */}
-      <section id="projects" className="py-28 bg-[#fffdf5] border-t-4 border-black overflow-hidden">
-        <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
+      <section id="projects" className="py-14 bg-[#fffdf5] border-t-2 border-black overflow-hidden">
+        <div className="w-full max-w-[1520px] mx-auto px-3 sm:px-4 lg:px-6">
           <Reveal>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
                <div>
@@ -383,9 +423,9 @@ const App = () => {
                          setSelectedCategory(cat);
                          setShowAllProjects(false);
                        }}
-                       className={`px-4 py-2 border-2 border-black font-black text-xs uppercase rounded-lg transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+                       className={`px-3.5 py-1.5 border border-black font-black text-xs uppercase rounded-lg transition-all shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] ${
                          isActive 
-                           ? 'bg-yellow-300 text-black translate-x-[1px] translate-y-[1px] shadow-none' 
+                           ? 'bg-yellow-300 text-black translate-x-[0.5px] translate-y-[0.5px] shadow-none' 
                            : 'bg-white text-gray-700 hover:bg-gray-100'
                        }`}
                      >
@@ -397,25 +437,48 @@ const App = () => {
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayedProjects.map((project, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            {initialProjects.map((project, idx) => (
               <Reveal key={idx} delay={(idx % 3) * 100}>
                 <ProjectCard 
                   title={project.title}
                   category={project.category}
                   images={project.gallery}
                   color={project.color}
-                  onOpenModal={() => openCaseModal(project)}
+                  summary={project.summary}
+                  techStack={project.techStack}
+                  links={project.links}
                 />
               </Reveal>
             ))}
+
           </div>
+
+          {additionalProjects.length > 0 && (
+            <ExpandableContent isOpen={showAllProjects}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8 pb-3 items-stretch">
+                  {additionalProjects.map((project, idx) => (
+                    <Reveal key={idx} delay={(idx % 3) * 100} className="h-full">
+                      <ProjectCard
+                        title={project.title}
+                        category={project.category}
+                        images={project.gallery}
+                        color={project.color}
+                        summary={project.summary}
+                        techStack={project.techStack}
+                        links={project.links}
+                      />
+                    </Reveal>
+                  ))}
+              </div>
+            </ExpandableContent>
+          )}
 
           {selectedCategory === 'ALL' && filteredProjects.length > 6 && (
             <div className="text-center mt-14">
               <button
-                onClick={() => setShowAllProjects(!showAllProjects)}
-                className="bg-white border-2 border-black px-8 py-3.5 font-black uppercase text-xs sm:text-sm rounded-lg shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                onClick={handleToggleProjects}
+                className="bg-white border border-black px-6 py-2.5 font-black uppercase text-xs sm:text-sm rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
               >
                 {showAllProjects 
                   ? "↑ Show Fewer Projects" 
@@ -428,20 +491,17 @@ const App = () => {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-28 bg-blue-50 border-y-4 border-black">
-        <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16">
+      <section id="experience" className="py-14 bg-blue-50 border-y-2 border-black">
+        <div className="w-full max-w-[1520px] mx-auto px-3 sm:px-4 lg:px-6">
           <Reveal>
-            <div className="mb-16 flex flex-col items-center text-center">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight mb-2 uppercase border-b-4 border-black pb-2">
+            <div className="mb-8 flex flex-col items-center text-center">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-black tracking-tight mb-2 uppercase border-b-2 border-black pb-2">
                 Experience Highlight
-              </h2>
-              <p className="text-gray-600 font-medium text-xs sm:text-sm mt-2">
-                Proof of leadership & real-world field contributions (Click photo for details)
-              </p>
+              </h2>        
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full mb-10">
             {internshipsList.map((internship, idx) => (
               <Reveal key={idx} delay={100 + (idx * 50)}>
                 <InternshipCard 
@@ -452,8 +512,8 @@ const App = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {displayedExp.map((exp, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full items-stretch">
+            {initialExp.map((exp, idx) => (
               <Reveal key={idx} delay={idx * 100}>
                 <VisualExperienceCard
                   title={exp.title}
@@ -467,11 +527,30 @@ const App = () => {
             ))}
           </div>
 
+          {additionalExp.length > 0 && (
+            <ExpandableContent isOpen={showAllExp}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full pt-8 pb-3 items-stretch">
+                  {additionalExp.map((exp, idx) => (
+                    <Reveal key={idx} delay={idx * 100} className="h-full">
+                      <VisualExperienceCard
+                        title={exp.title}
+                        role={exp.role}
+                        year={exp.year}
+                        image={exp.image}
+                        categoryBadgeColor={exp.categoryBadgeColor}
+                        onClickDetail={() => openCaseModal(exp)}
+                      />
+                    </Reveal>
+                  ))}
+              </div>
+            </ExpandableContent>
+          )}
+
           {experiencesList.length > 3 && (
             <div className="text-center mt-14">
               <button
-                onClick={() => setShowAllExp(!showAllExp)}
-                className="bg-white border-2 border-black px-8 py-3.5 font-black uppercase text-xs sm:text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                onClick={handleToggleExp}
+                className="bg-white border border-black px-6 py-2.5 font-black uppercase text-xs sm:text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
               >
                 {showAllExp 
                   ? "↑ Show Less" 
@@ -484,12 +563,12 @@ const App = () => {
       </section>
 
       {/* Certifications */}
-      <section id="certs" className="py-28 bg-yellow-50 relative overflow-hidden">
+      <section id="certs" className="py-14 bg-yellow-50 relative overflow-hidden">
          <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px'}}></div>
 
-         <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16 relative z-10">
+         <div className="w-full max-w-[1520px] mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
             <Reveal>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-center mb-16 bg-white border-2 border-black inline-block px-8 py-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mx-auto block transform rotate-1">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-center mb-8 bg-white border border-black inline-block px-6 py-2.5 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] mx-auto block transform rotate-1">
                 CERTIFICATIONS & TRAINING
               </h2>
             </Reveal>
