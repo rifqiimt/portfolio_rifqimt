@@ -11,7 +11,7 @@ export const Footer = () => {
                 { icon: <Github size={20}/>, href: "https://github.com/rifqiimt" },
                 { icon: <Instagram size={20}/>, href: "https://www.instagram.com/rifqiimt/" },
                 { icon: <Linkedin size={20}/>, href: "https://www.linkedin.com/in/rifqiimt/" },
-                { icon: <Mail size={20}/>, href: "mailto:tampengrifqmubarak@gmail.com" },
+                { icon: <Mail size={20}/>, href: "mailto:rifqim.tmpg@gmail.com" },
                 { icon: <Phone size={20}/>, href: "https://wa.me/85214006701" }
             ].map((social, idx) => (
                 <a key={idx} href={social.href} className="w-12 h-12 bg-white text-black border-2 border-white flex items-center justify-center rounded hover:bg-black hover:text-white hover:border-white transition-colors">
