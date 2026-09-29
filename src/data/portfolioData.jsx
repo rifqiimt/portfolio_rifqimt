@@ -203,7 +203,7 @@ export const projectsData = [
       "Blender 3D",
       "Android SDK"
     ],
-    color: "bg-black-300",
+    color: "bg-white",
     gallery: ["projects/ar.hardware.jpg"],
     links: [
       { text: "Source Code", url: "https://drive.google.com/drive/folders/1d3CT7M3wk4dY-DI3fOsczbqzrCtGB6by", icon: <Code size={14} />, className: "bg-orange-300 text-black hover:bg-orange-400" }
@@ -233,7 +233,7 @@ export const projectsData = [
       "WebAR",
       "Interactive UI/UX"
     ],
-    color: "bg-black-300",
+    color: "bg-white",
     gallery: ["bmkg2.png"],
     links: [
       { text: "Live Demo", url: "https://drive.google.com/file/d/1V6obcvnr7jf35-M14eItzmC8sS8rudcz/view?usp=drive_link", icon: <Youtube size={14} />, className: "bg-red-300 text-black hover:bg-red-400" }

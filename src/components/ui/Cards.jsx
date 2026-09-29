@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { ArrowUpRight, Image as ImageIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 export const VisualExperienceCard = ({ title, role, year, image, categoryBadgeColor = "bg-yellow-300", onClickDetail }) => {
   return (
@@ -43,38 +44,52 @@ export const VisualExperienceCard = ({ title, role, year, image, categoryBadgeCo
   );
 };
 
-export const ProjectCard = ({ title, category, images, color = "bg-yellow-300", summary, techStack, links, onOpenModal }) => {
+export const ProjectCard = ({ title, category, images, color = "bg-yellow-300", summary, techStack, links }) => {
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
   const imageList = Array.isArray(images) && images.length > 0 
     ? images 
     : ["https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"];
 
-  const handlePrev = (e) => {
-    e.stopPropagation();
+  useEffect(() => {
+    if (!isImagePreviewOpen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsImagePreviewOpen(false);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isImagePreviewOpen]);
+
+  const handlePrev = () => {
     setActiveImageIdx((prev) => (prev - 1 + imageList.length) % imageList.length);
   };
 
-  const handleNext = (e) => {
-    e.stopPropagation();
+  const handleNext = () => {
     setActiveImageIdx((prev) => (prev + 1) % imageList.length);
   };
 
   return (
     <div
-      onClick={onOpenModal}
-      className={`group relative w-full h-full bg-white border border-black rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-200 select-none flex flex-col min-h-[720px] sm:min-h-[760px] ${
-        onOpenModal ? 'cursor-pointer' : 'cursor-default'
-      }`}
+      className="group relative w-full h-full bg-white border border-black rounded-2xl overflow-hidden shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all duration-200 flex flex-col min-h-[720px] sm:min-h-[760px]"
     >
       {/* BAGIAN ATAS: GAMBAR PROJEK & SLIDER (DIBESARKAN AGAR TERLIHAT MAKSIMAL) */}
       <div className="w-full p-1.5 pb-0">
         <div className="relative w-full h-72 sm:h-80 md:h-96 rounded-xl overflow-hidden bg-gray-100 border border-black/15">
-          <img
-            src={imageList[activeImageIdx]}
-            alt={`${title} - view ${activeImageIdx + 1}`}
-            className="w-full h-full object-contain object-center transform transition-transform duration-500 ease-out group-hover:scale-[1.015]"
-            onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"; }}
-          />
+          <button
+            type="button"
+            onClick={() => setIsImagePreviewOpen(true)}
+            aria-label={`Enlarge ${title} image ${activeImageIdx + 1}`}
+            className="absolute inset-0 z-10 flex h-full w-full cursor-pointer items-center justify-center"
+          >
+            <img
+              src={imageList[activeImageIdx]}
+              alt={`${title} - view ${activeImageIdx + 1}`}
+              className="h-full w-full object-contain object-center transition-transform duration-500 ease-out group-hover:scale-[1.015]"
+              onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"; }}
+            />
+          </button>
 
           {/* Category Badge di pojok kiri atas gambar */}
           <div className="absolute top-2.5 left-2.5 z-20">
@@ -110,7 +125,7 @@ export const ProjectCard = ({ title, category, images, color = "bg-yellow-300", 
                   <button
                     key={i}
                     type="button"
-                    onClick={(e) => { e.stopPropagation(); setActiveImageIdx(i); }}
+                    onClick={() => setActiveImageIdx(i)}
                     className={`h-1.5 rounded-full transition-all cursor-pointer ${
                       i === activeImageIdx ? 'w-3.5 bg-yellow-300' : 'w-1.5 bg-white/70 hover:bg-white'
                     }`}
@@ -131,7 +146,7 @@ export const ProjectCard = ({ title, category, images, color = "bg-yellow-300", 
           </h3>
 
           {summary && (
-            <p className="text-xs sm:text-[13px] text-gray-700 font-medium leading-relaxed mb-4">
+            <p className="text-xs sm:text-[13px] text-gray-700 font-medium leading-relaxed mb-4 cursor-text">
               {summary}
             </p>
           )}
@@ -179,19 +194,65 @@ export const ProjectCard = ({ title, category, images, color = "bg-yellow-300", 
               <span className="text-[10px] font-mono text-gray-400 font-bold">PROJECT SHOWCASE</span>
             )}
 
-            {onOpenModal && (
-              <button
-                type="button"
-                onClick={onOpenModal}
-                className="w-7 h-7 bg-black text-white rounded-full flex items-center justify-center hover:bg-yellow-300 hover:text-black hover:border hover:border-black transition-all ml-auto shrink-0"
-                title="View Details"
-              >
-                <ArrowUpRight size={14} />
-              </button>
-            )}
           </div>
         </div>
       </div>
+
+      {isImagePreviewOpen && createPortal(
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/90 p-4 sm:p-8">
+          <button
+            type="button"
+            aria-label="Close image preview"
+            onClick={() => setIsImagePreviewOpen(false)}
+            className="absolute inset-0 h-full w-full"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${title} image preview`}
+            className="relative z-10 flex max-h-full max-w-full items-center justify-center"
+          >
+            <img
+              src={imageList[activeImageIdx]}
+              alt={`${title} - enlarged view ${activeImageIdx + 1}`}
+              className="max-h-[90vh] max-w-[92vw] cursor-pointer object-contain"
+              onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"; }}
+            />
+            {imageList.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  aria-label="Previous image"
+                  className="absolute left-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-black bg-white/90 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-300 sm:left-5 sm:h-12 sm:w-12"
+                >
+                  <ChevronLeft size={22} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  aria-label="Next image"
+                  className="absolute right-3 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-black bg-white/90 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-300 sm:right-5 sm:h-12 sm:w-12"
+                >
+                  <ChevronRight size={22} />
+                </button>
+                <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded border border-white/30 bg-black/70 px-2.5 py-1 font-mono text-xs font-bold text-white">
+                  {activeImageIdx + 1} / {imageList.length}
+                </span>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsImagePreviewOpen(false)}
+              aria-label="Close image preview"
+              className="absolute -right-2 -top-2 rounded-full border-2 border-black bg-white p-2 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-300 sm:-right-4 sm:-top-4"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
