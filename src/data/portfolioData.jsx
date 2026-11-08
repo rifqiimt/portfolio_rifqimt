@@ -537,7 +537,7 @@ export const internshipsList = [
       "Designed and developed an interactive Web-Based Augmented Reality (WebAR) educational application to visualize complex meteorological equipment (such as Campbell Stokes) as interactive 3D models.",
       "Reconstructed high-fidelity 3D assets from physical photos using Meshroom photogrammetry engine and optimized topology/texturing in Blender for mobile browser performance.",
       "Engineered spatial scenes and UI overlays in Unity and published via Zapworks Studio for instant QR code browser access without app installation.",
-      "Assisted IT department with daily hardware/network operations and technical sensor data processing."
+      "Assisted IT department with daily hardware operations."
     ],
     tags: ["WebAR", "Unity 3D"],
     caseStudyData: {
